@@ -1,0 +1,26 @@
+{
+  "action": "delete_domain_indicator",
+  "config": {},
+  "inputs": {
+    "feed_id": "123e4567-e89b-12d3-a456-426655440000",
+    "indicator": "malicious.example.com"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "DELETE",
+        "url": "https://cloudinfra-gw.portal.checkpoint.com/app/ioc-management/feeds/123e4567-e89b-12d3-a456-426655440000/indicators/domain/malicious.example.com"
+      },
+      "response": {
+        "method": "DELETE",
+        "host": "cloudinfra-gw.portal.checkpoint.com",
+        "path": "/app/ioc-management/feeds/123e4567-e89b-12d3-a456-426655440000/indicators/domain/malicious.example.com",
+        "status": 204,
+        "body": ""
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://app.swaggerhub.com/apis-docs/Check-Point/Custom-IOC-Management-API/1.0.3#/Feed%20Indicator%20Controller/deleteIndicatorFromFeed",
+  "request_evidence": "independent_http_mock"
+}

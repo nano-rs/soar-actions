@@ -1,0 +1,30 @@
+{
+  "action": "revoke_sessions",
+  "config": {},
+  "inputs": {
+    "user_id": "00000000-0000-0000-0000-000000000001"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/users/00000000-0000-0000-0000-000000000001/revokeSignInSessions"
+      },
+      "response": {
+        "method": "POST",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/users/00000000-0000-0000-0000-000000000001/revokeSignInSessions",
+        "status": 200,
+        "body": {
+          "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#Edm.Boolean",
+          "value": true
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "revoked": true
+  },
+  "source": "https://learn.microsoft.com/en-us/graph/api/user-revokesigninsessions?view=graph-rest-1.0",
+  "request_evidence": "independent_http_mock"
+}

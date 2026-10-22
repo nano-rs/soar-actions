@@ -1,0 +1,20 @@
+{
+  "quarantine_email": {
+    "reason": "No public ICES reference endpoint/example/schema for moving an email into quarantine; the public Remediation section defines release and deletion only.",
+    "documentation": [
+      "https://developer.tessian.com/documentation/api/index.html#tag/Remediation"
+    ]
+  },
+  "trap_quarantine_email": {
+    "reason": "The official endpoint reference requires vendor portal access; public request and response definitions are unavailable.",
+    "documentation": [
+      "https://ptr-docs.proofpoint.com/extensibility-guides/ptr-api/"
+    ]
+  },
+  "trap_release_email": {
+    "reason": "The official endpoint reference requires vendor portal access; public request and response definitions are unavailable.",
+    "documentation": [
+      "https://ptr-docs.proofpoint.com/extensibility-guides/ptr-api/"
+    ]
+  }
+}

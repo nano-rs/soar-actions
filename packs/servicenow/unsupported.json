@@ -1,0 +1,14 @@
+{
+  "on_prem_create_incident": {
+    "reason": "Customer-managed appliance or instance hosts require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://developer.servicenow.com/print_page.do?category=null&identifier=c_TableAPI&module=api&release=zurich"
+    ]
+  },
+  "on_prem_add_incident_comment": {
+    "reason": "Customer-managed appliance or instance hosts require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://developer.servicenow.com/print_page.do?category=null&identifier=c_TableAPI&module=api&release=zurich"
+    ]
+  }
+}

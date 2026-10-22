@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "google_workspace",
+  "display_name": "Google Workspace Directory",
+  "description": "Google Workspace Directory response actions. Mutations require approval.",
+  "vendor": "Google",
+  "categories": [
+    "identity"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "admin.googleapis.com",
+      "path_prefixes": [
+        "/admin/directory/v1/users"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "ACCESS_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "ACCESS_TOKEN",
+      "label": "Current API access token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "suspend_user": {
+      "display_name": "Suspend user",
+      "description": "Set only the suspended flag using the documented patch semantics of users.update. Requires admin.directory.user scope and the relevant delegated administrator privilege. Existing sessions are a separate operation. API documentation: https://developers.google.com/workspace/admin/directory/reference/rest/v1/users/update",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PUT",
+            "url": "https://admin.googleapis.com/admin/directory/v1/users/{{input.user_id}}",
+            "json": {
+              "suspended": true
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "suspended",
+            "equals": true
+          }
+        }
+      ],
+      "outputs": {
+        "user_id": "steps.request.id",
+        "suspended": "steps.request.suspended"
+      },
+      "fixtures": [
+        "fixtures/suspend_user.json"
+      ],
+      "rollback": "unsuspend_user"
+    },
+    "unsuspend_user": {
+      "display_name": "Restore suspended user",
+      "description": "Set only the suspended flag using the documented patch semantics of users.update. Requires admin.directory.user scope and the relevant delegated administrator privilege. Existing sessions are a separate operation. API documentation: https://developers.google.com/workspace/admin/directory/reference/rest/v1/users/update",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PUT",
+            "url": "https://admin.googleapis.com/admin/directory/v1/users/{{input.user_id}}",
+            "json": {
+              "suspended": false
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "suspended",
+            "equals": false
+          }
+        }
+      ],
+      "outputs": {
+        "user_id": "steps.request.id",
+        "suspended": "steps.request.suspended"
+      },
+      "fixtures": [
+        "fixtures/unsuspend_user.json"
+      ],
+      "rollback": "suspend_user"
+    },
+    "sign_out_user": {
+      "display_name": "Sign user out",
+      "description": "Sign out web/device sessions and reset sign-in cookies. Requires admin.directory.user.security scope and the relevant delegated administrator privilege. The user must authenticate again; this does not recreate sessions. API documentation: https://developers.google.com/workspace/admin/directory/reference/rest/v1/users/signOut",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://admin.googleapis.com/admin/directory/v1/users/{{input.user_id}}/signOut",
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200,
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/sign_out_user.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Revoked sign-in sessions cannot be recreated; the user must authenticate again."
+    }
+  }
+}

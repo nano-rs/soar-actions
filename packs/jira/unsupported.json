@@ -1,0 +1,14 @@
+{
+  "self_hosted_create_issue": {
+    "reason": "Customer-managed appliance or instance hosts require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://developer.atlassian.com/server/jira/platform/rest-apis/"
+    ]
+  },
+  "self_hosted_add_comment": {
+    "reason": "Customer-managed appliance or instance hosts require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://developer.atlassian.com/server/jira/platform/rest-apis/"
+    ]
+  }
+}

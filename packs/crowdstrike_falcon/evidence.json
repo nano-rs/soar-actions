@@ -1,0 +1,241 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/add_case_tag.json",
+      "url": "https://developer.crowdstrike.com/api-reference/collections/case-management/#entitiescase-tagspostv1",
+      "document_sha256": "c891134b886cfa1971a19fb1c3c5f2739dbda6e62dadb02182a5bdd165e793a1",
+      "request": {
+        "method": "POST",
+        "url": "https://api.crowdstrike.com/cases/entities/case-tags/v1",
+        "json": {
+          "id": "string",
+          "tags": [
+            "string"
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.crowdstrike.com",
+        "path": "/cases/entities/case-tags/v1",
+        "status": 200,
+        "body": [
+          {
+            "access_tags": [],
+            "analysis_results": {},
+            "assigned_to": {},
+            "cid": "string",
+            "consistency": {},
+            "created_by": {},
+            "created_timestamp": "string",
+            "creation_actor": {},
+            "description": "string",
+            "description_format": "string",
+            "description_tagged_users": [],
+            "end_timestamp": "string",
+            "evidence": {},
+            "fields": [],
+            "id": "string",
+            "last_updated_by": {},
+            "name": "string",
+            "read_only": {},
+            "reference_id": "string",
+            "severity": 0,
+            "severity_info": {},
+            "sla": {},
+            "start_timestamp": "string",
+            "status": "string",
+            "tags": [],
+            "template": {},
+            "update_actor": {},
+            "updated_timestamp": "string",
+            "version": 0,
+            "workflows": []
+          }
+        ]
+      },
+      "document_url": "https://developer.crowdstrike.com/api-reference/collections/case-management/"
+    },
+    {
+      "fixture": "fixtures/delete_case_tag.json",
+      "url": "https://developer.crowdstrike.com/api-reference/collections/case-management/#entitiescase-tagsdeletev1",
+      "document_sha256": "c891134b886cfa1971a19fb1c3c5f2739dbda6e62dadb02182a5bdd165e793a1",
+      "request": {
+        "method": "DELETE",
+        "url": "https://api.crowdstrike.com/cases/entities/case-tags/v1",
+        "query": {
+          "id": "string",
+          "tag": "string"
+        }
+      },
+      "response": {
+        "method": "DELETE",
+        "host": "api.crowdstrike.com",
+        "path": "/cases/entities/case-tags/v1",
+        "status": 200,
+        "body": [
+          {
+            "access_tags": [],
+            "analysis_results": {},
+            "assigned_to": {},
+            "cid": "string",
+            "consistency": {},
+            "created_by": {},
+            "created_timestamp": "string",
+            "creation_actor": {},
+            "description": "string",
+            "description_format": "string",
+            "description_tagged_users": [],
+            "end_timestamp": "string",
+            "evidence": {},
+            "fields": [],
+            "id": "string",
+            "last_updated_by": {},
+            "name": "string",
+            "read_only": {},
+            "reference_id": "string",
+            "severity": 0,
+            "severity_info": {},
+            "sla": {},
+            "start_timestamp": "string",
+            "status": "string",
+            "tags": [],
+            "template": {},
+            "update_actor": {},
+            "updated_timestamp": "string",
+            "version": 0,
+            "workflows": []
+          }
+        ]
+      },
+      "document_url": "https://developer.crowdstrike.com/api-reference/collections/case-management/"
+    },
+    {
+      "fixture": "fixtures/contain_host.json",
+      "url": "https://developer.crowdstrike.com/api-reference/collections/hosts/#performactionv2",
+      "document_url": "https://developer.crowdstrike.com/api-reference/collections/hosts/",
+      "document_sha256": "4de8bccad85c2b10cff28df55b2e25e1ebc7d054ab6edadfe557a6781d90d57f",
+      "request": {
+        "method": "POST",
+        "url": "https://api.crowdstrike.com/devices/entities/devices-actions/v2",
+        "query": {
+          "action_name": "contain"
+        },
+        "json": {
+          "ids": [
+            "0123456789abcdef0123456789abcdef"
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.crowdstrike.com",
+        "path": "/devices/entities/devices-actions/v2",
+        "status": 202,
+        "body": {
+          "errors": [],
+          "meta": {
+            "query_time": 0.0,
+            "trace_id": "string"
+          },
+          "resources": [
+            {
+              "id": "0123456789abcdef0123456789abcdef",
+              "path": "string"
+            }
+          ]
+        }
+      },
+      "schema_documents": [
+        {
+          "url": "https://raw.githubusercontent.com/CrowdStrike/gofalcon/29988d86d1274c981746a7976a95931bf0cb1667/falcon/models/msa_entity_action_request_v2.go",
+          "sha256": "b406b3b49f6bd1e86ec7594194256f2e96cdd86cefc98da8114ff6ed473bf355"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/CrowdStrike/gofalcon/29988d86d1274c981746a7976a95931bf0cb1667/falcon/models/msa_reply_affected_entities.go",
+          "sha256": "addb1ef0b7655823c95cddc581a9703f528ca95dc44667f53344afe2fdb44fb9"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/CrowdStrike/gofalcon/29988d86d1274c981746a7976a95931bf0cb1667/falcon/models/msa_meta_info.go",
+          "sha256": "8fafaa6d07d6dcdb15978cea63463158cd29710523c2709392e1c8ef0d9ec7c4"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/CrowdStrike/gofalcon/29988d86d1274c981746a7976a95931bf0cb1667/falcon/models/msa_affected_entity.go",
+          "sha256": "f797bf34a53bcba7d70b9afa4178636ed4dcedbb713af1987b821d1b277a3660"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/CrowdStrike/gofalcon/29988d86d1274c981746a7976a95931bf0cb1667/falcon/models/msa_api_error.go",
+          "sha256": "1b8ffbe6148ec557591defc92d35a13c815ec52e0fd569774ba9bb5f194b8071"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/CrowdStrike/gofalcon/29988d86d1274c981746a7976a95931bf0cb1667/falcon/client/hosts/perform_action_v2_responses.go",
+          "sha256": "26aad7b5464a892f1197ad7ca328fb7534b1a48dd4f48c1f87f3b2e2f30954f8"
+        }
+      ]
+    },
+    {
+      "fixture": "fixtures/lift_containment.json",
+      "url": "https://developer.crowdstrike.com/api-reference/collections/hosts/#performactionv2",
+      "document_url": "https://developer.crowdstrike.com/api-reference/collections/hosts/",
+      "document_sha256": "4de8bccad85c2b10cff28df55b2e25e1ebc7d054ab6edadfe557a6781d90d57f",
+      "request": {
+        "method": "POST",
+        "url": "https://api.crowdstrike.com/devices/entities/devices-actions/v2",
+        "query": {
+          "action_name": "lift_containment"
+        },
+        "json": {
+          "ids": [
+            "0123456789abcdef0123456789abcdef"
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.crowdstrike.com",
+        "path": "/devices/entities/devices-actions/v2",
+        "status": 202,
+        "body": {
+          "errors": [],
+          "meta": {
+            "query_time": 0.0,
+            "trace_id": "string"
+          },
+          "resources": [
+            {
+              "id": "0123456789abcdef0123456789abcdef",
+              "path": "string"
+            }
+          ]
+        }
+      },
+      "schema_documents": [
+        {
+          "url": "https://raw.githubusercontent.com/CrowdStrike/gofalcon/29988d86d1274c981746a7976a95931bf0cb1667/falcon/models/msa_entity_action_request_v2.go",
+          "sha256": "b406b3b49f6bd1e86ec7594194256f2e96cdd86cefc98da8114ff6ed473bf355"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/CrowdStrike/gofalcon/29988d86d1274c981746a7976a95931bf0cb1667/falcon/models/msa_reply_affected_entities.go",
+          "sha256": "addb1ef0b7655823c95cddc581a9703f528ca95dc44667f53344afe2fdb44fb9"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/CrowdStrike/gofalcon/29988d86d1274c981746a7976a95931bf0cb1667/falcon/models/msa_meta_info.go",
+          "sha256": "8fafaa6d07d6dcdb15978cea63463158cd29710523c2709392e1c8ef0d9ec7c4"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/CrowdStrike/gofalcon/29988d86d1274c981746a7976a95931bf0cb1667/falcon/models/msa_affected_entity.go",
+          "sha256": "f797bf34a53bcba7d70b9afa4178636ed4dcedbb713af1987b821d1b277a3660"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/CrowdStrike/gofalcon/29988d86d1274c981746a7976a95931bf0cb1667/falcon/models/msa_api_error.go",
+          "sha256": "1b8ffbe6148ec557591defc92d35a13c815ec52e0fd569774ba9bb5f194b8071"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/CrowdStrike/gofalcon/29988d86d1274c981746a7976a95931bf0cb1667/falcon/client/hosts/perform_action_v2_responses.go",
+          "sha256": "26aad7b5464a892f1197ad7ca328fb7534b1a48dd4f48c1f87f3b2e2f30954f8"
+        }
+      ]
+    }
+  ]
+}

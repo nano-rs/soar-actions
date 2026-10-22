@@ -1,0 +1,49 @@
+{
+  "action": "block_sender",
+  "config": {},
+  "inputs": {
+    "sender": "sender@example.com",
+    "recipient": "recipient@example.com",
+    "description": "Block investigated sender for this recipient"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.services.mimecast.com/policy-management/cloud-gateway/v1/blocked-senders/policies",
+        "json": {
+          "description": "Block investigated sender for this recipient",
+          "option": "block_sender",
+          "fromPart": "both",
+          "from": {
+            "type": "individual_email_address",
+            "emailAddress": "sender@example.com"
+          },
+          "to": {
+            "type": "individual_email_address",
+            "emailAddress": "recipient@example.com"
+          },
+          "enabled": true,
+          "bidirectional": false,
+          "override": false,
+          "fromEternal": true,
+          "toEternal": true
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.services.mimecast.com",
+        "path": "/policy-management/cloud-gateway/v1/blocked-senders/policies",
+        "status": 201,
+        "body": {
+          "id": "policy_123"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "policy_id": "policy_123"
+  },
+  "source": "https://developer.services.mimecast.com/docs/policymanagement/1/routes/policy-management%2Fcloud-gateway%2Fv1%2Fblocked-senders%2Fpolicies/post",
+  "request_evidence": "independent_http_mock"
+}

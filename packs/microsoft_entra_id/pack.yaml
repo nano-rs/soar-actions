@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "microsoft_entra_id",
+  "display_name": "Microsoft Entra ID / Graph",
+  "description": "Microsoft Entra ID / Graph response actions. Mutations require approval.",
+  "vendor": "Microsoft",
+  "categories": [
+    "identity"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "graph.microsoft.com",
+      "path_prefixes": [
+        "/v1.0/users"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "ACCESS_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "ACCESS_TOKEN",
+      "label": "Current API access token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "disable_user": {
+      "display_name": "Disable user",
+      "description": "Set accountEnabled to false for an explicit object ID. Requires User.EnableDisableAccount.All plus User.Read.All and the applicable Entra role. This does not revoke existing sessions. API documentation: https://learn.microsoft.com/en-us/graph/api/user-update?view=graph-rest-1.0",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PATCH",
+            "url": "https://graph.microsoft.com/v1.0/users/{{input.user_id}}",
+            "json": {
+              "accountEnabled": false
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/disable_user.json"
+      ],
+      "rollback": "enable_user"
+    },
+    "enable_user": {
+      "display_name": "Enable user",
+      "description": "Set accountEnabled to true for an explicit object ID. Requires User.EnableDisableAccount.All plus User.Read.All and the applicable Entra role. This does not revoke existing sessions. API documentation: https://learn.microsoft.com/en-us/graph/api/user-update?view=graph-rest-1.0",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PATCH",
+            "url": "https://graph.microsoft.com/v1.0/users/{{input.user_id}}",
+            "json": {
+              "accountEnabled": true
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/enable_user.json"
+      ],
+      "rollback": "disable_user"
+    },
+    "revoke_sessions": {
+      "display_name": "Revoke sign-in sessions",
+      "description": "Invalidate refresh tokens and browser session cookies. Requires User.RevokeSessions.All. Microsoft documents propagation delay and excludes external-user sessions. Returns the reported Boolean; false is refused. API documentation: https://learn.microsoft.com/en-us/graph/api/user-revokesigninsessions?view=graph-rest-1.0",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://graph.microsoft.com/v1.0/users/{{input.user_id}}/revokeSignInSessions"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "value",
+            "equals": true
+          }
+        }
+      ],
+      "outputs": {
+        "revoked": "steps.request.value"
+      },
+      "fixtures": [
+        "fixtures/revoke_sessions.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Revoked sign-in sessions cannot be recreated; the user must authenticate again."
+    }
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "mimecast",
+  "display_name": "Mimecast Cloud Gateway policy",
+  "description": "Mimecast Cloud Gateway policy response actions. Mutations require approval.",
+  "vendor": "Mimecast",
+  "categories": [
+    "email"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "api.services.mimecast.com",
+      "path_prefixes": [
+        "/policy-management/cloud-gateway/v1/blocked-senders/policies"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "ACCESS_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "ACCESS_TOKEN",
+      "label": "Current API access token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "block_sender": {
+      "display_name": "Block sender for one recipient",
+      "description": "Create a policy for one explicit sender and recipient, covering envelope/header sender. Requires Gateway | Policies | Edit. Return the policy ID for the inverse action; acknowledgment does not establish delivery enforcement. API documentation: https://developer.services.mimecast.com/docs/policymanagement/1/routes/policy-management%2Fcloud-gateway%2Fv1%2Fblocked-senders%2Fpolicies/post",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "sender",
+          "type": "email",
+          "required": true
+        },
+        {
+          "name": "recipient",
+          "type": "email",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "pattern": "^.{1,256}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://api.services.mimecast.com/policy-management/cloud-gateway/v1/blocked-senders/policies",
+            "json": {
+              "description": "{{input.description}}",
+              "option": "block_sender",
+              "fromPart": "both",
+              "from": {
+                "type": "individual_email_address",
+                "emailAddress": "{{input.sender}}"
+              },
+              "to": {
+                "type": "individual_email_address",
+                "emailAddress": "{{input.recipient}}"
+              },
+              "enabled": true,
+              "bidirectional": false,
+              "override": false,
+              "fromEternal": true,
+              "toEternal": true
+            }
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "policy_id": "steps.request.id"
+      },
+      "fixtures": [
+        "fixtures/block_sender.json"
+      ],
+      "rollback": "remove_sender_block"
+    },
+    "remove_sender_block": {
+      "display_name": "Remove sender block policy",
+      "description": "Delete the policy ID returned by block_sender. Requires Gateway | Policies | Edit. This removes this policy only, not other protections. Re-creating requires the original sender, recipient and description; IDs/history are not restored. API documentation: https://developer.services.mimecast.com/docs/policymanagement/1/routes/policy-management%2Fcloud-gateway%2Fv1%2Fblocked-senders%2Fpolicies%2F%7Bpolicy_id%7D/delete",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "policy_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_=-]{1,512}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "DELETE",
+            "url": "https://api.services.mimecast.com/policy-management/cloud-gateway/v1/blocked-senders/policies/{{input.policy_id}}",
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/remove_sender_block.json"
+      ],
+      "rollback": "block_sender"
+    }
+  }
+}

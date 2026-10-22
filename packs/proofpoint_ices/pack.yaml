@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "proofpoint_ices",
+  "display_name": "Proofpoint ICES Defend remediation",
+  "description": "Proofpoint ICES Defend remediation response actions. Mutations require approval.",
+  "vendor": "Proofpoint",
+  "categories": [
+    "email"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Connected vendor instance HTTPS origin",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "host_suffixes": [
+        ".tessian-platform.com",
+        ".tessian-app.com"
+      ],
+      "path_prefixes": [
+        "/api/v1/remediation"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "Authorization",
+    "credential": "API_TOKEN",
+    "prefix": "API-Token "
+  },
+  "credentials": [
+    {
+      "name": "API_TOKEN",
+      "label": "Proofpoint API token (Action Quarantined Emails permission)"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "release_quarantined_email": {
+      "display_name": "Submit release of quarantined email",
+      "description": "For ICES Defend events with exactly one protected user. Requires Action Quarantined Emails permission. Accept only exactly one attempted/succeeded receipt and one error:null result; zero, multiple and partial results fail. This reports queued work, not completion: wait for the updated security event. API documentation: https://developer.tessian.com/documentation/api/index.html#tag/Remediation/paths/~1api~1v1~1remediation~1release_from_quarantine/post",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "event_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,256}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/v1/remediation/release_from_quarantine",
+            "json": {
+              "event_id": "{{input.event_id}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "results",
+            "items": 1,
+            "fields": {
+              "number_of_actions_attempted": 1,
+              "number_of_actions_succeeded": 1,
+              "results.0.error": null
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "attempted": "steps.request.number_of_actions_attempted",
+        "queued": "steps.request.number_of_actions_succeeded",
+        "results": "steps.request.results"
+      },
+      "fixtures": [
+        "fixtures/release_quarantined_email.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "No inverse for this ICES remediation is defined by the public API reference. Deletion cannot recreate a message; release cannot restore the original quarantine state."
+    },
+    "delete_quarantined_email": {
+      "display_name": "Submit deletion of quarantined email",
+      "description": "For ICES Defend events with exactly one protected user. Requires Action Quarantined Emails permission. Accept only exactly one attempted/succeeded receipt and one error:null result; zero, multiple and partial results fail. This reports queued work, not completion: wait for the updated security event. API documentation: https://developer.tessian.com/documentation/api/index.html#tag/Remediation/paths/~1api~1v1~1remediation~1delete_from_quarantine/post",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "event_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,256}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/v1/remediation/delete_from_quarantine",
+            "json": {
+              "event_id": "{{input.event_id}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "results",
+            "items": 1,
+            "fields": {
+              "number_of_actions_attempted": 1,
+              "number_of_actions_succeeded": 1,
+              "results.0.error": null
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "attempted": "steps.request.number_of_actions_attempted",
+        "queued": "steps.request.number_of_actions_succeeded",
+        "results": "steps.request.results"
+      },
+      "fixtures": [
+        "fixtures/delete_quarantined_email.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "No inverse for this ICES remediation is defined by the public API reference. Deletion cannot recreate a message; release cannot restore the original quarantine state."
+    },
+    "delete_inbox_email": {
+      "display_name": "Submit deletion of inbox email",
+      "description": "For ICES Defend events with exactly one protected user. Requires Action Quarantined Emails permission. Accept only exactly one attempted/succeeded receipt and one error:null result; zero, multiple and partial results fail. This reports queued work, not completion: wait for the updated security event. API documentation: https://developer.tessian.com/documentation/api/index.html#tag/Remediation/paths/~1api~1v1~1remediation~1delete_from_inbox/post",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "event_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,256}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/v1/remediation/delete_from_inbox",
+            "json": {
+              "event_id": "{{input.event_id}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "results",
+            "items": 1,
+            "fields": {
+              "number_of_actions_attempted": 1,
+              "number_of_actions_succeeded": 1,
+              "results.0.error": null
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "attempted": "steps.request.number_of_actions_attempted",
+        "queued": "steps.request.number_of_actions_succeeded",
+        "results": "steps.request.results"
+      },
+      "fixtures": [
+        "fixtures/delete_inbox_email.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "No inverse for this ICES remediation is defined by the public API reference. Deletion cannot recreate a message; release cannot restore the original quarantine state."
+    }
+  }
+}

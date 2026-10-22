@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/quarantine_device.json",
+      "url": "https://pan.dev/scm/api/config/ngfw/objects/create-quarantined-devices/",
+      "document_url": "https://pan.dev/scm/api/config/ngfw/objects/create-quarantined-devices/",
+      "document_sha256": "ddce26506806d050360a0f01f2adb3308aee7d249bb133f363aba2985e211024",
+      "request": {
+        "method": "POST",
+        "url": "https://api.strata.paloaltonetworks.com/config/objects/v1/quarantined-devices",
+        "json": {
+          "host_id": "schema-derived-host-id"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.strata.paloaltonetworks.com",
+        "path": "/config/objects/v1/quarantined-devices",
+        "status": 201,
+        "body": {
+          "host_id": "schema-derived-host-id"
+        }
+      },
+      "schema_documents": [
+        {
+          "url": "https://raw.githubusercontent.com/PaloAltoNetworks/pan.dev/6860f1c29fc6b04badfba0e2370f452a4e7b5324/openapi-specs/scm/config/ngfw/objects/objects_R3.yaml",
+          "sha256": "9b39e965a902c5f47ada994489f96fa1e3252d1337d3744aa2131ea6c5e9956b"
+        }
+      ]
+    },
+    {
+      "fixture": "fixtures/unquarantine_device.json",
+      "url": "https://pan.dev/scm/api/config/ngfw/objects/delete-quarantined-devices/",
+      "document_url": "https://pan.dev/scm/api/config/ngfw/objects/delete-quarantined-devices/",
+      "document_sha256": "4fe3c7bd91fdf1d9c62d783bb070bd5b8e40dd4996a23daad15ca0409452ac91",
+      "request": {
+        "method": "DELETE",
+        "url": "https://api.strata.paloaltonetworks.com/config/objects/v1/quarantined-devices",
+        "query": {
+          "host_id": "schema-derived-host-id"
+        }
+      },
+      "response": {
+        "method": "DELETE",
+        "host": "api.strata.paloaltonetworks.com",
+        "path": "/config/objects/v1/quarantined-devices",
+        "status": 200,
+        "body": ""
+      },
+      "schema_documents": [
+        {
+          "url": "https://raw.githubusercontent.com/PaloAltoNetworks/pan.dev/6860f1c29fc6b04badfba0e2370f452a4e7b5324/openapi-specs/scm/config/ngfw/objects/objects_R3.yaml",
+          "sha256": "9b39e965a902c5f47ada994489f96fa1e3252d1337d3744aa2131ea6c5e9956b"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "on_prem_block_ip": {
+    "reason": "Customer-managed appliance or instance hosts require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://sc1.checkpoint.com/documents/latest/APIs/"
+    ]
+  },
+  "on_prem_unblock_ip": {
+    "reason": "Customer-managed appliance or instance hosts require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://sc1.checkpoint.com/documents/latest/APIs/"
+    ]
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "carbon_black_cloud",
+  "display_name": "Carbon Black Cloud",
+  "description": "Carbon Black Cloud response actions. Mutations require approval.",
+  "vendor": "Broadcom",
+  "categories": [
+    "edr"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Production cloud",
+      "required": true,
+      "default": "https://defense-prod05.conferdeploy.net",
+      "one_of": [
+        "https://dashboard.confer.net",
+        "https://defense.conferdeploy.net",
+        "https://defense-prod05.conferdeploy.net",
+        "https://defense-eu.conferdeploy.net",
+        "https://defense-prodnrt.conferdeploy.net",
+        "https://defense-prodsyd.conferdeploy.net"
+      ]
+    },
+    {
+      "name": "org_key",
+      "label": "Organization key",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/appservices/v6/orgs"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "composite_token",
+    "header": "X-Auth-Token",
+    "first_credential": "API_SECRET",
+    "second_credential": "API_ID",
+    "separator": "/"
+  },
+  "credentials": [
+    {
+      "name": "API_SECRET",
+      "label": "API secret key"
+    },
+    {
+      "name": "API_ID",
+      "label": "API ID"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "quarantine_devices": {
+      "display_name": "Quarantine devices",
+      "description": "Quarantine devices. Request acknowledgment only; this action does not claim asynchronous completion. API documentation: https://developer.carbonblack.com/reference/carbon-black-cloud/platform/latest/devices-api/#quarantine",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "device_ids",
+          "type": "string_list",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/appservices/v6/orgs/{{config.org_key}}/device_actions",
+            "json": {
+              "action_type": "QUARANTINE",
+              "device_id": "{{input.device_ids}}",
+              "options": {
+                "toggle": "ON"
+              }
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/quarantine_devices.json"
+      ],
+      "rollback": "unquarantine_devices"
+    },
+    "unquarantine_devices": {
+      "display_name": "Unquarantine devices",
+      "description": "Unquarantine devices. Request acknowledgment only; this action does not claim asynchronous completion. API documentation: https://developer.carbonblack.com/reference/carbon-black-cloud/platform/latest/devices-api/#quarantine",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "device_ids",
+          "type": "string_list",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/appservices/v6/orgs/{{config.org_key}}/device_actions",
+            "json": {
+              "action_type": "QUARANTINE",
+              "device_id": "{{input.device_ids}}",
+              "options": {
+                "toggle": "OFF"
+              }
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/unquarantine_devices.json"
+      ],
+      "rollback": "quarantine_devices"
+    }
+  }
+}

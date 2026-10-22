@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/suspend_user.json",
+      "url": "https://developers.google.com/workspace/admin/directory/reference/rest/v1/users/update",
+      "document_url": "https://developers.google.com/workspace/admin/directory/reference/rest/v1/users/update",
+      "document_sha256": "e1c88458f90cf41acfd2e438c254aabac6e8a16f16cdb6a67a7ecbf6fce0fa5f",
+      "request": {
+        "method": "PUT",
+        "url": "https://admin.googleapis.com/admin/directory/v1/users/12309329403209438205",
+        "json": {
+          "suspended": true
+        }
+      },
+      "response": {
+        "method": "PUT",
+        "host": "admin.googleapis.com",
+        "path": "/admin/directory/v1/users/12309329403209438205",
+        "status": 200,
+        "body": {
+          "id": "12309329403209438205",
+          "suspended": true
+        }
+      },
+      "schema_documents": [
+        {
+          "url": "https://raw.githubusercontent.com/googleapis/google-api-go-client/2d9e29d7b319dc580bd38e14a819c6e12bad1174/admin/directory/v1/admin-api.json",
+          "sha256": "315493e8f593891727853d60e41eeafac5820fa8f2f35edb6d18209b2d4d0898"
+        }
+      ]
+    },
+    {
+      "fixture": "fixtures/unsuspend_user.json",
+      "url": "https://developers.google.com/workspace/admin/directory/reference/rest/v1/users/update",
+      "document_url": "https://developers.google.com/workspace/admin/directory/reference/rest/v1/users/update",
+      "document_sha256": "e1c88458f90cf41acfd2e438c254aabac6e8a16f16cdb6a67a7ecbf6fce0fa5f",
+      "request": {
+        "method": "PUT",
+        "url": "https://admin.googleapis.com/admin/directory/v1/users/12309329403209438205",
+        "json": {
+          "suspended": false
+        }
+      },
+      "response": {
+        "method": "PUT",
+        "host": "admin.googleapis.com",
+        "path": "/admin/directory/v1/users/12309329403209438205",
+        "status": 200,
+        "body": {
+          "id": "12309329403209438205",
+          "suspended": false
+        }
+      },
+      "schema_documents": [
+        {
+          "url": "https://raw.githubusercontent.com/googleapis/google-api-go-client/2d9e29d7b319dc580bd38e14a819c6e12bad1174/admin/directory/v1/admin-api.json",
+          "sha256": "315493e8f593891727853d60e41eeafac5820fa8f2f35edb6d18209b2d4d0898"
+        }
+      ]
+    },
+    {
+      "fixture": "fixtures/sign_out_user.json",
+      "url": "https://developers.google.com/workspace/admin/directory/reference/rest/v1/users/signOut",
+      "document_url": "https://developers.google.com/workspace/admin/directory/reference/rest/v1/users/signOut",
+      "document_sha256": "f1a3ebfd05a5e180d9c37a40e2abba16ba48c70f44360e3cce8fa6358fc027e1",
+      "request": {
+        "method": "POST",
+        "url": "https://admin.googleapis.com/admin/directory/v1/users/12309329403209438205/signOut"
+      },
+      "response": {
+        "method": "POST",
+        "host": "admin.googleapis.com",
+        "path": "/admin/directory/v1/users/12309329403209438205/signOut",
+        "status": 200,
+        "body": ""
+      },
+      "schema_documents": [
+        {
+          "url": "https://raw.githubusercontent.com/googleapis/google-api-go-client/2d9e29d7b319dc580bd38e14a819c6e12bad1174/admin/directory/v1/admin-api.json",
+          "sha256": "315493e8f593891727853d60e41eeafac5820fa8f2f35edb6d18209b2d4d0898"
+        }
+      ]
+    }
+  ]
+}

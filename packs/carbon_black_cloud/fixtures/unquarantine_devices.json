@@ -1,0 +1,41 @@
+{
+  "action": "unquarantine_devices",
+  "config": {
+    "base_url": "https://defense-prod05.conferdeploy.net",
+    "org_key": "ABCD1234"
+  },
+  "inputs": {
+    "device_ids": [
+      "12131",
+      "12132"
+    ]
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://defense-prod05.conferdeploy.net/appservices/v6/orgs/ABCD1234/device_actions",
+        "json": {
+          "action_type": "QUARANTINE",
+          "device_id": [
+            "12131",
+            "12132"
+          ],
+          "options": {
+            "toggle": "OFF"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "defense-prod05.conferdeploy.net",
+        "path": "/appservices/v6/orgs/ABCD1234/device_actions",
+        "status": 204,
+        "body": ""
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://developer.carbonblack.com/reference/carbon-black-cloud/platform/latest/devices-api/#quarantine",
+  "request_evidence": "independent_http_mock"
+}

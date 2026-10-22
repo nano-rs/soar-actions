@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/create_issue.json",
+      "url": "https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-post",
+      "document_url": "https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/",
+      "document_sha256": "34445aeadf55f8e148767e79ba541e1e33164222acb8e666f5a1382140c2e895",
+      "request": {
+        "method": "POST",
+        "url": "https://your-domain.atlassian.net/rest/api/3/issue",
+        "json": {
+          "fields": {
+            "project": {
+              "id": "10000"
+            },
+            "issuetype": {
+              "id": "10000"
+            },
+            "summary": "Main order flow broken"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "your-domain.atlassian.net",
+        "path": "/rest/api/3/issue",
+        "status": 201,
+        "body": {
+          "id": "10000",
+          "key": "ED-24",
+          "self": "https://your-domain.atlassian.net/rest/api/3/issue/10000"
+        }
+      },
+      "schema_documents": [
+        {
+          "url": "https://dac-static.atlassian.com/cloud/jira/platform/swagger-v3.v3.json",
+          "sha256": "e30922c95a8e036084ce5da6a244e247cb527f3f0eb398f1ba2c973fe4d9e59b"
+        },
+        {
+          "url": "https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/",
+          "sha256": "610d2df1d278bf5e0428090c863ed46504fbd6b456f5dd6e39b3bcf91a3302df"
+        }
+      ]
+    },
+    {
+      "fixture": "fixtures/add_comment.json",
+      "url": "https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-comments/#api-rest-api-3-issue-issueIdOrKey-comment-post",
+      "document_url": "https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-comments/",
+      "document_sha256": "1feeb1df307fd4c04864b633643a9fa082cfc83c62156217e06ea419c42681a6",
+      "request": {
+        "method": "POST",
+        "url": "https://your-domain.atlassian.net/rest/api/3/issue/ED-24/comment",
+        "json": {
+          "body": {
+            "type": "doc",
+            "version": 1,
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget venenatis elit. Duis eu justo eget augue iaculis fermentum. Sed semper quam laoreet nisi egestas at posuere augue semper."
+                  }
+                ]
+              }
+            ]
+          },
+          "visibility": {
+            "type": "role",
+            "identifier": "Administrators"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "your-domain.atlassian.net",
+        "path": "/rest/api/3/issue/ED-24/comment",
+        "status": 201,
+        "body": {
+          "author": {
+            "accountId": "5b10a2844c20165700ede21g",
+            "active": false,
+            "displayName": "Mia Krystof",
+            "self": "https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21g"
+          },
+          "body": {
+            "type": "doc",
+            "version": 1,
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget venenatis elit. Duis eu justo eget augue iaculis fermentum. Sed semper quam laoreet nisi egestas at posuere augue semper."
+                  }
+                ]
+              }
+            ]
+          },
+          "created": "2021-01-17T12:34:00.000+0000",
+          "id": "10000",
+          "self": "https://your-domain.atlassian.net/rest/api/3/issue/10010/comment/10000",
+          "updateAuthor": {
+            "accountId": "5b10a2844c20165700ede21g",
+            "active": false,
+            "displayName": "Mia Krystof",
+            "self": "https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21g"
+          },
+          "updated": "2021-01-18T23:45:00.000+0000",
+          "visibility": {
+            "identifier": "Administrators",
+            "type": "role",
+            "value": "Administrators"
+          }
+        }
+      },
+      "schema_documents": [
+        {
+          "url": "https://dac-static.atlassian.com/cloud/jira/platform/swagger-v3.v3.json",
+          "sha256": "e30922c95a8e036084ce5da6a244e247cb527f3f0eb398f1ba2c973fe4d9e59b"
+        },
+        {
+          "url": "https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/",
+          "sha256": "610d2df1d278bf5e0428090c863ed46504fbd6b456f5dd6e39b3bcf91a3302df"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "okta",
+  "display_name": "Okta",
+  "description": "Okta response actions. Mutations require approval.",
+  "vendor": "Okta",
+  "categories": [
+    "identity"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Okta organization URL",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "host_suffixes": [
+        ".okta.com",
+        ".oktapreview.com",
+        ".okta-emea.com"
+      ],
+      "path_prefixes": [
+        "/api/v1/users"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "okta_ssws",
+    "credential": "API_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "API_TOKEN",
+      "label": "Okta API token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "suspend_user": {
+      "display_name": "Suspend user",
+      "description": "Suspend user. Request acknowledgment only; this action does not claim asynchronous completion. API documentation: https://developer.okta.com/docs/api/openapi/okta-management/management/tag/UserLifecycle/#tag/UserLifecycle/operation/suspendUser",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^00u[A-Za-z0-9]{17}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/v1/users/{{input.user_id}}/lifecycle/suspend",
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/suspend_user.json"
+      ],
+      "rollback": "unsuspend_user"
+    },
+    "unsuspend_user": {
+      "display_name": "Unsuspend user",
+      "description": "Unsuspend user. Request acknowledgment only; this action does not claim asynchronous completion. API documentation: https://developer.okta.com/docs/api/openapi/okta-management/management/tag/UserLifecycle/#tag/UserLifecycle/operation/unsuspendUser",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^00u[A-Za-z0-9]{17}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/v1/users/{{input.user_id}}/lifecycle/unsuspend",
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/unsuspend_user.json"
+      ],
+      "rollback": "suspend_user"
+    },
+    "revoke_sessions": {
+      "display_name": "Revoke sessions",
+      "description": "Revoke sessions. Request acknowledgment only; this action does not claim asynchronous completion. API documentation: https://developer.okta.com/docs/api/openapi/okta-management/management/tag/UserSessions/#tag/UserSessions/operation/revokeUserSessions",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^00u[A-Za-z0-9]{17}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "DELETE",
+            "url": "{{config.base_url}}/api/v1/users/{{input.user_id}}/sessions",
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/revoke_sessions.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Revoked sessions cannot be recreated; the user must authenticate again. This does not clear sessions established by web or native apps."
+    }
+  }
+}

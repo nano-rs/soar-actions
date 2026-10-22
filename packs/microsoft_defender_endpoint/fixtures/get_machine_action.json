@@ -1,0 +1,42 @@
+{
+  "action": "get_machine_action",
+  "config": {},
+  "inputs": {
+    "action_id": "aaaabbbb-0000-cccc-1111-dddd2222eeee"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.security.microsoft.com/api/machineactions/aaaabbbb-0000-cccc-1111-dddd2222eeee"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.security.microsoft.com",
+        "path": "/api/machineactions/aaaabbbb-0000-cccc-1111-dddd2222eeee",
+        "status": 200,
+        "body": {
+          "@odata.context": "https://api.security.microsoft.com/api/$metadata#MachineActions/$entity",
+          "id": "5382f7ea-7557-4ab7-9782-d50480024a4e",
+          "type": "Isolate",
+          "scope": "Selective",
+          "requestor": "Analyst@TestPrd.onmicrosoft.com",
+          "requestorComment": "test for docs",
+          "status": "Succeeded",
+          "machineId": "7b1f4967d9728e5aa3c06a9e617a22a4a5a17378",
+          "computerDnsName": "desktop-test",
+          "creationDateTimeUtc": "2019-01-02T14:39:38.2262283Z",
+          "lastUpdateDateTimeUtc": "2019-01-02T14:40:44.6596267Z",
+          "relatedFileInfo": null
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "action_id": "5382f7ea-7557-4ab7-9782-d50480024a4e",
+    "status": "Succeeded",
+    "machine_id": "7b1f4967d9728e5aa3c06a9e617a22a4a5a17378"
+  },
+  "source": "https://learn.microsoft.com/en-us/defender-endpoint/api/get-machineaction-object",
+  "request_evidence": "independent_http_mock"
+}

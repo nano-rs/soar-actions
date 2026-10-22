@@ -1,0 +1,40 @@
+{
+  "action": "isolate_machine",
+  "config": {},
+  "inputs": {
+    "machine_id": "1e5bc9d7e413ddd7902c2932e418702b84d0cc07",
+    "comment": "Isolate machine due to alert 1234"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.security.microsoft.com/api/machines/1e5bc9d7e413ddd7902c2932e418702b84d0cc07/isolate",
+        "json": {
+          "Comment": "Isolate machine due to alert 1234",
+          "IsolationType": "Full"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.security.microsoft.com",
+        "path": "/api/machines/1e5bc9d7e413ddd7902c2932e418702b84d0cc07/isolate",
+        "status": 201,
+        "body": {
+          "id": "5382f7ea-7557-4ab7-9782-d50480024a4e",
+          "type": "Isolate",
+          "status": "Pending",
+          "machineId": "1e5bc9d7e413ddd7902c2932e418702b84d0cc07",
+          "requestorComment": "Isolate machine due to alert 1234"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "action_id": "5382f7ea-7557-4ab7-9782-d50480024a4e",
+    "status": "Pending",
+    "machine_id": "1e5bc9d7e413ddd7902c2932e418702b84d0cc07"
+  },
+  "source": "https://learn.microsoft.com/en-us/defender-endpoint/api/isolate-machine",
+  "request_evidence": "independent_http_mock"
+}

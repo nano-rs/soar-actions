@@ -1,0 +1,48 @@
+{
+  "action": "release_quarantined_email",
+  "config": {
+    "base_url": "https://your-subdomain.tessian-platform.com"
+  },
+  "inputs": {
+    "event_id": "string"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://your-subdomain.tessian-platform.com/api/v1/remediation/release_from_quarantine",
+        "json": {
+          "event_id": "string"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "your-subdomain.tessian-platform.com",
+        "path": "/api/v1/remediation/release_from_quarantine",
+        "status": 200,
+        "body": {
+          "number_of_actions_attempted": 1,
+          "number_of_actions_succeeded": 1,
+          "results": [
+            {
+              "user_address": "user@example.com",
+              "error": null
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "attempted": 1,
+    "queued": 1,
+    "results": [
+      {
+        "user_address": "user@example.com",
+        "error": null
+      }
+    ]
+  },
+  "source": "https://developer.tessian.com/documentation/api/index.html#tag/Remediation/paths/~1api~1v1~1remediation~1release_from_quarantine/post",
+  "request_evidence": "independent_http_mock"
+}

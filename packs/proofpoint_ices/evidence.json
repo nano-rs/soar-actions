@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/release_quarantined_email.json",
+      "url": "https://developer.tessian.com/documentation/api/index.html#tag/Remediation/paths/~1api~1v1~1remediation~1release_from_quarantine/post",
+      "document_url": "https://developer.tessian.com/documentation/api/index.html",
+      "document_sha256": "d4a6f4f75be3e1234b6acc8e173346254aec1d6575bcf2be96aec780a095438b",
+      "request": {
+        "method": "POST",
+        "url": "https://your-subdomain.tessian-platform.com/api/v1/remediation/release_from_quarantine",
+        "json": {
+          "event_id": "string"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "your-subdomain.tessian-platform.com",
+        "path": "/api/v1/remediation/release_from_quarantine",
+        "status": 200,
+        "body": {
+          "number_of_actions_attempted": 1,
+          "number_of_actions_succeeded": 1,
+          "results": [
+            {
+              "user_address": "user@example.com",
+              "error": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/delete_quarantined_email.json",
+      "url": "https://developer.tessian.com/documentation/api/index.html#tag/Remediation/paths/~1api~1v1~1remediation~1delete_from_quarantine/post",
+      "document_url": "https://developer.tessian.com/documentation/api/index.html",
+      "document_sha256": "d4a6f4f75be3e1234b6acc8e173346254aec1d6575bcf2be96aec780a095438b",
+      "request": {
+        "method": "POST",
+        "url": "https://your-subdomain.tessian-platform.com/api/v1/remediation/delete_from_quarantine",
+        "json": {
+          "event_id": "string"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "your-subdomain.tessian-platform.com",
+        "path": "/api/v1/remediation/delete_from_quarantine",
+        "status": 200,
+        "body": {
+          "number_of_actions_attempted": 1,
+          "number_of_actions_succeeded": 1,
+          "results": [
+            {
+              "user_address": "user@example.com",
+              "error": null
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/delete_inbox_email.json",
+      "url": "https://developer.tessian.com/documentation/api/index.html#tag/Remediation/paths/~1api~1v1~1remediation~1delete_from_inbox/post",
+      "document_url": "https://developer.tessian.com/documentation/api/index.html",
+      "document_sha256": "d4a6f4f75be3e1234b6acc8e173346254aec1d6575bcf2be96aec780a095438b",
+      "request": {
+        "method": "POST",
+        "url": "https://your-subdomain.tessian-platform.com/api/v1/remediation/delete_from_inbox",
+        "json": {
+          "event_id": "string"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "your-subdomain.tessian-platform.com",
+        "path": "/api/v1/remediation/delete_from_inbox",
+        "status": 200,
+        "body": {
+          "number_of_actions_attempted": 1,
+          "number_of_actions_succeeded": 1,
+          "results": [
+            {
+              "user_address": "user@example.com",
+              "error": null
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

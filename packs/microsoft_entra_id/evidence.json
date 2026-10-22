@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/disable_user.json",
+      "url": "https://learn.microsoft.com/en-us/graph/api/user-update?view=graph-rest-1.0",
+      "document_url": "https://learn.microsoft.com/en-us/graph/api/user-update?view=graph-rest-1.0",
+      "document_sha256": "5fbf40da8a049548c3fbcc11c310057b65de6dd80f0f82ddde83ebeecc3e7a61",
+      "request": {
+        "method": "PATCH",
+        "url": "https://graph.microsoft.com/v1.0/users/00000000-0000-0000-0000-000000000001",
+        "json": {
+          "accountEnabled": false
+        }
+      },
+      "response": {
+        "method": "PATCH",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/users/00000000-0000-0000-0000-000000000001",
+        "status": 204,
+        "body": ""
+      }
+    },
+    {
+      "fixture": "fixtures/enable_user.json",
+      "url": "https://learn.microsoft.com/en-us/graph/api/user-update?view=graph-rest-1.0",
+      "document_url": "https://learn.microsoft.com/en-us/graph/api/user-update?view=graph-rest-1.0",
+      "document_sha256": "5fbf40da8a049548c3fbcc11c310057b65de6dd80f0f82ddde83ebeecc3e7a61",
+      "request": {
+        "method": "PATCH",
+        "url": "https://graph.microsoft.com/v1.0/users/00000000-0000-0000-0000-000000000001",
+        "json": {
+          "accountEnabled": true
+        }
+      },
+      "response": {
+        "method": "PATCH",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/users/00000000-0000-0000-0000-000000000001",
+        "status": 204,
+        "body": ""
+      }
+    },
+    {
+      "fixture": "fixtures/revoke_sessions.json",
+      "url": "https://learn.microsoft.com/en-us/graph/api/user-revokesigninsessions?view=graph-rest-1.0",
+      "document_url": "https://learn.microsoft.com/en-us/graph/api/user-revokesigninsessions?view=graph-rest-1.0",
+      "document_sha256": "2eb6f8b4f1a66390ee3587fe234da4cd24fd98951a7aa867e24c70959cf35532",
+      "request": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/users/00000000-0000-0000-0000-000000000001/revokeSignInSessions"
+      },
+      "response": {
+        "method": "POST",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/users/00000000-0000-0000-0000-000000000001/revokeSignInSessions",
+        "status": 200,
+        "body": {
+          "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#Edm.Boolean",
+          "value": true
+        }
+      }
+    }
+  ]
+}

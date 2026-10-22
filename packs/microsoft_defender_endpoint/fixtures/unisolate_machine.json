@@ -1,0 +1,39 @@
+{
+  "action": "unisolate_machine",
+  "config": {},
+  "inputs": {
+    "machine_id": "1e5bc9d7e413ddd7902c2932e418702b84d0cc07",
+    "comment": "Unisolate machine since it was clean and validated"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.security.microsoft.com/api/machines/1e5bc9d7e413ddd7902c2932e418702b84d0cc07/unisolate",
+        "json": {
+          "Comment": "Unisolate machine since it was clean and validated"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.security.microsoft.com",
+        "path": "/api/machines/1e5bc9d7e413ddd7902c2932e418702b84d0cc07/unisolate",
+        "status": 201,
+        "body": {
+          "id": "5382f7ea-7557-4ab7-9782-d50480024a4e",
+          "type": "Unisolate",
+          "status": "Pending",
+          "machineId": "1e5bc9d7e413ddd7902c2932e418702b84d0cc07",
+          "requestorComment": "Unisolate machine since it was clean and validated"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "action_id": "5382f7ea-7557-4ab7-9782-d50480024a4e",
+    "status": "Pending",
+    "machine_id": "1e5bc9d7e413ddd7902c2932e418702b84d0cc07"
+  },
+  "source": "https://learn.microsoft.com/en-us/defender-endpoint/api/unisolate-machine",
+  "request_evidence": "independent_http_mock"
+}

@@ -1,0 +1,41 @@
+{
+  "action": "hard_delete_email",
+  "config": {},
+  "inputs": {
+    "network_message_id": "73ca4154-58d8-43d0-a890-08dc18c52e6d",
+    "recipient": "hannah.jarvis@contoso.com",
+    "display_name": "Clean up Phish email",
+    "description": "Delete email"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/security/collaboration/analyzedEmails/remediate",
+        "json": {
+          "displayName": "Clean up Phish email",
+          "description": "Delete email",
+          "severity": "medium",
+          "action": "hardDelete",
+          "remediateSendersCopy": false,
+          "analyzedEmails": [
+            {
+              "networkMessageId": "73ca4154-58d8-43d0-a890-08dc18c52e6d",
+              "recipientEmailAddress": "hannah.jarvis@contoso.com"
+            }
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/security/collaboration/analyzedEmails/remediate",
+        "status": 202,
+        "body": ""
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://learn.microsoft.com/en-us/graph/api/security-analyzedemail-remediate?view=graph-rest-1.0",
+  "request_evidence": "independent_http_mock"
+}

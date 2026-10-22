@@ -1,0 +1,89 @@
+{
+  "action": "add_comment",
+  "config": {
+    "base_url": "https://your-domain.atlassian.net"
+  },
+  "inputs": {
+    "issue_key": "ED-24",
+    "comment": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget venenatis elit. Duis eu justo eget augue iaculis fermentum. Sed semper quam laoreet nisi egestas at posuere augue semper.",
+    "role_name": "Administrators"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://your-domain.atlassian.net/rest/api/3/issue/ED-24/comment",
+        "json": {
+          "body": {
+            "type": "doc",
+            "version": 1,
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget venenatis elit. Duis eu justo eget augue iaculis fermentum. Sed semper quam laoreet nisi egestas at posuere augue semper."
+                  }
+                ]
+              }
+            ]
+          },
+          "visibility": {
+            "type": "role",
+            "identifier": "Administrators"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "your-domain.atlassian.net",
+        "path": "/rest/api/3/issue/ED-24/comment",
+        "status": 201,
+        "body": {
+          "author": {
+            "accountId": "5b10a2844c20165700ede21g",
+            "active": false,
+            "displayName": "Mia Krystof",
+            "self": "https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21g"
+          },
+          "body": {
+            "type": "doc",
+            "version": 1,
+            "content": [
+              {
+                "type": "paragraph",
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget venenatis elit. Duis eu justo eget augue iaculis fermentum. Sed semper quam laoreet nisi egestas at posuere augue semper."
+                  }
+                ]
+              }
+            ]
+          },
+          "created": "2021-01-17T12:34:00.000+0000",
+          "id": "10000",
+          "self": "https://your-domain.atlassian.net/rest/api/3/issue/10010/comment/10000",
+          "updateAuthor": {
+            "accountId": "5b10a2844c20165700ede21g",
+            "active": false,
+            "displayName": "Mia Krystof",
+            "self": "https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21g"
+          },
+          "updated": "2021-01-18T23:45:00.000+0000",
+          "visibility": {
+            "identifier": "Administrators",
+            "type": "role",
+            "value": "Administrators"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "comment_id": "10000"
+  },
+  "source": "https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-comments/#api-rest-api-3-issue-issueIdOrKey-comment-post",
+  "request_evidence": "independent_http_mock"
+}

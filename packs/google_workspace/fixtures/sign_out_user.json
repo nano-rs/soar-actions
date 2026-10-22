@@ -1,0 +1,25 @@
+{
+  "action": "sign_out_user",
+  "config": {},
+  "inputs": {
+    "user_id": "12309329403209438205"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://admin.googleapis.com/admin/directory/v1/users/12309329403209438205/signOut"
+      },
+      "response": {
+        "method": "POST",
+        "host": "admin.googleapis.com",
+        "path": "/admin/directory/v1/users/12309329403209438205/signOut",
+        "status": 200,
+        "body": ""
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://developers.google.com/workspace/admin/directory/reference/rest/v1/users/signOut",
+  "request_evidence": "independent_http_mock"
+}

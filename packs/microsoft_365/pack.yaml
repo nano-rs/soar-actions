@@ -1,0 +1,233 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "microsoft_365",
+  "display_name": "Microsoft 365 email remediation",
+  "description": "Microsoft 365 email remediation response actions. Mutations require approval.",
+  "vendor": "Microsoft",
+  "categories": [
+    "email"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "graph.microsoft.com",
+      "path_prefixes": [
+        "/v1.0/security/collaboration/analyzedEmails/remediate"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "ACCESS_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "ACCESS_TOKEN",
+      "label": "Current API access token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "soft_delete_email": {
+      "display_name": "Submit recoverable email purge",
+      "description": "Submit softDelete for one explicit analyzed message/recipient, without touching the sender copy. Requires application SecurityAnalyzedMessage.ReadWrite.All and applicable Defender for Office 365 licensing. A 202 is submission only; track completion in the Defender Action center. Moving to Inbox does not restore original folder/metadata. API documentation: https://learn.microsoft.com/en-us/graph/api/security-analyzedemail-remediate?view=graph-rest-1.0",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "network_message_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "recipient",
+          "type": "email",
+          "required": true
+        },
+        {
+          "name": "display_name",
+          "type": "string",
+          "required": true,
+          "pattern": "^.{1,128}$"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "pattern": "^.{1,512}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://graph.microsoft.com/v1.0/security/collaboration/analyzedEmails/remediate",
+            "json": {
+              "displayName": "{{input.display_name}}",
+              "description": "{{input.description}}",
+              "severity": "medium",
+              "action": "softDelete",
+              "remediateSendersCopy": false,
+              "analyzedEmails": [
+                {
+                  "networkMessageId": "{{input.network_message_id}}",
+                  "recipientEmailAddress": "{{input.recipient}}"
+                }
+              ]
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              202
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/soft_delete_email.json"
+      ],
+      "rollback": "move_email_to_inbox"
+    },
+    "move_email_to_inbox": {
+      "display_name": "Submit email move to Inbox",
+      "description": "Submit moveToInbox for one explicit analyzed message/recipient, without touching the sender copy. Requires application SecurityAnalyzedMessage.ReadWrite.All and applicable Defender for Office 365 licensing. A 202 is submission only; track completion in the Defender Action center. Moving to Inbox does not restore original folder/metadata. API documentation: https://learn.microsoft.com/en-us/graph/api/security-analyzedemail-remediate?view=graph-rest-1.0",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "network_message_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "recipient",
+          "type": "email",
+          "required": true
+        },
+        {
+          "name": "display_name",
+          "type": "string",
+          "required": true,
+          "pattern": "^.{1,128}$"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "pattern": "^.{1,512}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://graph.microsoft.com/v1.0/security/collaboration/analyzedEmails/remediate",
+            "json": {
+              "displayName": "{{input.display_name}}",
+              "description": "{{input.description}}",
+              "severity": "medium",
+              "action": "moveToInbox",
+              "remediateSendersCopy": false,
+              "analyzedEmails": [
+                {
+                  "networkMessageId": "{{input.network_message_id}}",
+                  "recipientEmailAddress": "{{input.recipient}}"
+                }
+              ]
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              202
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/move_email_to_inbox.json"
+      ],
+      "rollback": "soft_delete_email"
+    },
+    "hard_delete_email": {
+      "display_name": "Submit permanent email purge",
+      "description": "Submit hardDelete for one explicit analyzed message/recipient, without touching the sender copy. Requires application SecurityAnalyzedMessage.ReadWrite.All and applicable Defender for Office 365 licensing. A 202 is submission only; track completion in the Defender Action center. Moving to Inbox does not restore original folder/metadata. API documentation: https://learn.microsoft.com/en-us/graph/api/security-analyzedemail-remediate?view=graph-rest-1.0",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "network_message_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "recipient",
+          "type": "email",
+          "required": true
+        },
+        {
+          "name": "display_name",
+          "type": "string",
+          "required": true,
+          "pattern": "^.{1,128}$"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "pattern": "^.{1,512}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://graph.microsoft.com/v1.0/security/collaboration/analyzedEmails/remediate",
+            "json": {
+              "displayName": "{{input.display_name}}",
+              "description": "{{input.description}}",
+              "severity": "medium",
+              "action": "hardDelete",
+              "remediateSendersCopy": false,
+              "analyzedEmails": [
+                {
+                  "networkMessageId": "{{input.network_message_id}}",
+                  "recipientEmailAddress": "{{input.recipient}}"
+                }
+              ]
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              202
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/hard_delete_email.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Permanent deletion has no inverse; messages and original state cannot be recreated by this API."
+    }
+  }
+}

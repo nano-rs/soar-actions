@@ -1,0 +1,28 @@
+{
+  "action": "unquarantine_device",
+  "config": {},
+  "inputs": {
+    "host_id": "schema-derived-host-id"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "DELETE",
+        "url": "https://api.strata.paloaltonetworks.com/config/objects/v1/quarantined-devices",
+        "query": {
+          "host_id": "schema-derived-host-id"
+        }
+      },
+      "response": {
+        "method": "DELETE",
+        "host": "api.strata.paloaltonetworks.com",
+        "path": "/config/objects/v1/quarantined-devices",
+        "status": 200,
+        "body": ""
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://pan.dev/scm/api/config/ngfw/objects/delete-quarantined-devices/",
+  "request_evidence": "independent_http_mock"
+}

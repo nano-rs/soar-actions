@@ -1,0 +1,67 @@
+{
+  "action": "add_case_tag",
+  "config": {
+    "base_url": "https://api.crowdstrike.com"
+  },
+  "inputs": {
+    "case_id": "string",
+    "tag": "string"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.crowdstrike.com/cases/entities/case-tags/v1",
+        "json": {
+          "id": "string",
+          "tags": [
+            "string"
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.crowdstrike.com",
+        "path": "/cases/entities/case-tags/v1",
+        "status": 200,
+        "body": [
+          {
+            "access_tags": [],
+            "analysis_results": {},
+            "assigned_to": {},
+            "cid": "string",
+            "consistency": {},
+            "created_by": {},
+            "created_timestamp": "string",
+            "creation_actor": {},
+            "description": "string",
+            "description_format": "string",
+            "description_tagged_users": [],
+            "end_timestamp": "string",
+            "evidence": {},
+            "fields": [],
+            "id": "string",
+            "last_updated_by": {},
+            "name": "string",
+            "read_only": {},
+            "reference_id": "string",
+            "severity": 0,
+            "severity_info": {},
+            "sla": {},
+            "start_timestamp": "string",
+            "status": "string",
+            "tags": [],
+            "template": {},
+            "update_actor": {},
+            "updated_timestamp": "string",
+            "version": 0,
+            "workflows": []
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://developer.crowdstrike.com/api-reference/collections/case-management/#entitiescase-tagspostv1",
+  "request_evidence": "independent_http_mock"
+}

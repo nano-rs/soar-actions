@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_machine_action.json",
+      "url": "https://learn.microsoft.com/en-us/defender-endpoint/api/get-machineaction-object",
+      "document_sha256": "1d00d6241b9cd9383355b2ff10c113d50f02c6c311bed5c5c7eb869a32a3baa9",
+      "request": {
+        "method": "GET",
+        "url": "https://api.security.microsoft.com/api/machineactions/aaaabbbb-0000-cccc-1111-dddd2222eeee"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.security.microsoft.com",
+        "path": "/api/machineactions/aaaabbbb-0000-cccc-1111-dddd2222eeee",
+        "status": 200,
+        "body": {
+          "@odata.context": "https://api.security.microsoft.com/api/$metadata#MachineActions/$entity",
+          "id": "5382f7ea-7557-4ab7-9782-d50480024a4e",
+          "type": "Isolate",
+          "scope": "Selective",
+          "requestor": "Analyst@TestPrd.onmicrosoft.com",
+          "requestorComment": "test for docs",
+          "status": "Succeeded",
+          "machineId": "7b1f4967d9728e5aa3c06a9e617a22a4a5a17378",
+          "computerDnsName": "desktop-test",
+          "creationDateTimeUtc": "2019-01-02T14:39:38.2262283Z",
+          "lastUpdateDateTimeUtc": "2019-01-02T14:40:44.6596267Z",
+          "relatedFileInfo": null
+        }
+      },
+      "document_url": "https://learn.microsoft.com/en-us/defender-endpoint/api/get-machineaction-object"
+    },
+    {
+      "fixture": "fixtures/isolate_machine.json",
+      "url": "https://learn.microsoft.com/en-us/defender-endpoint/api/isolate-machine",
+      "document_url": "https://learn.microsoft.com/en-us/defender-endpoint/api/isolate-machine",
+      "document_sha256": "25eb4af909e632fb4c303b1c74ec8b09f02e8181f462b947fe3ce7a2b0ce3342",
+      "request": {
+        "method": "POST",
+        "url": "https://api.security.microsoft.com/api/machines/1e5bc9d7e413ddd7902c2932e418702b84d0cc07/isolate",
+        "json": {
+          "Comment": "Isolate machine due to alert 1234",
+          "IsolationType": "Full"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.security.microsoft.com",
+        "path": "/api/machines/1e5bc9d7e413ddd7902c2932e418702b84d0cc07/isolate",
+        "status": 201,
+        "body": {
+          "id": "5382f7ea-7557-4ab7-9782-d50480024a4e",
+          "type": "Isolate",
+          "status": "Pending",
+          "machineId": "1e5bc9d7e413ddd7902c2932e418702b84d0cc07",
+          "requestorComment": "Isolate machine due to alert 1234"
+        }
+      },
+      "schema_documents": [
+        {
+          "url": "https://learn.microsoft.com/en-us/defender-endpoint/api/machineaction",
+          "sha256": "2becce8072c7271364b9bb6aa8aaba4338423c2d004aef1cb2d427e1e757c8fb"
+        }
+      ]
+    },
+    {
+      "fixture": "fixtures/unisolate_machine.json",
+      "url": "https://learn.microsoft.com/en-us/defender-endpoint/api/unisolate-machine",
+      "document_url": "https://learn.microsoft.com/en-us/defender-endpoint/api/unisolate-machine",
+      "document_sha256": "466fe38181e956e250c37cb1720e3c756582a0e3d4ed0b7a116e0c009033b8c2",
+      "request": {
+        "method": "POST",
+        "url": "https://api.security.microsoft.com/api/machines/1e5bc9d7e413ddd7902c2932e418702b84d0cc07/unisolate",
+        "json": {
+          "Comment": "Unisolate machine since it was clean and validated"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.security.microsoft.com",
+        "path": "/api/machines/1e5bc9d7e413ddd7902c2932e418702b84d0cc07/unisolate",
+        "status": 201,
+        "body": {
+          "id": "5382f7ea-7557-4ab7-9782-d50480024a4e",
+          "type": "Unisolate",
+          "status": "Pending",
+          "machineId": "1e5bc9d7e413ddd7902c2932e418702b84d0cc07",
+          "requestorComment": "Unisolate machine since it was clean and validated"
+        }
+      },
+      "schema_documents": [
+        {
+          "url": "https://learn.microsoft.com/en-us/defender-endpoint/api/machineaction",
+          "sha256": "2becce8072c7271364b9bb6aa8aaba4338423c2d004aef1cb2d427e1e757c8fb"
+        }
+      ]
+    }
+  ]
+}

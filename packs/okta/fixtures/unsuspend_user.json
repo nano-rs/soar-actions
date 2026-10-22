@@ -1,0 +1,27 @@
+{
+  "action": "unsuspend_user",
+  "config": {
+    "base_url": "https://subdomain.okta.com"
+  },
+  "inputs": {
+    "user_id": "00ub0oNGTSWTBKOLGLNR"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://subdomain.okta.com/api/v1/users/00ub0oNGTSWTBKOLGLNR/lifecycle/unsuspend"
+      },
+      "response": {
+        "method": "POST",
+        "host": "subdomain.okta.com",
+        "path": "/api/v1/users/00ub0oNGTSWTBKOLGLNR/lifecycle/unsuspend",
+        "status": 200,
+        "body": ""
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://developer.okta.com/docs/api/openapi/okta-management/management/tag/UserLifecycle/#tag/UserLifecycle/operation/unsuspendUser",
+  "request_evidence": "independent_http_mock"
+}

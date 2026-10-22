@@ -1,0 +1,8 @@
+{
+  "quarantine_email": {
+    "reason": "The official v1.0 reference explicitly states moveToQuarantine is not currently supported; no usable supported quarantine request/example/schema is available.",
+    "documentation": [
+      "https://learn.microsoft.com/en-us/graph/api/security-analyzedemail-remediate?view=graph-rest-1.0"
+    ]
+  }
+}

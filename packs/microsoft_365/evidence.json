@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/soft_delete_email.json",
+      "url": "https://learn.microsoft.com/en-us/graph/api/security-analyzedemail-remediate?view=graph-rest-1.0",
+      "document_url": "https://learn.microsoft.com/en-us/graph/api/security-analyzedemail-remediate?view=graph-rest-1.0",
+      "document_sha256": "32488822dc5b7516703ffdb2abf2c517136fc58e8e1ca046a49922dac0553832",
+      "request": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/security/collaboration/analyzedEmails/remediate",
+        "json": {
+          "displayName": "Clean up Phish email",
+          "description": "Delete email",
+          "severity": "medium",
+          "action": "softDelete",
+          "remediateSendersCopy": false,
+          "analyzedEmails": [
+            {
+              "networkMessageId": "73ca4154-58d8-43d0-a890-08dc18c52e6d",
+              "recipientEmailAddress": "hannah.jarvis@contoso.com"
+            }
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/security/collaboration/analyzedEmails/remediate",
+        "status": 202,
+        "body": ""
+      }
+    },
+    {
+      "fixture": "fixtures/move_email_to_inbox.json",
+      "url": "https://learn.microsoft.com/en-us/graph/api/security-analyzedemail-remediate?view=graph-rest-1.0",
+      "document_url": "https://learn.microsoft.com/en-us/graph/api/security-analyzedemail-remediate?view=graph-rest-1.0",
+      "document_sha256": "32488822dc5b7516703ffdb2abf2c517136fc58e8e1ca046a49922dac0553832",
+      "request": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/security/collaboration/analyzedEmails/remediate",
+        "json": {
+          "displayName": "Clean up Phish email",
+          "description": "Restore false positive to Inbox",
+          "severity": "medium",
+          "action": "moveToInbox",
+          "remediateSendersCopy": false,
+          "analyzedEmails": [
+            {
+              "networkMessageId": "73ca4154-58d8-43d0-a890-08dc18c52e6d",
+              "recipientEmailAddress": "hannah.jarvis@contoso.com"
+            }
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/security/collaboration/analyzedEmails/remediate",
+        "status": 202,
+        "body": ""
+      }
+    },
+    {
+      "fixture": "fixtures/hard_delete_email.json",
+      "url": "https://learn.microsoft.com/en-us/graph/api/security-analyzedemail-remediate?view=graph-rest-1.0",
+      "document_url": "https://learn.microsoft.com/en-us/graph/api/security-analyzedemail-remediate?view=graph-rest-1.0",
+      "document_sha256": "32488822dc5b7516703ffdb2abf2c517136fc58e8e1ca046a49922dac0553832",
+      "request": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/security/collaboration/analyzedEmails/remediate",
+        "json": {
+          "displayName": "Clean up Phish email",
+          "description": "Delete email",
+          "severity": "medium",
+          "action": "hardDelete",
+          "remediateSendersCopy": false,
+          "analyzedEmails": [
+            {
+              "networkMessageId": "73ca4154-58d8-43d0-a890-08dc18c52e6d",
+              "recipientEmailAddress": "hannah.jarvis@contoso.com"
+            }
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/security/collaboration/analyzedEmails/remediate",
+        "status": 202,
+        "body": ""
+      }
+    }
+  ]
+}

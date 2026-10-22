@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/add_ipv4_indicator.json",
+      "url": "https://app.swaggerhub.com/apis-docs/Check-Point/Custom-IOC-Management-API/1.0.3#/Feed%20Indicator%20Controller/addIndicatorToFeed",
+      "document_url": "https://api.swaggerhub.com/apis/Check-Point/Custom-IOC-Management-API/1.0.3",
+      "document_sha256": "e53891e4f73d7d3d3140983ffe48f03d6f157a99bf75252b2feaf8cc80a71172",
+      "request": {
+        "method": "POST",
+        "url": "https://cloudinfra-gw.portal.checkpoint.com/app/ioc-management/feeds/123e4567-e89b-12d3-a456-426655440000/indicators",
+        "json": {
+          "indicator_type": "ipv4",
+          "indicator_value": "192.0.2.1",
+          "enabled": true,
+          "ttl_in_days": 1
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "cloudinfra-gw.portal.checkpoint.com",
+        "path": "/app/ioc-management/feeds/123e4567-e89b-12d3-a456-426655440000/indicators",
+        "status": 200,
+        "body": {
+          "indicator_type": "ipv4",
+          "indicator_value": "192.0.2.1",
+          "feed_id": "123e4567-e89b-12d3-a456-426655440000",
+          "enabled": true
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/delete_ipv4_indicator.json",
+      "url": "https://app.swaggerhub.com/apis-docs/Check-Point/Custom-IOC-Management-API/1.0.3#/Feed%20Indicator%20Controller/deleteIndicatorFromFeed",
+      "document_url": "https://api.swaggerhub.com/apis/Check-Point/Custom-IOC-Management-API/1.0.3",
+      "document_sha256": "e53891e4f73d7d3d3140983ffe48f03d6f157a99bf75252b2feaf8cc80a71172",
+      "request": {
+        "method": "DELETE",
+        "url": "https://cloudinfra-gw.portal.checkpoint.com/app/ioc-management/feeds/123e4567-e89b-12d3-a456-426655440000/indicators/ipv4/192.0.2.1"
+      },
+      "response": {
+        "method": "DELETE",
+        "host": "cloudinfra-gw.portal.checkpoint.com",
+        "path": "/app/ioc-management/feeds/123e4567-e89b-12d3-a456-426655440000/indicators/ipv4/192.0.2.1",
+        "status": 204,
+        "body": ""
+      }
+    },
+    {
+      "fixture": "fixtures/add_domain_indicator.json",
+      "url": "https://app.swaggerhub.com/apis-docs/Check-Point/Custom-IOC-Management-API/1.0.3#/Feed%20Indicator%20Controller/addIndicatorToFeed",
+      "document_url": "https://api.swaggerhub.com/apis/Check-Point/Custom-IOC-Management-API/1.0.3",
+      "document_sha256": "e53891e4f73d7d3d3140983ffe48f03d6f157a99bf75252b2feaf8cc80a71172",
+      "request": {
+        "method": "POST",
+        "url": "https://cloudinfra-gw.portal.checkpoint.com/app/ioc-management/feeds/123e4567-e89b-12d3-a456-426655440000/indicators",
+        "json": {
+          "indicator_type": "domain",
+          "indicator_value": "malicious.example.com",
+          "enabled": true,
+          "ttl_in_days": 1
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "cloudinfra-gw.portal.checkpoint.com",
+        "path": "/app/ioc-management/feeds/123e4567-e89b-12d3-a456-426655440000/indicators",
+        "status": 200,
+        "body": {
+          "indicator_type": "domain",
+          "indicator_value": "malicious.example.com",
+          "feed_id": "123e4567-e89b-12d3-a456-426655440000",
+          "enabled": true
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/delete_domain_indicator.json",
+      "url": "https://app.swaggerhub.com/apis-docs/Check-Point/Custom-IOC-Management-API/1.0.3#/Feed%20Indicator%20Controller/deleteIndicatorFromFeed",
+      "document_url": "https://api.swaggerhub.com/apis/Check-Point/Custom-IOC-Management-API/1.0.3",
+      "document_sha256": "e53891e4f73d7d3d3140983ffe48f03d6f157a99bf75252b2feaf8cc80a71172",
+      "request": {
+        "method": "DELETE",
+        "url": "https://cloudinfra-gw.portal.checkpoint.com/app/ioc-management/feeds/123e4567-e89b-12d3-a456-426655440000/indicators/domain/malicious.example.com"
+      },
+      "response": {
+        "method": "DELETE",
+        "host": "cloudinfra-gw.portal.checkpoint.com",
+        "path": "/app/ioc-management/feeds/123e4567-e89b-12d3-a456-426655440000/indicators/domain/malicious.example.com",
+        "status": 204,
+        "body": ""
+      }
+    }
+  ]
+}

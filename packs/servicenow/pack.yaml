@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "servicenow",
+  "display_name": "ServiceNow incident ticketing",
+  "description": "ServiceNow incident ticketing response actions. Mutations require approval.",
+  "vendor": "ServiceNow",
+  "categories": [
+    "ticketing"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Connected vendor instance HTTPS origin",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "host_suffixes": [
+        ".service-now.com"
+      ],
+      "path_prefixes": [
+        "/api/now/table/incident"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "username": "USERNAME",
+    "password": "PASSWORD"
+  },
+  "credentials": [
+    {
+      "name": "USERNAME",
+      "label": "ServiceNow integration user"
+    },
+    {
+      "name": "PASSWORD",
+      "label": "ServiceNow integration password"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "create_incident": {
+      "display_name": "Create investigation incident",
+      "description": "Create an incident with an explicit assignment-group sys_id and fixed urgency/impact 2. Requires Table API access and applicable incident/field ACLs; instance business rules may impose additional requirements. Returns the created record identifiers. API documentation: https://developer.servicenow.com/print_page.do?category=null&identifier=c_TableAPI&module=api&release=zurich",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "short_description",
+          "type": "string",
+          "required": true,
+          "pattern": "^.{1,160}$"
+        },
+        {
+          "name": "assignment_group",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-f]{32}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/now/table/incident",
+            "json": {
+              "short_description": "{{input.short_description}}",
+              "assignment_group": "{{input.assignment_group}}",
+              "urgency": "2",
+              "impact": "2"
+            }
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "result.sys_id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "sys_id": "steps.request.result.sys_id",
+        "number": "steps.request.result.number"
+      },
+      "fixtures": [
+        "fixtures/create_incident.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Incident creation can trigger business rules, audit and notifications; no automatic delete is supplied as an undo."
+    },
+    "add_incident_comment": {
+      "display_name": "Add incident customer-visible comment",
+      "description": "Append a customer-visible comments journal entry to one incident. Requires Table API and incident/comments write ACLs. This is not an internal work note: review content before approval. Changes only comments; no assignment, urgency or workflow-state change. API documentation: https://developer.servicenow.com/print_page.do?category=null&identifier=c_TableAPI&module=api&release=zurich",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "sys_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-f]{32}$"
+        },
+        {
+          "name": "comment",
+          "type": "string",
+          "required": true,
+          "pattern": "^[\\s\\S]{1,8192}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PATCH",
+            "url": "{{config.base_url}}/api/now/table/incident/{{input.sys_id}}",
+            "json": {
+              "comments": "{{input.comment}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "result.sys_id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "sys_id": "steps.request.result.sys_id",
+        "number": "steps.request.result.number"
+      },
+      "fixtures": [
+        "fixtures/add_incident_comment.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "A journal append and resulting notifications/audit cannot be undone by an inverse Table API write."
+    }
+  }
+}

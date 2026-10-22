@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/block_sender.json",
+      "url": "https://developer.services.mimecast.com/docs/policymanagement/1/routes/policy-management%2Fcloud-gateway%2Fv1%2Fblocked-senders%2Fpolicies/post",
+      "document_url": "https://developer.services.mimecast.com/portals/api/sites/mimecast-prod-apigee-developer/liveportal/apis/policymanagement/spec",
+      "document_sha256": "bffcab2108f96b4dfdef11dc98def4446cdae18893a41e8dc77bfa0e979ce4d7",
+      "request": {
+        "method": "POST",
+        "url": "https://api.services.mimecast.com/policy-management/cloud-gateway/v1/blocked-senders/policies",
+        "json": {
+          "description": "Block investigated sender for this recipient",
+          "option": "block_sender",
+          "fromPart": "both",
+          "from": {
+            "type": "individual_email_address",
+            "emailAddress": "sender@example.com"
+          },
+          "to": {
+            "type": "individual_email_address",
+            "emailAddress": "recipient@example.com"
+          },
+          "enabled": true,
+          "bidirectional": false,
+          "override": false,
+          "fromEternal": true,
+          "toEternal": true
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.services.mimecast.com",
+        "path": "/policy-management/cloud-gateway/v1/blocked-senders/policies",
+        "status": 201,
+        "body": {
+          "id": "policy_123"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/remove_sender_block.json",
+      "url": "https://developer.services.mimecast.com/docs/policymanagement/1/routes/policy-management%2Fcloud-gateway%2Fv1%2Fblocked-senders%2Fpolicies%2F%7Bpolicy_id%7D/delete",
+      "document_url": "https://developer.services.mimecast.com/portals/api/sites/mimecast-prod-apigee-developer/liveportal/apis/policymanagement/spec",
+      "document_sha256": "bffcab2108f96b4dfdef11dc98def4446cdae18893a41e8dc77bfa0e979ce4d7",
+      "request": {
+        "method": "DELETE",
+        "url": "https://api.services.mimecast.com/policy-management/cloud-gateway/v1/blocked-senders/policies/policy_123"
+      },
+      "response": {
+        "method": "DELETE",
+        "host": "api.services.mimecast.com",
+        "path": "/policy-management/cloud-gateway/v1/blocked-senders/policies/policy_123",
+        "status": 204,
+        "body": ""
+      }
+    }
+  ]
+}

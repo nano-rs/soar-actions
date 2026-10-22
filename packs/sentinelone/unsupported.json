@@ -1,0 +1,14 @@
+{
+  "disconnect_agent": {
+    "reason": "The official endpoint reference requires vendor portal access; public request and response definitions are unavailable.",
+    "documentation": [
+      "https://usea1-partners.sentinelone.net/api-doc/overview"
+    ]
+  },
+  "connect_agent": {
+    "reason": "The official endpoint reference requires vendor portal access; public request and response definitions are unavailable.",
+    "documentation": [
+      "https://usea1-partners.sentinelone.net/api-doc/overview"
+    ]
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "palo_alto_strata_cloud_manager",
+  "display_name": "Palo Alto Strata Cloud Manager",
+  "description": "Palo Alto Strata Cloud Manager response actions. Mutations require approval.",
+  "vendor": "Palo Alto Networks",
+  "categories": [
+    "firewall"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "api.strata.paloaltonetworks.com",
+      "path_prefixes": [
+        "/config/objects/v1/quarantined-devices"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "ACCESS_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "ACCESS_TOKEN",
+      "label": "Current API access token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "quarantine_device": {
+      "display_name": "Quarantine device",
+      "description": "Change the SCM quarantined-device record for an explicit host ID. This is the vendor-hosted SCM API, not an on-premises PAN-OS call. Acknowledgment does not verify downstream endpoint/network state. API documentation: https://pan.dev/scm/api/config/ngfw/objects/create-quarantined-devices/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "host_id",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://api.strata.paloaltonetworks.com/config/objects/v1/quarantined-devices",
+            "json": {
+              "host_id": "{{input.host_id}}"
+            }
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "host_id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "host_id": "steps.request.host_id"
+      },
+      "fixtures": [
+        "fixtures/quarantine_device.json"
+      ],
+      "rollback": "unquarantine_device"
+    },
+    "unquarantine_device": {
+      "display_name": "Release device from quarantine",
+      "description": "Change the SCM quarantined-device record for an explicit host ID. This is the vendor-hosted SCM API, not an on-premises PAN-OS call. Acknowledgment does not verify downstream endpoint/network state. API documentation: https://pan.dev/scm/api/config/ngfw/objects/delete-quarantined-devices/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "host_id",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "DELETE",
+            "url": "https://api.strata.paloaltonetworks.com/config/objects/v1/quarantined-devices",
+            "query": {
+              "host_id": "{{input.host_id}}"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/unquarantine_device.json"
+      ],
+      "rollback": "quarantine_device"
+    }
+  }
+}

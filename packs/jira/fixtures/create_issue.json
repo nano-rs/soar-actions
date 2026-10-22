@@ -1,0 +1,47 @@
+{
+  "action": "create_issue",
+  "config": {
+    "base_url": "https://your-domain.atlassian.net"
+  },
+  "inputs": {
+    "project_id": "10000",
+    "issue_type_id": "10000",
+    "summary": "Main order flow broken"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://your-domain.atlassian.net/rest/api/3/issue",
+        "json": {
+          "fields": {
+            "project": {
+              "id": "10000"
+            },
+            "issuetype": {
+              "id": "10000"
+            },
+            "summary": "Main order flow broken"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "your-domain.atlassian.net",
+        "path": "/rest/api/3/issue",
+        "status": 201,
+        "body": {
+          "id": "10000",
+          "key": "ED-24",
+          "self": "https://your-domain.atlassian.net/rest/api/3/issue/10000"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "issue_id": "10000",
+    "issue_key": "ED-24"
+  },
+  "source": "https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-post",
+  "request_evidence": "independent_http_mock"
+}

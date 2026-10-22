@@ -1,0 +1,25 @@
+{
+  "action": "remove_sender_block",
+  "config": {},
+  "inputs": {
+    "policy_id": "policy_123"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "DELETE",
+        "url": "https://api.services.mimecast.com/policy-management/cloud-gateway/v1/blocked-senders/policies/policy_123"
+      },
+      "response": {
+        "method": "DELETE",
+        "host": "api.services.mimecast.com",
+        "path": "/policy-management/cloud-gateway/v1/blocked-senders/policies/policy_123",
+        "status": 204,
+        "body": ""
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://developer.services.mimecast.com/docs/policymanagement/1/routes/policy-management%2Fcloud-gateway%2Fv1%2Fblocked-senders%2Fpolicies%2F%7Bpolicy_id%7D/delete",
+  "request_evidence": "independent_http_mock"
+}

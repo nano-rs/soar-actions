@@ -1,0 +1,218 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "check_point_infinity",
+  "display_name": "Check Point Infinity IoC Management",
+  "description": "Check Point Infinity IoC Management response actions. Mutations require approval.",
+  "vendor": "Check Point",
+  "categories": [
+    "firewall"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "cloudinfra-gw.portal.checkpoint.com",
+      "path_prefixes": [
+        "/app/ioc-management/feeds"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "ACCESS_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "ACCESS_TOKEN",
+      "label": "Current API access token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "add_ipv4_indicator": {
+      "display_name": "Add ipv4 indicator",
+      "description": "Change one indicator in an existing manual IoC feed. New indicators are enabled with a one-day TTL. Gateway prevention depends on the feed being configured in Quantum policy; this acknowledgment does not prove packet blocking. Delete removes this indicator, not independent protections from other feeds. API documentation: https://app.swaggerhub.com/apis-docs/Check-Point/Custom-IOC-Management-API/1.0.3#/Feed%20Indicator%20Controller/addIndicatorToFeed",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "feed_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "indicator",
+          "type": "string",
+          "required": true,
+          "pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://cloudinfra-gw.portal.checkpoint.com/app/ioc-management/feeds/{{input.feed_id}}/indicators",
+            "json": {
+              "indicator_type": "ipv4",
+              "indicator_value": "{{input.indicator}}",
+              "enabled": true,
+              "ttl_in_days": 1
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "enabled",
+            "equals": true
+          }
+        }
+      ],
+      "outputs": {
+        "indicator": "steps.request.indicator_value",
+        "feed_id": "steps.request.feed_id"
+      },
+      "fixtures": [
+        "fixtures/add_ipv4_indicator.json"
+      ],
+      "rollback": "delete_ipv4_indicator"
+    },
+    "delete_ipv4_indicator": {
+      "display_name": "Delete ipv4 indicator",
+      "description": "Change one indicator in an existing manual IoC feed. Gateway prevention depends on the feed being configured in Quantum policy; this acknowledgment does not prove packet blocking. Delete removes this indicator, not independent protections from other feeds. API documentation: https://app.swaggerhub.com/apis-docs/Check-Point/Custom-IOC-Management-API/1.0.3#/Feed%20Indicator%20Controller/deleteIndicatorFromFeed",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "feed_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "indicator",
+          "type": "string",
+          "required": true,
+          "pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "DELETE",
+            "url": "https://cloudinfra-gw.portal.checkpoint.com/app/ioc-management/feeds/{{input.feed_id}}/indicators/ipv4/{{input.indicator}}",
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/delete_ipv4_indicator.json"
+      ],
+      "rollback": "add_ipv4_indicator"
+    },
+    "add_domain_indicator": {
+      "display_name": "Add domain indicator",
+      "description": "Change one indicator in an existing manual IoC feed. New indicators are enabled with a one-day TTL. Gateway prevention depends on the feed being configured in Quantum policy; this acknowledgment does not prove packet blocking. Delete removes this indicator, not independent protections from other feeds. API documentation: https://app.swaggerhub.com/apis-docs/Check-Point/Custom-IOC-Management-API/1.0.3#/Feed%20Indicator%20Controller/addIndicatorToFeed",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "feed_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "indicator",
+          "type": "domain",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://cloudinfra-gw.portal.checkpoint.com/app/ioc-management/feeds/{{input.feed_id}}/indicators",
+            "json": {
+              "indicator_type": "domain",
+              "indicator_value": "{{input.indicator}}",
+              "enabled": true,
+              "ttl_in_days": 1
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "enabled",
+            "equals": true
+          }
+        }
+      ],
+      "outputs": {
+        "indicator": "steps.request.indicator_value",
+        "feed_id": "steps.request.feed_id"
+      },
+      "fixtures": [
+        "fixtures/add_domain_indicator.json"
+      ],
+      "rollback": "delete_domain_indicator"
+    },
+    "delete_domain_indicator": {
+      "display_name": "Delete domain indicator",
+      "description": "Change one indicator in an existing manual IoC feed. Gateway prevention depends on the feed being configured in Quantum policy; this acknowledgment does not prove packet blocking. Delete removes this indicator, not independent protections from other feeds. API documentation: https://app.swaggerhub.com/apis-docs/Check-Point/Custom-IOC-Management-API/1.0.3#/Feed%20Indicator%20Controller/deleteIndicatorFromFeed",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "feed_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "indicator",
+          "type": "domain",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "DELETE",
+            "url": "https://cloudinfra-gw.portal.checkpoint.com/app/ioc-management/feeds/{{input.feed_id}}/indicators/domain/{{input.indicator}}",
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/delete_domain_indicator.json"
+      ],
+      "rollback": "add_domain_indicator"
+    }
+  }
+}

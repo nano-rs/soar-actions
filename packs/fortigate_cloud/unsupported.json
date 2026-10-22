@@ -1,0 +1,28 @@
+{
+  "cloud_block_ip": {
+    "reason": "The official endpoint reference requires vendor portal access; public request and response definitions are unavailable.",
+    "documentation": [
+      "https://docs.fortinet.com/document/fortigate-cloud/26.1.0/administration-guide/557024/api-access",
+      "https://fndn.fortinet.net/"
+    ]
+  },
+  "cloud_unblock_ip": {
+    "reason": "The official endpoint reference requires vendor portal access; public request and response definitions are unavailable.",
+    "documentation": [
+      "https://docs.fortinet.com/document/fortigate-cloud/26.1.0/administration-guide/557024/api-access",
+      "https://fndn.fortinet.net/"
+    ]
+  },
+  "on_prem_block_ip": {
+    "reason": "Customer-managed appliance or instance hosts require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://docs.fortinet.com/document/fortigate/7.6.3/administration-guide/712168/accessing-fortinet-developer-network"
+    ]
+  },
+  "on_prem_unblock_ip": {
+    "reason": "Customer-managed appliance or instance hosts require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://docs.fortinet.com/document/fortigate/7.6.3/administration-guide/712168/accessing-fortinet-developer-network"
+    ]
+  }
+}

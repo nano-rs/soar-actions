@@ -1,0 +1,187 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "jira",
+  "display_name": "Jira Cloud ticketing",
+  "description": "Jira Cloud ticketing response actions. Mutations require approval.",
+  "vendor": "Atlassian",
+  "categories": [
+    "ticketing"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Connected vendor instance HTTPS origin",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "host_suffixes": [
+        ".atlassian.net"
+      ],
+      "path_prefixes": [
+        "/rest/api/3/issue"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "username": "ACCOUNT_EMAIL",
+    "password": "API_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "ACCOUNT_EMAIL",
+      "label": "Atlassian account email"
+    },
+    {
+      "name": "API_TOKEN",
+      "label": "API token compatible with the connected site origin"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "create_issue": {
+      "display_name": "Create investigation issue",
+      "description": "Create a Jira Cloud issue using tenant-verified project/issue type IDs. Requires Browse projects and Create issues; project-specific required fields must be configured appropriately. No fields or IDs are discovered automatically. API documentation: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-post",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "project_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9]{1,20}$"
+        },
+        {
+          "name": "issue_type_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9]{1,20}$"
+        },
+        {
+          "name": "summary",
+          "type": "string",
+          "required": true,
+          "pattern": "^.{1,255}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/rest/api/3/issue",
+            "json": {
+              "fields": {
+                "project": {
+                  "id": "{{input.project_id}}"
+                },
+                "issuetype": {
+                  "id": "{{input.issue_type_id}}"
+                },
+                "summary": "{{input.summary}}"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "issue_id": "steps.request.id",
+        "issue_key": "steps.request.key"
+      },
+      "fixtures": [
+        "fixtures/create_issue.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Creation triggers issue history, notifications and automation; no automatic delete is supplied as an undo."
+    },
+    "add_comment": {
+      "display_name": "Add role-restricted investigation comment",
+      "description": "Add an ADF plain-text comment restricted to an explicit existing project role. Requires Browse projects and Add comments plus any issue security permission. Select the intended role before approval; no public-comment default is provided. API documentation: https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-comments/#api-rest-api-3-issue-issueIdOrKey-comment-post",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "issue_key",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Z][A-Z0-9_]{0,63}-[1-9][0-9]{0,19}$"
+        },
+        {
+          "name": "comment",
+          "type": "string",
+          "required": true,
+          "pattern": "^[\\s\\S]{1,8192}$"
+        },
+        {
+          "name": "role_name",
+          "type": "string",
+          "required": true,
+          "pattern": "^.{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/rest/api/3/issue/{{input.issue_key}}/comment",
+            "json": {
+              "body": {
+                "type": "doc",
+                "version": 1,
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "{{input.comment}}"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "visibility": {
+                "type": "role",
+                "identifier": "{{input.role_name}}"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "comment_id": "steps.request.id"
+      },
+      "fixtures": [
+        "fixtures/add_comment.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Comments may trigger notifications and audit history; deleting a comment does not undo those effects. No automatic delete is supplied."
+    }
+  }
+}

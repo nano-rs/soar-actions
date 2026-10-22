@@ -1,0 +1,49 @@
+{
+  "action": "contain_host",
+  "config": {
+    "base_url": "https://api.crowdstrike.com"
+  },
+  "inputs": {
+    "device_id": "0123456789abcdef0123456789abcdef"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.crowdstrike.com/devices/entities/devices-actions/v2",
+        "query": {
+          "action_name": "contain"
+        },
+        "json": {
+          "ids": [
+            "0123456789abcdef0123456789abcdef"
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.crowdstrike.com",
+        "path": "/devices/entities/devices-actions/v2",
+        "status": 202,
+        "body": {
+          "errors": [],
+          "meta": {
+            "query_time": 0.0,
+            "trace_id": "string"
+          },
+          "resources": [
+            {
+              "id": "0123456789abcdef0123456789abcdef",
+              "path": "string"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "device_id": "0123456789abcdef0123456789abcdef"
+  },
+  "source": "https://developer.crowdstrike.com/api-reference/collections/hosts/#performactionv2",
+  "request_evidence": "independent_http_mock"
+}

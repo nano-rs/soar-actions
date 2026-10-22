@@ -1,0 +1,239 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "crowdstrike_falcon",
+  "display_name": "CrowdStrike Falcon",
+  "description": "CrowdStrike Falcon response actions. Mutations require approval.",
+  "vendor": "CrowdStrike",
+  "categories": [
+    "edr"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Falcon cloud",
+      "required": true,
+      "default": "https://api.crowdstrike.com",
+      "one_of": [
+        "https://api.crowdstrike.com",
+        "https://api.us-2.crowdstrike.com",
+        "https://api.eu-1.crowdstrike.com",
+        "https://api.laggar.gcw.crowdstrike.com"
+      ]
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/oauth2/token",
+        "/cases/entities/case-tags/v1",
+        "/devices/entities/devices-actions/v2"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "oauth2_client_credentials",
+    "token_url": "{{config.base_url}}/oauth2/token",
+    "client_id": "CLIENT_ID",
+    "client_secret": "CLIENT_SECRET"
+  },
+  "credentials": [
+    {
+      "name": "CLIENT_ID",
+      "label": "Client ID"
+    },
+    {
+      "name": "CLIENT_SECRET",
+      "label": "Client secret"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "add_case_tag": {
+      "display_name": "Add case tag",
+      "description": "Add case tag. Request acknowledgment only; this action does not claim asynchronous completion. API documentation: https://developer.crowdstrike.com/api-reference/collections/case-management/#entitiescase-tagspostv1",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "case_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "tag",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/cases/entities/case-tags/v1",
+            "json": {
+              "id": "{{input.case_id}}",
+              "tags": [
+                "{{input.tag}}"
+              ]
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "0.id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/add_case_tag.json"
+      ],
+      "rollback": "delete_case_tag"
+    },
+    "delete_case_tag": {
+      "display_name": "Delete case tag",
+      "description": "Delete case tag. Request acknowledgment only; this action does not claim asynchronous completion. API documentation: https://developer.crowdstrike.com/api-reference/collections/case-management/#entitiescase-tagsdeletev1",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "case_id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "tag",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "DELETE",
+            "url": "{{config.base_url}}/cases/entities/case-tags/v1",
+            "query": {
+              "id": "{{input.case_id}}",
+              "tag": "{{input.tag}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "0.id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/delete_case_tag.json"
+      ],
+      "rollback": "add_case_tag"
+    },
+    "contain_host": {
+      "display_name": "Contain host",
+      "description": "Request contain for one explicit Falcon AID. Requires Hosts:WRITE. Request acknowledgment only; endpoint-state completion must be verified separately. API documentation: https://developer.crowdstrike.com/api-reference/collections/hosts/#performactionv2",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "device_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{32}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/devices/entities/devices-actions/v2",
+            "query": {
+              "action_name": "contain"
+            },
+            "json": {
+              "ids": [
+                "{{input.device_id}}"
+              ]
+            }
+          },
+          "expect": {
+            "status": [
+              202
+            ],
+            "path": "errors",
+            "items": 0
+          }
+        }
+      ],
+      "outputs": {
+        "device_id": "steps.request.resources.0.id"
+      },
+      "fixtures": [
+        "fixtures/contain_host.json"
+      ],
+      "rollback": "lift_containment"
+    },
+    "lift_containment": {
+      "display_name": "Lift containment",
+      "description": "Request lift_containment for one explicit Falcon AID. Requires Hosts:WRITE. Request acknowledgment only; endpoint-state completion must be verified separately. API documentation: https://developer.crowdstrike.com/api-reference/collections/hosts/#performactionv2",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "device_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{32}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/devices/entities/devices-actions/v2",
+            "query": {
+              "action_name": "lift_containment"
+            },
+            "json": {
+              "ids": [
+                "{{input.device_id}}"
+              ]
+            }
+          },
+          "expect": {
+            "status": [
+              202
+            ],
+            "path": "errors",
+            "items": 0
+          }
+        }
+      ],
+      "outputs": {
+        "device_id": "steps.request.resources.0.id"
+      },
+      "fixtures": [
+        "fixtures/lift_containment.json"
+      ],
+      "rollback": "contain_host"
+    }
+  }
+}

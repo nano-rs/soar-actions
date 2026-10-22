@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/quarantine_devices.json",
+      "url": "https://developer.carbonblack.com/reference/carbon-black-cloud/platform/latest/devices-api/#quarantine",
+      "document_sha256": "c647d9c10c1392f2c480932da48a043ebf73c51b679225e12fe4b926c91c0bd1",
+      "request": {
+        "method": "POST",
+        "url": "https://defense-prod05.conferdeploy.net/appservices/v6/orgs/ABCD1234/device_actions",
+        "json": {
+          "action_type": "QUARANTINE",
+          "device_id": [
+            "12131",
+            "12132"
+          ],
+          "options": {
+            "toggle": "ON"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "defense-prod05.conferdeploy.net",
+        "path": "/appservices/v6/orgs/ABCD1234/device_actions",
+        "status": 204,
+        "body": ""
+      },
+      "document_url": "https://developer.carbonblack.com/reference/carbon-black-cloud/platform/latest/devices-api/"
+    },
+    {
+      "fixture": "fixtures/unquarantine_devices.json",
+      "url": "https://developer.carbonblack.com/reference/carbon-black-cloud/platform/latest/devices-api/#quarantine",
+      "document_sha256": "c647d9c10c1392f2c480932da48a043ebf73c51b679225e12fe4b926c91c0bd1",
+      "request": {
+        "method": "POST",
+        "url": "https://defense-prod05.conferdeploy.net/appservices/v6/orgs/ABCD1234/device_actions",
+        "json": {
+          "action_type": "QUARANTINE",
+          "device_id": [
+            "12131",
+            "12132"
+          ],
+          "options": {
+            "toggle": "OFF"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "defense-prod05.conferdeploy.net",
+        "path": "/appservices/v6/orgs/ABCD1234/device_actions",
+        "status": 204,
+        "body": ""
+      },
+      "document_url": "https://developer.carbonblack.com/reference/carbon-black-cloud/platform/latest/devices-api/"
+    }
+  ]
+}

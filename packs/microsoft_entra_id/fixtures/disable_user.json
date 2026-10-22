@@ -1,0 +1,28 @@
+{
+  "action": "disable_user",
+  "config": {},
+  "inputs": {
+    "user_id": "00000000-0000-0000-0000-000000000001"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "PATCH",
+        "url": "https://graph.microsoft.com/v1.0/users/00000000-0000-0000-0000-000000000001",
+        "json": {
+          "accountEnabled": false
+        }
+      },
+      "response": {
+        "method": "PATCH",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/users/00000000-0000-0000-0000-000000000001",
+        "status": 204,
+        "body": ""
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://learn.microsoft.com/en-us/graph/api/user-update?view=graph-rest-1.0",
+  "request_evidence": "independent_http_mock"
+}

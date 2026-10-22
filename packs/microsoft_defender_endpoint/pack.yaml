@@ -1,0 +1,174 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "microsoft_defender_endpoint",
+  "display_name": "Microsoft Defender for Endpoint",
+  "description": "Microsoft Defender for Endpoint response actions. Mutations require approval.",
+  "vendor": "Microsoft",
+  "categories": [
+    "edr"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "api.security.microsoft.com",
+      "path_prefixes": [
+        "/api/machineactions",
+        "/api/machines"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "ACCESS_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "ACCESS_TOKEN",
+      "label": "Defender API access token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 25,
+    "per_day": 750,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_machine_action": {
+      "display_name": "Get machine action",
+      "description": "Get machine action. Request acknowledgment only; this action does not claim asynchronous completion. API documentation: https://learn.microsoft.com/en-us/defender-endpoint/api/get-machineaction-object",
+      "effect": "read",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "action_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://api.security.microsoft.com/api/machineactions/{{input.action_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.id",
+        "status": "steps.request.status",
+        "machine_id": "steps.request.machineId"
+      },
+      "fixtures": [
+        "fixtures/get_machine_action.json"
+      ]
+    },
+    "isolate_machine": {
+      "display_name": "Isolate machine",
+      "description": "Request full isolation of a managed device (Windows or Linux). Requires Machine.Isolate. Returns the asynchronous MachineAction identity and reported status. Request acknowledgment only; endpoint-state completion must be verified separately. API documentation: https://learn.microsoft.com/en-us/defender-endpoint/api/isolate-machine",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "machine_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{40}$"
+        },
+        {
+          "name": "comment",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://api.security.microsoft.com/api/machines/{{input.machine_id}}/isolate",
+            "json": {
+              "Comment": "{{input.comment}}",
+              "IsolationType": "Full"
+            }
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.id",
+        "status": "steps.request.status",
+        "machine_id": "steps.request.machineId"
+      },
+      "fixtures": [
+        "fixtures/isolate_machine.json"
+      ],
+      "rollback": "unisolate_machine"
+    },
+    "unisolate_machine": {
+      "display_name": "Release machine from isolation",
+      "description": "Request release of a managed device from isolation. Requires Machine.Isolate. Returns the asynchronous MachineAction identity and reported status. Request acknowledgment only; endpoint-state completion must be verified separately. API documentation: https://learn.microsoft.com/en-us/defender-endpoint/api/unisolate-machine",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "machine_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{40}$"
+        },
+        {
+          "name": "comment",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://api.security.microsoft.com/api/machines/{{input.machine_id}}/unisolate",
+            "json": {
+              "Comment": "{{input.comment}}"
+            }
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.id",
+        "status": "steps.request.status",
+        "machine_id": "steps.request.machineId"
+      },
+      "fixtures": [
+        "fixtures/unisolate_machine.json"
+      ],
+      "rollback": "isolate_machine"
+    }
+  }
+}
