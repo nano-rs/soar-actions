@@ -1,0 +1,56 @@
+{
+  "on_prem_execute": {
+    "reason": "Self-hosted Kibana uses customer-managed hosts, which require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointexecuteaction"
+    ]
+  },
+  "on_prem_get_action_details": {
+    "reason": "Self-hosted Kibana uses customer-managed hosts, which require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointgetactionsdetails"
+    ]
+  },
+  "on_prem_get_file": {
+    "reason": "Self-hosted Kibana uses customer-managed hosts, which require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointgetfileaction"
+    ]
+  },
+  "on_prem_get_running_processes": {
+    "reason": "Self-hosted Kibana uses customer-managed hosts, which require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointgetprocessesaction"
+    ]
+  },
+  "on_prem_isolate_host": {
+    "reason": "Self-hosted Kibana uses customer-managed hosts, which require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointisolateaction"
+    ]
+  },
+  "on_prem_kill_process": {
+    "reason": "Self-hosted Kibana uses customer-managed hosts, which require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointkillprocessaction"
+    ]
+  },
+  "on_prem_release_host": {
+    "reason": "Self-hosted Kibana uses customer-managed hosts, which require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointunisolateaction"
+    ]
+  },
+  "on_prem_scan": {
+    "reason": "Self-hosted Kibana uses customer-managed hosts, which require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointscanaction"
+    ]
+  },
+  "on_prem_suspend_process": {
+    "reason": "Self-hosted Kibana uses customer-managed hosts, which require an on-premises relay and are unsupported.",
+    "documentation": [
+      "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointsuspendprocessaction"
+    ]
+  }
+}

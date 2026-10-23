@@ -1,0 +1,76 @@
+{
+  "action": "execute",
+  "config": {
+    "base_url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com"
+  },
+  "inputs": {
+    "endpoint_id": "b3d6de74-36b0-4fa8-be46-c375bf1771bf",
+    "command": "ls -al",
+    "timeout": 600,
+    "comment": "Get list of all files"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com/api/endpoint/action/execute",
+        "json": {
+          "comment": "Get list of all files",
+          "endpoint_ids": [
+            "b3d6de74-36b0-4fa8-be46-c375bf1771bf"
+          ],
+          "parameters": {
+            "command": "ls -al",
+            "timeout": 600
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com",
+        "path": "/api/endpoint/action/execute",
+        "status": 200,
+        "body": {
+          "data": {
+            "agents": [
+              "ed518850-681a-4d60-bb98-e22640cae2a8"
+            ],
+            "agentState": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "isCompleted": false,
+                "wasSuccessful": false
+              }
+            },
+            "agentType": "endpoint",
+            "command": "execute",
+            "createdBy": "elastic",
+            "hosts": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "name": "gke-node-1235412"
+              }
+            },
+            "id": "9f934028-2300-4927-b531-b26376793dc4",
+            "isCompleted": false,
+            "isExpired": false,
+            "outputs": {},
+            "parameters": {
+              "command": "ls -al",
+              "timeout": 600
+            },
+            "startedAt": "2023-07-28T18:43:27.362Z",
+            "status": "pending",
+            "wasSuccessful": false
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "action_id": "9f934028-2300-4927-b531-b26376793dc4",
+    "command": "execute",
+    "status": "pending",
+    "is_completed": false
+  },
+  "source": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointexecuteaction",
+  "request_evidence": "independent_http_mock"
+}

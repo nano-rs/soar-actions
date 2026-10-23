@@ -1,0 +1,73 @@
+{
+  "action": "scan",
+  "config": {
+    "base_url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com"
+  },
+  "inputs": {
+    "endpoint_id": "ed518850-681a-4d60-bb98-e22640cae2a8",
+    "path": "/usr/my-file.txt",
+    "comment": "Scan the file for malware"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com/api/endpoint/action/scan",
+        "json": {
+          "comment": "Scan the file for malware",
+          "endpoint_ids": [
+            "ed518850-681a-4d60-bb98-e22640cae2a8"
+          ],
+          "parameters": {
+            "path": "/usr/my-file.txt"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com",
+        "path": "/api/endpoint/action/scan",
+        "status": 200,
+        "body": {
+          "data": {
+            "agents": [
+              "ed518850-681a-4d60-bb98-e22640cae2a8"
+            ],
+            "agentState": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "isCompleted": false,
+                "wasSuccessful": false
+              }
+            },
+            "agentType": "endpoint",
+            "command": "scan",
+            "createdBy": "elastic",
+            "hosts": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "name": "gke-node-1235412"
+              }
+            },
+            "id": "27ba1b42-7cc6-4e53-86ce-675c876092b2",
+            "isCompleted": false,
+            "isExpired": false,
+            "outputs": {},
+            "parameters": {
+              "path": "/usr/my-file.txt"
+            },
+            "startedAt": "2023-07-28T19:00:03.911Z",
+            "status": "pending",
+            "wasSuccessful": false
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "action_id": "27ba1b42-7cc6-4e53-86ce-675c876092b2",
+    "command": "scan",
+    "status": "pending",
+    "is_completed": false
+  },
+  "source": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointscanaction",
+  "request_evidence": "independent_http_mock"
+}

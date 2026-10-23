@@ -1,0 +1,582 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "elastic_defend",
+  "display_name": "Elastic Defend",
+  "description": "Elastic Security endpoint response actions through the Kibana Security endpoint management API on Elastic Cloud. Mutations require approval.",
+  "vendor": "Elastic",
+  "categories": [
+    "edr"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Elastic Cloud Kibana endpoint URL",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "host_suffixes": [
+        ".elastic-cloud.com",
+        ".cloud.es.io"
+      ],
+      "path_prefixes": [
+        "/api/endpoint/action"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "Authorization",
+    "credential": "API_KEY",
+    "prefix": "ApiKey "
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "Kibana API key (encoded value)"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "execute": {
+      "display_name": "Run command",
+      "description": "Request execution of a shell command on an Elastic Defend endpoint, with a timeout in seconds. The command runs as the account running the Elastic Defend integration. Requires the Execute Operations privilege. Returns the queued response action identity and its reported status; this is request acknowledgment only. Follow completion with get_action_details. API documentation: https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointexecuteaction",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "endpoint_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        },
+        {
+          "name": "command",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "timeout",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "comment",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/endpoint/action/execute",
+            "headers": {
+              "kbn-xsrf": "true"
+            },
+            "json": {
+              "comment": "{{input.comment}}",
+              "endpoint_ids": [
+                "{{input.endpoint_id}}"
+              ],
+              "parameters": {
+                "command": "{{input.command}}",
+                "timeout": "{{input.timeout}}"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.id",
+            "non_empty": true,
+            "fields": {
+              "data.command": "execute"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.data.id",
+        "command": "steps.request.data.command",
+        "status": "steps.request.data.status",
+        "is_completed": "steps.request.data.isCompleted"
+      },
+      "fixtures": [
+        "fixtures/execute.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Effects of an arbitrary shell command cannot be reversed generically."
+    },
+    "get_action_details": {
+      "display_name": "Get action details",
+      "description": "Get the details of a response action by its action ID, to follow asynchronous actions to completion. Reports isCompleted and wasSuccessful as returned by Kibana. Read-only. API documentation: https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointgetactionsdetails",
+      "effect": "read",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "action_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9-]{1,64}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/endpoint/action/{{input.action_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.data.id",
+        "command": "steps.request.data.command",
+        "is_completed": "steps.request.data.isCompleted",
+        "was_successful": "steps.request.data.wasSuccessful",
+        "completed_at": "steps.request.data.completedAt"
+      },
+      "fixtures": [
+        "fixtures/get_action_details.json"
+      ]
+    },
+    "get_file": {
+      "display_name": "Get file",
+      "description": "Request retrieval of a file, by full path, from an Elastic Defend endpoint into Kibana. Requires the File Operations privilege. Returns the queued response action identity and its reported status; this is request acknowledgment only. Follow completion with get_action_details. API documentation: https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointgetfileaction",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "endpoint_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        },
+        {
+          "name": "path",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "comment",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/endpoint/action/get_file",
+            "headers": {
+              "kbn-xsrf": "true"
+            },
+            "json": {
+              "comment": "{{input.comment}}",
+              "endpoint_ids": [
+                "{{input.endpoint_id}}"
+              ],
+              "parameters": {
+                "path": "{{input.path}}"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.id",
+            "non_empty": true,
+            "fields": {
+              "data.command": "get-file"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.data.id",
+        "command": "steps.request.data.command",
+        "status": "steps.request.data.status",
+        "is_completed": "steps.request.data.isCompleted"
+      },
+      "fixtures": [
+        "fixtures/get_file.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "A retrieved file copy is stored outside the endpoint and cannot be recalled by this pack."
+    },
+    "get_running_processes": {
+      "display_name": "Get running processes",
+      "description": "Request a list of all processes running on an Elastic Defend endpoint. Creates a response action on the endpoint; the process list is delivered asynchronously. Requires the Process Operations privilege. Returns the queued response action identity and its reported status; this is request acknowledgment only. Follow completion with get_action_details. API documentation: https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointgetprocessesaction",
+      "effect": "write",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "endpoint_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/endpoint/action/running_procs",
+            "headers": {
+              "kbn-xsrf": "true"
+            },
+            "json": {
+              "endpoint_ids": [
+                "{{input.endpoint_id}}"
+              ]
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.id",
+            "non_empty": true,
+            "fields": {
+              "data.command": "running-processes"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.data.id",
+        "command": "steps.request.data.command",
+        "status": "steps.request.data.status",
+        "is_completed": "steps.request.data.isCompleted"
+      },
+      "fixtures": [
+        "fixtures/get_running_processes.json"
+      ]
+    },
+    "isolate_host": {
+      "display_name": "Isolate host",
+      "description": "Request network isolation of an Elastic Defend endpoint. The endpoint remains isolated until it is released. Requires the Host Isolation privilege. Returns the queued response action identity and its reported status; this is request acknowledgment only. Follow completion with get_action_details. API documentation: https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointisolateaction",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "endpoint_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/endpoint/action/isolate",
+            "headers": {
+              "kbn-xsrf": "true"
+            },
+            "json": {
+              "endpoint_ids": [
+                "{{input.endpoint_id}}"
+              ]
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.id",
+            "non_empty": true,
+            "fields": {
+              "data.command": "isolate"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.data.id",
+        "command": "steps.request.data.command",
+        "status": "steps.request.data.status",
+        "is_completed": "steps.request.data.isCompleted"
+      },
+      "fixtures": [
+        "fixtures/isolate_host.json"
+      ],
+      "rollback": "release_host"
+    },
+    "kill_process": {
+      "display_name": "Terminate process",
+      "description": "Request termination of a running process, identified by its process entity ID, on an Elastic Defend endpoint. Requires the Process Operations privilege. Returns the queued response action identity and its reported status; this is request acknowledgment only. Follow completion with get_action_details. API documentation: https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointkillprocessaction",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "endpoint_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        },
+        {
+          "name": "entity_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9+/=_-]{1,256}$"
+        },
+        {
+          "name": "comment",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/endpoint/action/kill_process",
+            "headers": {
+              "kbn-xsrf": "true"
+            },
+            "json": {
+              "comment": "{{input.comment}}",
+              "endpoint_ids": [
+                "{{input.endpoint_id}}"
+              ],
+              "parameters": {
+                "entity_id": "{{input.entity_id}}"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.id",
+            "non_empty": true,
+            "fields": {
+              "data.command": "kill-process"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.data.id",
+        "command": "steps.request.data.command",
+        "status": "steps.request.data.status",
+        "is_completed": "steps.request.data.isCompleted"
+      },
+      "fixtures": [
+        "fixtures/kill_process.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "A terminated process cannot be restored; the API has no inverse operation."
+    },
+    "release_host": {
+      "display_name": "Release host from isolation",
+      "description": "Request release of an isolated Elastic Defend endpoint so it can rejoin the network. Requires the Host Isolation privilege. Returns the queued response action identity and its reported status; this is request acknowledgment only. Follow completion with get_action_details. API documentation: https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointunisolateaction",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "endpoint_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/endpoint/action/unisolate",
+            "headers": {
+              "kbn-xsrf": "true"
+            },
+            "json": {
+              "endpoint_ids": [
+                "{{input.endpoint_id}}"
+              ]
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.id",
+            "non_empty": true,
+            "fields": {
+              "data.command": "unisolate"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.data.id",
+        "command": "steps.request.data.command",
+        "status": "steps.request.data.status",
+        "is_completed": "steps.request.data.isCompleted"
+      },
+      "fixtures": [
+        "fixtures/release_host.json"
+      ],
+      "rollback": "isolate_host"
+    },
+    "scan": {
+      "display_name": "Scan file or directory",
+      "description": "Request a malware scan of a file or directory on an Elastic Defend endpoint, using the malware protection settings of its integration policy (which may block or quarantine files). Requires the Scan Operations privilege. Returns the queued response action identity and its reported status; this is request acknowledgment only. Follow completion with get_action_details. API documentation: https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointscanaction",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "endpoint_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        },
+        {
+          "name": "path",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "comment",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/endpoint/action/scan",
+            "headers": {
+              "kbn-xsrf": "true"
+            },
+            "json": {
+              "comment": "{{input.comment}}",
+              "endpoint_ids": [
+                "{{input.endpoint_id}}"
+              ],
+              "parameters": {
+                "path": "{{input.path}}"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.id",
+            "non_empty": true,
+            "fields": {
+              "data.command": "scan"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.data.id",
+        "command": "steps.request.data.command",
+        "status": "steps.request.data.status",
+        "is_completed": "steps.request.data.isCompleted"
+      },
+      "fixtures": [
+        "fixtures/scan.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Policy-driven scan outcomes, such as quarantine, are not reversed by this pack."
+    },
+    "suspend_process": {
+      "display_name": "Suspend process",
+      "description": "Request suspension of a running process, identified by its process entity ID, on an Elastic Defend endpoint. Requires the Process Operations privilege. Returns the queued response action identity and its reported status; this is request acknowledgment only. Follow completion with get_action_details. API documentation: https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointsuspendprocessaction",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "endpoint_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        },
+        {
+          "name": "entity_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9+/=_-]{1,256}$"
+        },
+        {
+          "name": "comment",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/endpoint/action/suspend_process",
+            "headers": {
+              "kbn-xsrf": "true"
+            },
+            "json": {
+              "comment": "{{input.comment}}",
+              "endpoint_ids": [
+                "{{input.endpoint_id}}"
+              ],
+              "parameters": {
+                "entity_id": "{{input.entity_id}}"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.id",
+            "non_empty": true,
+            "fields": {
+              "data.command": "suspend-process"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.data.id",
+        "command": "steps.request.data.command",
+        "status": "steps.request.data.status",
+        "is_completed": "steps.request.data.isCompleted"
+      },
+      "fixtures": [
+        "fixtures/suspend_process.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "The Security endpoint management API documents no resume-process operation, so a suspended process cannot be resumed through this pack."
+    }
+  }
+}

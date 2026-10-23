@@ -1,0 +1,549 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_action_details.json",
+      "url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointgetactionsdetails",
+      "document_url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointgetactionsdetails",
+      "document_sha256": "3b04b4dbed39dc2bc4ae229d8e6ff22315c8b5732675aa70777a7af5777c5eec",
+      "doc_version": "Kibana API reference v9 (generated from the Kibana 9.5 branch; current release 9.5.5)",
+      "retrieved": "2026-10-22",
+      "openapi_document": {
+        "url": "https://www.elastic.co/docs/api/doc/kibana/v9.json",
+        "sha256": "ab05408bc7f7b77eafad04f2f7ea8410e272e21cd878ccdeabb34295b9ff5e35",
+        "operation_id": "EndpointGetActionsDetails",
+        "response_example": "actionDetails",
+        "note": "The request action_id is the id returned in the documented actionDetails response."
+      },
+      "request": {
+        "method": "GET",
+        "url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com/api/endpoint/action/233db9ea-6733-4849-9226-5a7039c7161d"
+      },
+      "response": {
+        "method": "GET",
+        "host": "my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com",
+        "path": "/api/endpoint/action/233db9ea-6733-4849-9226-5a7039c7161d",
+        "status": 200,
+        "body": {
+          "data": {
+            "agents": [
+              "ed518850-681a-4d60-bb98-e22640cae2a8"
+            ],
+            "agentType": "endpoint",
+            "command": "isolate",
+            "completedAt": "2022-08-08T10:41:57.352Z",
+            "createdBy": "elastic",
+            "id": "233db9ea-6733-4849-9226-5a7039c7161d",
+            "isCompleted": true,
+            "isExpired": false,
+            "startedAt": "2022-08-08T15:23:37.359Z",
+            "wasSuccessful": true
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/isolate_host.json",
+      "url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointisolateaction",
+      "document_url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointisolateaction",
+      "document_sha256": "40c1a6e7c8c38ae8191dbcdc547c16e5a53422fffd0ee5e5ca14763b3393967e",
+      "doc_version": "Kibana API reference v9 (generated from the Kibana 9.5 branch; current release 9.5.5)",
+      "retrieved": "2026-10-22",
+      "openapi_document": {
+        "url": "https://www.elastic.co/docs/api/doc/kibana/v9.json",
+        "sha256": "ab05408bc7f7b77eafad04f2f7ea8410e272e21cd878ccdeabb34295b9ff5e35",
+        "operation_id": "EndpointIsolateAction",
+        "request_example": "single_endpoint",
+        "response_example": "IsolateSuccess"
+      },
+      "request": {
+        "method": "POST",
+        "url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com/api/endpoint/action/isolate",
+        "json": {
+          "endpoint_ids": [
+            "ed518850-681a-4d60-bb98-e22640cae2a8"
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com",
+        "path": "/api/endpoint/action/isolate",
+        "status": 200,
+        "body": {
+          "action": "233db9ea-6733-4849-9226-5a7039c7161d",
+          "data": {
+            "agents": [
+              "ed518850-681a-4d60-bb98-e22640cae2a8"
+            ],
+            "agentState": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "isCompleted": false,
+                "wasSuccessful": false
+              }
+            },
+            "agentType": "endpoint",
+            "command": "isolate",
+            "createdBy": "elastic",
+            "hosts": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "name": "gke-node-1235412"
+              }
+            },
+            "id": "233db9ea-6733-4849-9226-5a7039c7161d",
+            "isCompleted": false,
+            "isExpired": false,
+            "outputs": {},
+            "startedAt": "2022-07-29T19:08:49.126Z",
+            "status": "pending",
+            "wasSuccessful": false
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/release_host.json",
+      "url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointunisolateaction",
+      "document_url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointunisolateaction",
+      "document_sha256": "6cb116f4254886362c73bf45439838485cf7a3c1d7b45391a586443ed675dc6f",
+      "doc_version": "Kibana API reference v9 (generated from the Kibana 9.5 branch; current release 9.5.5)",
+      "retrieved": "2026-10-22",
+      "openapi_document": {
+        "url": "https://www.elastic.co/docs/api/doc/kibana/v9.json",
+        "sha256": "ab05408bc7f7b77eafad04f2f7ea8410e272e21cd878ccdeabb34295b9ff5e35",
+        "operation_id": "EndpointUnisolateAction",
+        "request_example": "singleHost",
+        "response_example": "UnisolateSuccess"
+      },
+      "request": {
+        "method": "POST",
+        "url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com/api/endpoint/action/unisolate",
+        "json": {
+          "endpoint_ids": [
+            "ed518850-681a-4d60-bb98-e22640cae2a8"
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com",
+        "path": "/api/endpoint/action/unisolate",
+        "status": 200,
+        "body": {
+          "action": "233db9ea-6733-4849-9226-5a7039c7161d",
+          "data": {
+            "agents": [
+              "ed518850-681a-4d60-bb98-e22640cae2a8"
+            ],
+            "agentState": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "isCompleted": false,
+                "wasSuccessful": false
+              }
+            },
+            "agentType": "endpoint",
+            "command": "unisolate",
+            "createdBy": "elastic",
+            "hosts": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "name": "gke-node-1235412"
+              }
+            },
+            "id": "233db9ea-6733-4849-9226-5a7039c7161d",
+            "isCompleted": false,
+            "isExpired": false,
+            "outputs": {},
+            "startedAt": "2022-07-29T19:08:49.126Z",
+            "status": "pending",
+            "wasSuccessful": false
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/kill_process.json",
+      "url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointkillprocessaction",
+      "document_url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointkillprocessaction",
+      "document_sha256": "71b8b7dc00e59b90fe039ab6d2a075b92d39c2a4c317bc44cdced2b7c886f22d",
+      "doc_version": "Kibana API reference v9 (generated from the Kibana 9.5 branch; current release 9.5.5)",
+      "retrieved": "2026-10-22",
+      "openapi_document": {
+        "url": "https://www.elastic.co/docs/api/doc/kibana/v9.json",
+        "sha256": "ab05408bc7f7b77eafad04f2f7ea8410e272e21cd878ccdeabb34295b9ff5e35",
+        "operation_id": "EndpointKillProcessAction",
+        "request_example": "byEntityId",
+        "response_example": "KillProcessSuccess"
+      },
+      "request": {
+        "method": "POST",
+        "url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com/api/endpoint/action/kill_process",
+        "json": {
+          "comment": "Terminating malicious process",
+          "endpoint_ids": [
+            "ed518850-681a-4d60-bb98-e22640cae2a8"
+          ],
+          "parameters": {
+            "entity_id": "abc123"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com",
+        "path": "/api/endpoint/action/kill_process",
+        "status": 200,
+        "body": {
+          "data": {
+            "agents": [
+              "ed518850-681a-4d60-bb98-e22640cae2a8"
+            ],
+            "agentState": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "isCompleted": false,
+                "wasSuccessful": false
+              }
+            },
+            "agentType": "endpoint",
+            "command": "kill-process",
+            "createdBy": "elastic",
+            "hosts": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "name": "gke-node-1235412"
+              }
+            },
+            "id": "233db9ea-6733-4849-9226-5a7039c7161d",
+            "isCompleted": false,
+            "isExpired": false,
+            "outputs": {},
+            "parameters": {
+              "entity_id": "abc123"
+            },
+            "startedAt": "2022-07-29T19:08:49.126Z",
+            "status": "pending",
+            "wasSuccessful": false
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/suspend_process.json",
+      "url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointsuspendprocessaction",
+      "document_url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointsuspendprocessaction",
+      "document_sha256": "edeb9bb26937a3225948eef700b428d6d665eb6c7701efc5a688f64bfd61e55c",
+      "doc_version": "Kibana API reference v9 (generated from the Kibana 9.5 branch; current release 9.5.5)",
+      "retrieved": "2026-10-22",
+      "openapi_document": {
+        "url": "https://www.elastic.co/docs/api/doc/kibana/v9.json",
+        "sha256": "ab05408bc7f7b77eafad04f2f7ea8410e272e21cd878ccdeabb34295b9ff5e35",
+        "operation_id": "EndpointSuspendProcessAction",
+        "request_example": "byEntityId",
+        "response_example": "SuspendProcessSuccess"
+      },
+      "request": {
+        "method": "POST",
+        "url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com/api/endpoint/action/suspend_process",
+        "json": {
+          "comment": "Suspending suspicious process",
+          "endpoint_ids": [
+            "ed518850-681a-4d60-bb98-e22640cae2a8"
+          ],
+          "parameters": {
+            "entity_id": "abc123"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com",
+        "path": "/api/endpoint/action/suspend_process",
+        "status": 200,
+        "body": {
+          "data": {
+            "agents": [
+              "ed518850-681a-4d60-bb98-e22640cae2a8"
+            ],
+            "agentState": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "isCompleted": false,
+                "wasSuccessful": false
+              }
+            },
+            "agentType": "endpoint",
+            "command": "suspend-process",
+            "createdBy": "elastic",
+            "hosts": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "name": "gke-node-1235412"
+              }
+            },
+            "id": "233db9ea-6733-4849-9226-5a7039c7161d",
+            "isCompleted": false,
+            "isExpired": false,
+            "outputs": {},
+            "parameters": {
+              "entity_id": "abc123"
+            },
+            "startedAt": "2022-07-29T19:08:49.126Z",
+            "status": "pending",
+            "wasSuccessful": false
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/get_running_processes.json",
+      "url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointgetprocessesaction",
+      "document_url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointgetprocessesaction",
+      "document_sha256": "f18ee52b81c4bb55916fc2bc08980567137b4cd2770054ab7f131be869d328a4",
+      "doc_version": "Kibana API reference v9 (generated from the Kibana 9.5 branch; current release 9.5.5)",
+      "retrieved": "2026-10-22",
+      "openapi_document": {
+        "url": "https://www.elastic.co/docs/api/doc/kibana/v9.json",
+        "sha256": "ab05408bc7f7b77eafad04f2f7ea8410e272e21cd878ccdeabb34295b9ff5e35",
+        "operation_id": "EndpointGetProcessesAction",
+        "request_example": "singleEndpoint",
+        "response_example": "RunningProcsSuccess"
+      },
+      "request": {
+        "method": "POST",
+        "url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com/api/endpoint/action/running_procs",
+        "json": {
+          "endpoint_ids": [
+            "ed518850-681a-4d60-bb98-e22640cae2a8"
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com",
+        "path": "/api/endpoint/action/running_procs",
+        "status": 200,
+        "body": {
+          "data": {
+            "agents": [
+              "ed518850-681a-4d60-bb98-e22640cae2a8"
+            ],
+            "agentState": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "isCompleted": false,
+                "wasSuccessful": false
+              }
+            },
+            "agentType": "endpoint",
+            "command": "running-processes",
+            "createdBy": "elastic",
+            "hosts": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "name": "gke-node-1235412"
+              }
+            },
+            "id": "233db9ea-6733-4849-9226-5a7039c7161d",
+            "isCompleted": false,
+            "isExpired": false,
+            "outputs": {},
+            "startedAt": "2022-07-29T19:08:49.126Z",
+            "status": "pending",
+            "wasSuccessful": false
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/get_file.json",
+      "url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointgetfileaction",
+      "document_url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointgetfileaction",
+      "document_sha256": "86d6aac2cc53a0eca9b9890c5d63069010812835fc547c8dac471d017c838532",
+      "doc_version": "Kibana API reference v9 (generated from the Kibana 9.5 branch; current release 9.5.5)",
+      "retrieved": "2026-10-22",
+      "openapi_document": {
+        "url": "https://www.elastic.co/docs/api/doc/kibana/v9.json",
+        "sha256": "ab05408bc7f7b77eafad04f2f7ea8410e272e21cd878ccdeabb34295b9ff5e35",
+        "operation_id": "EndpointGetFileAction",
+        "request_example": "getFile",
+        "response_example": "GetFileSuccess"
+      },
+      "request": {
+        "method": "POST",
+        "url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com/api/endpoint/action/get_file",
+        "json": {
+          "comment": "Get my file",
+          "endpoint_ids": [
+            "ed518850-681a-4d60-bb98-e22640cae2a8"
+          ],
+          "parameters": {
+            "path": "/usr/my-file.txt"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com",
+        "path": "/api/endpoint/action/get_file",
+        "status": 200,
+        "body": {
+          "data": {
+            "agents": [
+              "ed518850-681a-4d60-bb98-e22640cae2a8"
+            ],
+            "agentState": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "isCompleted": false,
+                "wasSuccessful": false
+              }
+            },
+            "agentType": "endpoint",
+            "command": "get-file",
+            "createdBy": "elastic",
+            "hosts": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "name": "gke-node-1235412"
+              }
+            },
+            "id": "27ba1b42-7cc6-4e53-86ce-675c876092b2",
+            "isCompleted": false,
+            "isExpired": false,
+            "outputs": {},
+            "parameters": {
+              "path": "/usr/my-file.txt"
+            },
+            "startedAt": "2023-07-28T19:00:03.911Z",
+            "status": "pending",
+            "wasSuccessful": false
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/execute.json",
+      "url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointexecuteaction",
+      "document_url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointexecuteaction",
+      "document_sha256": "5fed57c5f8ac9fa35fc3fdcf4d3fdf6b68d3eef676de165dae57f0f2ef7107f5",
+      "doc_version": "Kibana API reference v9 (generated from the Kibana 9.5 branch; current release 9.5.5)",
+      "retrieved": "2026-10-22",
+      "openapi_document": {
+        "url": "https://www.elastic.co/docs/api/doc/kibana/v9.json",
+        "sha256": "ab05408bc7f7b77eafad04f2f7ea8410e272e21cd878ccdeabb34295b9ff5e35",
+        "operation_id": "EndpointExecuteAction",
+        "request_example": "executeCommand",
+        "response_example": "ExecuteSuccess"
+      },
+      "request": {
+        "method": "POST",
+        "url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com/api/endpoint/action/execute",
+        "json": {
+          "comment": "Get list of all files",
+          "endpoint_ids": [
+            "b3d6de74-36b0-4fa8-be46-c375bf1771bf"
+          ],
+          "parameters": {
+            "command": "ls -al",
+            "timeout": 600
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com",
+        "path": "/api/endpoint/action/execute",
+        "status": 200,
+        "body": {
+          "data": {
+            "agents": [
+              "ed518850-681a-4d60-bb98-e22640cae2a8"
+            ],
+            "agentState": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "isCompleted": false,
+                "wasSuccessful": false
+              }
+            },
+            "agentType": "endpoint",
+            "command": "execute",
+            "createdBy": "elastic",
+            "hosts": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "name": "gke-node-1235412"
+              }
+            },
+            "id": "9f934028-2300-4927-b531-b26376793dc4",
+            "isCompleted": false,
+            "isExpired": false,
+            "outputs": {},
+            "parameters": {
+              "command": "ls -al",
+              "timeout": 600
+            },
+            "startedAt": "2023-07-28T18:43:27.362Z",
+            "status": "pending",
+            "wasSuccessful": false
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/scan.json",
+      "url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointscanaction",
+      "document_url": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointscanaction",
+      "document_sha256": "a4a3d0b111dce1d38e1b20f36ce5294663cd6c4f33126c4803ac84756a923b58",
+      "doc_version": "Kibana API reference v9 (generated from the Kibana 9.5 branch; current release 9.5.5)",
+      "retrieved": "2026-10-22",
+      "openapi_document": {
+        "url": "https://www.elastic.co/docs/api/doc/kibana/v9.json",
+        "sha256": "ab05408bc7f7b77eafad04f2f7ea8410e272e21cd878ccdeabb34295b9ff5e35",
+        "operation_id": "EndpointScanAction",
+        "request_example": "scanFile",
+        "response_example": "ScanSuccess"
+      },
+      "request": {
+        "method": "POST",
+        "url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com/api/endpoint/action/scan",
+        "json": {
+          "comment": "Scan the file for malware",
+          "endpoint_ids": [
+            "ed518850-681a-4d60-bb98-e22640cae2a8"
+          ],
+          "parameters": {
+            "path": "/usr/my-file.txt"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com",
+        "path": "/api/endpoint/action/scan",
+        "status": 200,
+        "body": {
+          "data": {
+            "agents": [
+              "ed518850-681a-4d60-bb98-e22640cae2a8"
+            ],
+            "agentState": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "isCompleted": false,
+                "wasSuccessful": false
+              }
+            },
+            "agentType": "endpoint",
+            "command": "scan",
+            "createdBy": "elastic",
+            "hosts": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "name": "gke-node-1235412"
+              }
+            },
+            "id": "27ba1b42-7cc6-4e53-86ce-675c876092b2",
+            "isCompleted": false,
+            "isExpired": false,
+            "outputs": {},
+            "parameters": {
+              "path": "/usr/my-file.txt"
+            },
+            "startedAt": "2023-07-28T19:00:03.911Z",
+            "status": "pending",
+            "wasSuccessful": false
+          }
+        }
+      }
+    }
+  ]
+}

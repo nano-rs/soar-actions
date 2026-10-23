@@ -1,0 +1,48 @@
+{
+  "action": "get_action_details",
+  "config": {
+    "base_url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com"
+  },
+  "inputs": {
+    "action_id": "233db9ea-6733-4849-9226-5a7039c7161d"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com/api/endpoint/action/233db9ea-6733-4849-9226-5a7039c7161d"
+      },
+      "response": {
+        "method": "GET",
+        "host": "my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com",
+        "path": "/api/endpoint/action/233db9ea-6733-4849-9226-5a7039c7161d",
+        "status": 200,
+        "body": {
+          "data": {
+            "agents": [
+              "ed518850-681a-4d60-bb98-e22640cae2a8"
+            ],
+            "agentType": "endpoint",
+            "command": "isolate",
+            "completedAt": "2022-08-08T10:41:57.352Z",
+            "createdBy": "elastic",
+            "id": "233db9ea-6733-4849-9226-5a7039c7161d",
+            "isCompleted": true,
+            "isExpired": false,
+            "startedAt": "2022-08-08T15:23:37.359Z",
+            "wasSuccessful": true
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "action_id": "233db9ea-6733-4849-9226-5a7039c7161d",
+    "command": "isolate",
+    "is_completed": true,
+    "was_successful": true,
+    "completed_at": "2022-08-08T10:41:57.352Z"
+  },
+  "source": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointgetactionsdetails",
+  "request_evidence": "independent_http_mock"
+}

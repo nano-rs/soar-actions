@@ -1,0 +1,73 @@
+{
+  "action": "kill_process",
+  "config": {
+    "base_url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com"
+  },
+  "inputs": {
+    "endpoint_id": "ed518850-681a-4d60-bb98-e22640cae2a8",
+    "entity_id": "abc123",
+    "comment": "Terminating malicious process"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com/api/endpoint/action/kill_process",
+        "json": {
+          "comment": "Terminating malicious process",
+          "endpoint_ids": [
+            "ed518850-681a-4d60-bb98-e22640cae2a8"
+          ],
+          "parameters": {
+            "entity_id": "abc123"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com",
+        "path": "/api/endpoint/action/kill_process",
+        "status": 200,
+        "body": {
+          "data": {
+            "agents": [
+              "ed518850-681a-4d60-bb98-e22640cae2a8"
+            ],
+            "agentState": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "isCompleted": false,
+                "wasSuccessful": false
+              }
+            },
+            "agentType": "endpoint",
+            "command": "kill-process",
+            "createdBy": "elastic",
+            "hosts": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "name": "gke-node-1235412"
+              }
+            },
+            "id": "233db9ea-6733-4849-9226-5a7039c7161d",
+            "isCompleted": false,
+            "isExpired": false,
+            "outputs": {},
+            "parameters": {
+              "entity_id": "abc123"
+            },
+            "startedAt": "2022-07-29T19:08:49.126Z",
+            "status": "pending",
+            "wasSuccessful": false
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "action_id": "233db9ea-6733-4849-9226-5a7039c7161d",
+    "command": "kill-process",
+    "status": "pending",
+    "is_completed": false
+  },
+  "source": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointkillprocessaction",
+  "request_evidence": "independent_http_mock"
+}
