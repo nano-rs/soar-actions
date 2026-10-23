@@ -1,0 +1,64 @@
+{
+  "action": "get_running_processes",
+  "config": {
+    "base_url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com"
+  },
+  "inputs": {
+    "endpoint_id": "ed518850-681a-4d60-bb98-e22640cae2a8"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com/api/endpoint/action/running_procs",
+        "json": {
+          "endpoint_ids": [
+            "ed518850-681a-4d60-bb98-e22640cae2a8"
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "my-deployment-d53192.kb.us-east-1.aws.elastic-cloud.com",
+        "path": "/api/endpoint/action/running_procs",
+        "status": 200,
+        "body": {
+          "data": {
+            "agents": [
+              "ed518850-681a-4d60-bb98-e22640cae2a8"
+            ],
+            "agentState": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "isCompleted": false,
+                "wasSuccessful": false
+              }
+            },
+            "agentType": "endpoint",
+            "command": "running-processes",
+            "createdBy": "elastic",
+            "hosts": {
+              "ed518850-681a-4d60-bb98-e22640cae2a8": {
+                "name": "gke-node-1235412"
+              }
+            },
+            "id": "233db9ea-6733-4849-9226-5a7039c7161d",
+            "isCompleted": false,
+            "isExpired": false,
+            "outputs": {},
+            "startedAt": "2022-07-29T19:08:49.126Z",
+            "status": "pending",
+            "wasSuccessful": false
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "action_id": "233db9ea-6733-4849-9226-5a7039c7161d",
+    "command": "running-processes",
+    "status": "pending",
+    "is_completed": false
+  },
+  "source": "https://www.elastic.co/docs/api/doc/kibana/v9/operation/operation-endpointgetprocessesaction",
+  "request_evidence": "independent_http_mock"
+}
