@@ -47,6 +47,7 @@
     },
     "atlassian_cloud": {
       "actions": {
+        "get_user": "read",
         "suspend_user": "destructive",
         "restore_user": "destructive"
       },

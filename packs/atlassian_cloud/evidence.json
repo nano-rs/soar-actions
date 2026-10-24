@@ -2,6 +2,28 @@
   "schema_version": 1,
   "fixtures": [
     {
+      "fixture": "fixtures/get_user.json",
+      "url": "https://developer.atlassian.com/cloud/admin/organization/rest/api-group-users/",
+      "document_url": "https://developer.atlassian.com/cloud/admin/organization/swagger.v3.json",
+      "document_sha256": "084c03530d1eeb465e9527c64fd0e552b6331ee129d7b96ada0d75b5ee544a92",
+      "request": {
+        "method": "GET",
+        "url": "https://api.atlassian.com/admin/v2/orgs/00000000-0000-4000-8000-000000000001/directories/00000000-0000-4000-8000-000000000001/users/00000000-0000-4000-8000-000000000001"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.atlassian.com",
+        "path": "/admin/v2/orgs/00000000-0000-4000-8000-000000000001/directories/00000000-0000-4000-8000-000000000001/users/00000000-0000-4000-8000-000000000001",
+        "status": 200,
+        "body": {
+          "data": {
+            "accountId": "00000000-0000-4000-8000-000000000001",
+            "name": "Synthetic User"
+          }
+        }
+      }
+    },
+    {
       "fixture": "fixtures/suspend_user.json",
       "url": "https://developer.atlassian.com/cloud/admin/organization/rest/api-group-users/",
       "document_url": "https://developer.atlassian.com/cloud/admin/organization/swagger.v3.json",

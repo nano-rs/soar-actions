@@ -47,6 +47,47 @@
     "timeout_secs": 30
   },
   "actions": {
+    "get_user": {
+      "display_name": "Get directory user",
+      "description": "Read one directory user before a separately approved suspend/restore. Uses the documented MultiDirectoryUserDetails.data object and accountId. Requires organization directory-read permission. No pagination or response-supplied URL is followed. Official endpoint reference: https://developer.atlassian.com/cloud/admin/organization/rest/api-group-users/",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9:_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://api.atlassian.com/admin/v2/orgs/{{config.organization_id}}/directories/{{config.directory_id}}/users/{{input.account_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.accountId",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "account_id": "steps.request.data.accountId",
+        "user": "steps.request.data"
+      },
+      "output_types": {
+        "account_id": "string",
+        "user": "object"
+      },
+      "fixtures": [
+        "fixtures/get_user.json"
+      ]
+    },
     "suspend_user": {
       "display_name": "Suspend User",
       "description": "Use the current directory-aware organization-admin API. Suspend temporarily removes app access and billing; restore reinstates roles/group memberships and resumes billing. Requires organization admin API key and matching directory. Each direction requires approval. Official endpoint reference: https://developer.atlassian.com/cloud/admin/organization/rest/api-group-users/",
