@@ -1,6 +1,6 @@
 # IPinfo — batch=A
 
-Uses the current IPinfo Lite API with a token supplied by the native query-key plugin. Replay excludes only the token query parameter. This free-tier schema documents only ip as required; missing optional ASN/geolocation fields are the string unknown, never a fabricated location or benign risk. The minimal-object fixture proves that contract. IP geolocation/ASN is contextual metadata, not a threat score. One IP per call, no pagination or current-caller me endpoint. Vendor entitlement and rate failures surface.
+Uses the current IPinfo Lite API with a token supplied by the native query-key plugin. Replay excludes only the token query parameter. The upstream schema requires only ip. This action requires the selected ASN/geolocation fields for a complete enrichment result; if any is missing the native extraction fails instead of inventing a location or benign risk. Every successful output is present in the recorded response, as required by native bundle admission. IP geolocation/ASN is contextual metadata, not a threat score. One IP per call, no pagination or current-caller me endpoint. Vendor entitlement and rate failures surface.
 
 ## Actions and typed outputs
 

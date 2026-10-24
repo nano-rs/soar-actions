@@ -29,28 +29,6 @@
           "continent": "North America"
         }
       }
-    },
-    {
-      "fixture": "fixtures/lookup_ip_minimal.json",
-      "url": "https://ipinfo.io/developers/lite-api",
-      "document_url": "https://ipinfo.io/developers/lite-api",
-      "document_sha256": "9d8892438acb9e85bb9be43b7b58cc4709981ba8d68984dd0fbf80ed156a0b71",
-      "request": {
-        "method": "GET",
-        "url": "https://api.ipinfo.io/lite/8.8.4.4",
-        "auth_query_keys": [
-          "token"
-        ]
-      },
-      "response": {
-        "method": "GET",
-        "host": "api.ipinfo.io",
-        "path": "/lite/8.8.4.4",
-        "status": 200,
-        "body": {
-          "ip": "8.8.4.4"
-        }
-      }
     }
   ]
 }

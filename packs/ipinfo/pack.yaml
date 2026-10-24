@@ -68,13 +68,13 @@
       ],
       "outputs": {
         "ip": "steps.lookup.ip",
-        "asn": "coalesce steps.lookup.asn \"unknown\"",
-        "as_name": "coalesce steps.lookup.as_name \"unknown\"",
-        "as_domain": "coalesce steps.lookup.as_domain \"unknown\"",
-        "country_code": "coalesce steps.lookup.country_code \"unknown\"",
-        "country": "coalesce steps.lookup.country \"unknown\"",
-        "continent_code": "coalesce steps.lookup.continent_code \"unknown\"",
-        "continent": "coalesce steps.lookup.continent \"unknown\""
+        "asn": "steps.lookup.asn",
+        "as_name": "steps.lookup.as_name",
+        "as_domain": "steps.lookup.as_domain",
+        "country_code": "steps.lookup.country_code",
+        "country": "steps.lookup.country",
+        "continent_code": "steps.lookup.continent_code",
+        "continent": "steps.lookup.continent"
       },
       "output_types": {
         "ip": "string",
@@ -87,8 +87,7 @@
         "continent": "string"
       },
       "fixtures": [
-        "fixtures/lookup_ip.json",
-        "fixtures/lookup_ip_minimal.json"
+        "fixtures/lookup_ip.json"
       ]
     }
   }
