@@ -1,0 +1,61 @@
+{
+  "action": "get_endpoint",
+  "config": {
+    "base_url": "https://api-example.xdr.us.paloaltonetworks.com",
+    "api_key_id": "1"
+  },
+  "inputs": {
+    "endpoint_id": "0123456789abcdef0123456789abcdef"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api-example.xdr.us.paloaltonetworks.com/public_api/v1/endpoints/get_endpoint",
+        "json": {
+          "request_data": {
+            "filters": [
+              {
+                "field": "endpoint_id_list",
+                "operator": "in",
+                "value": [
+                  "0123456789abcdef0123456789abcdef"
+                ]
+              }
+            ],
+            "search_from": 0,
+            "search_to": 1
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api-example.xdr.us.paloaltonetworks.com",
+        "path": "/public_api/v1/endpoints/get_endpoint",
+        "status": 200,
+        "body": {
+          "reply": {
+            "total_count": 1,
+            "result_count": 1,
+            "endpoints": [
+              {
+                "endpoint_id": "0123456789abcdef0123456789abcdef",
+                "is_isolated": "AGENT_UNISOLATED"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "endpoints": [
+      {
+        "endpoint_id": "0123456789abcdef0123456789abcdef",
+        "is_isolated": "AGENT_UNISOLATED"
+      }
+    ]
+  },
+  "source": "https://cortex-docs.paloaltonetworks.com/xdr-5-api/cortex-platform/endpoint-management.md",
+  "request_evidence": "independent_http_mock"
+}

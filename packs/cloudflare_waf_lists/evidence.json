@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/list_items.json",
+      "url": "https://developers.cloudflare.com/api/resources/rules/subresources/lists/subresources/items/methods/list/",
+      "document_sha256": "7d51072bf7280ba550c8e90fa9a5d8df0e2ffd44086e14a064a3200a1cffab56",
+      "document_url": "https://developers.cloudflare.com/api/resources/rules/subresources/lists/subresources/items/methods/list/",
+      "request": {
+        "method": "GET",
+        "url": "https://api.cloudflare.com/client/v4/accounts/0123456789abcdef0123456789abcdef/rules/lists/0123456789abcdef0123456789abcdef/items",
+        "query": {
+          "per_page": "100"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.cloudflare.com",
+        "path": "/client/v4/accounts/0123456789abcdef0123456789abcdef/rules/lists/0123456789abcdef0123456789abcdef/items",
+        "status": 200,
+        "body": {
+          "success": true,
+          "errors": [],
+          "messages": [],
+          "result": [
+            {
+              "id": "0123456789abcdef0123456789abcdef",
+              "ip": "192.0.2.1"
+            }
+          ],
+          "result_info": {
+            "cursors": {
+              "after": ""
+            }
+          }
+        },
+        "query": {
+          "per_page": "100"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/get_bulk_operation.json",
+      "url": "https://developers.cloudflare.com/api/resources/rules/subresources/lists/subresources/bulk_operations/methods/get/",
+      "document_sha256": "7872dc1a6c413c868e43c09c01dcaa7ddddfe212e24b19692b9d406c5b3b3d70",
+      "document_url": "https://developers.cloudflare.com/api/resources/rules/subresources/lists/subresources/bulk_operations/methods/get/",
+      "request": {
+        "method": "GET",
+        "url": "https://api.cloudflare.com/client/v4/accounts/0123456789abcdef0123456789abcdef/rules/lists/bulk_operations/0123456789abcdef0123456789abcdef"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.cloudflare.com",
+        "path": "/client/v4/accounts/0123456789abcdef0123456789abcdef/rules/lists/bulk_operations/0123456789abcdef0123456789abcdef",
+        "status": 200,
+        "body": {
+          "success": true,
+          "errors": [],
+          "messages": [],
+          "result": {
+            "id": "0123456789abcdef0123456789abcdef",
+            "status": "pending"
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/add_ip.json",
+      "url": "https://developers.cloudflare.com/api/resources/rules/subresources/lists/subresources/items/methods/create/",
+      "document_sha256": "a9dbad3e0540ad20b89db0b50a44e7fa847492df20d3d12346bd1e2509d10d16",
+      "document_url": "https://developers.cloudflare.com/api/resources/rules/subresources/lists/subresources/items/methods/create/",
+      "request": {
+        "method": "POST",
+        "url": "https://api.cloudflare.com/client/v4/accounts/0123456789abcdef0123456789abcdef/rules/lists/0123456789abcdef0123456789abcdef/items",
+        "json": [
+          {
+            "ip": "1.1.1.1"
+          }
+        ]
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.cloudflare.com",
+        "path": "/client/v4/accounts/0123456789abcdef0123456789abcdef/rules/lists/0123456789abcdef0123456789abcdef/items",
+        "status": 200,
+        "body": {
+          "success": true,
+          "errors": [],
+          "messages": [],
+          "result": {
+            "operation_id": "0123456789abcdef0123456789abcdef"
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/remove_ip.json",
+      "url": "https://developers.cloudflare.com/api/resources/rules/subresources/lists/subresources/items/methods/delete/",
+      "document_sha256": "9d91c83835d48874b1bd20690b4fccecbc76076cbf121177d7ee2f0e6fe469c3",
+      "document_url": "https://developers.cloudflare.com/api/resources/rules/subresources/lists/subresources/items/methods/delete/",
+      "request": {
+        "method": "DELETE",
+        "url": "https://api.cloudflare.com/client/v4/accounts/0123456789abcdef0123456789abcdef/rules/lists/0123456789abcdef0123456789abcdef/items",
+        "json": {
+          "items": [
+            {
+              "id": "0123456789abcdef0123456789abcdef"
+            }
+          ]
+        }
+      },
+      "response": {
+        "method": "DELETE",
+        "host": "api.cloudflare.com",
+        "path": "/client/v4/accounts/0123456789abcdef0123456789abcdef/rules/lists/0123456789abcdef0123456789abcdef/items",
+        "status": 200,
+        "body": {
+          "success": true,
+          "errors": [],
+          "messages": [],
+          "result": {
+            "operation_id": "0123456789abcdef0123456789abcdef"
+          }
+        }
+      }
+    }
+  ]
+}

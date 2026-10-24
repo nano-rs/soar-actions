@@ -1,0 +1,43 @@
+{
+  "action": "get_action_status",
+  "config": {
+    "base_url": "https://api-example.xdr.us.paloaltonetworks.com",
+    "api_key_id": "1"
+  },
+  "inputs": {
+    "group_action_id": 12345
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api-example.xdr.us.paloaltonetworks.com/public_api/v1/actions/get_action_status",
+        "json": {
+          "request_data": {
+            "group_action_id": 12345
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api-example.xdr.us.paloaltonetworks.com",
+        "path": "/public_api/v1/actions/get_action_status",
+        "status": 200,
+        "body": {
+          "reply": {
+            "data": {
+              "agent_id": "COMPLETED_SUCCESSFULLY"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "status_by_agent": {
+      "agent_id": "COMPLETED_SUCCESSFULLY"
+    }
+  },
+  "source": "https://cortex-docs.paloaltonetworks.com/xdr-5-api/cortex-platform/response-action.md",
+  "request_evidence": "independent_http_mock"
+}

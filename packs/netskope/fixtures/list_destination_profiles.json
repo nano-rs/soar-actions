@@ -1,0 +1,57 @@
+{
+  "action": "list_destination_profiles",
+  "config": {
+    "base_url": "https://example.goskope.com"
+  },
+  "inputs": {
+    "offset": 0
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://example.goskope.com/api/v2/profiles/destinations",
+        "query": {
+          "fields": "id,name,type,values_count",
+          "offset": "0",
+          "limit": "100"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "example.goskope.com",
+        "path": "/api/v2/profiles/destinations",
+        "status": 200,
+        "body": {
+          "elements": [
+            {
+              "id": "11111111-1111-4111-8111-111111111111",
+              "name": "Example response profile",
+              "type": "insensitive",
+              "values_count": 1
+            }
+          ],
+          "total_count": 1
+        },
+        "query": {
+          "fields": "id,name,type,values_count",
+          "offset": "0",
+          "limit": "100"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "profiles": [
+      {
+        "id": "11111111-1111-4111-8111-111111111111",
+        "name": "Example response profile",
+        "type": "insensitive",
+        "values_count": 1
+      }
+    ],
+    "total_count": 1
+  },
+  "source": "https://docs.netskope.com/en/threat-exchange-plugin/",
+  "request_evidence": "independent_http_mock"
+}

@@ -1,0 +1,241 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "cloudflare_waf_lists",
+  "display_name": "Cloudflare WAF lists",
+  "description": "Cloudflare WAF lists response actions. Containment and inverse actions require approval.",
+  "vendor": "Cloudflare",
+  "categories": [
+    "network"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "account_id",
+      "label": "Cloudflare account ID",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "api.cloudflare.com",
+      "path_prefixes": [
+        "/client/v4/accounts"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "API_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "API_TOKEN",
+      "label": "Api Token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "list_items": {
+      "display_name": "List IP list items",
+      "description": "Read one cursor page of IP list items and the returned paging cursor. API documentation: https://developers.cloudflare.com/api/resources/rules/subresources/lists/subresources/items/methods/list/",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "list_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{32}$"
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "pattern": "^[A-Za-z0-9_=-]{1,1024}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://api.cloudflare.com/client/v4/accounts/{{config.account_id}}/rules/lists/{{input.list_id}}/items",
+            "query": {
+              "per_page": "100",
+              "cursor": "{{input.cursor}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "fields": {
+              "success": true,
+              "errors": []
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "items": "steps.request.result",
+        "cursors": "steps.request.result_info.cursors"
+      },
+      "fixtures": [
+        "fixtures/list_items.json"
+      ]
+    },
+    "get_bulk_operation": {
+      "display_name": "Get list operation status",
+      "description": "Read the asynchronous list operation state; pending or failed remains reported data. API documentation: https://developers.cloudflare.com/api/resources/rules/subresources/lists/subresources/bulk_operations/methods/get/",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "operation_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{32}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://api.cloudflare.com/client/v4/accounts/{{config.account_id}}/rules/lists/bulk_operations/{{input.operation_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "result.id",
+            "non_empty": true,
+            "fields": {
+              "success": true,
+              "errors": []
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "operation_id": "steps.request.result.id",
+        "status": "steps.request.result.status"
+      },
+      "fixtures": [
+        "fixtures/get_bulk_operation.json"
+      ]
+    },
+    "add_ip": {
+      "display_name": "Add Ip",
+      "description": "Queue a one-item list mutation. Read operation state and resolve the item ID before a later approved inverse. API documentation: https://developers.cloudflare.com/api/resources/rules/subresources/lists/subresources/items/methods/create/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "list_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{32}$"
+        },
+        {
+          "name": "ip",
+          "type": "ip",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://api.cloudflare.com/client/v4/accounts/{{config.account_id}}/rules/lists/{{input.list_id}}/items",
+            "json": [
+              {
+                "ip": "{{input.ip}}"
+              }
+            ]
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "result.operation_id",
+            "non_empty": true,
+            "fields": {
+              "success": true,
+              "errors": []
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "operation_id": "steps.request.result.operation_id"
+      },
+      "fixtures": [
+        "fixtures/add_ip.json"
+      ],
+      "rollback": "remove_ip"
+    },
+    "remove_ip": {
+      "display_name": "Remove Ip",
+      "description": "Queue a one-item list mutation. Read operation state and resolve the item ID before a later approved inverse. API documentation: https://developers.cloudflare.com/api/resources/rules/subresources/lists/subresources/items/methods/delete/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "list_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{32}$"
+        },
+        {
+          "name": "item_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{32}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "DELETE",
+            "url": "https://api.cloudflare.com/client/v4/accounts/{{config.account_id}}/rules/lists/{{input.list_id}}/items",
+            "json": {
+              "items": [
+                {
+                  "id": "{{input.item_id}}"
+                }
+              ]
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "result.operation_id",
+            "non_empty": true,
+            "fields": {
+              "success": true,
+              "errors": []
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "operation_id": "steps.request.result.operation_id"
+      },
+      "fixtures": [
+        "fixtures/remove_ip.json"
+      ],
+      "rollback": "add_ip"
+    }
+  }
+}

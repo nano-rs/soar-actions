@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_isolation.json",
+      "url": "https://developer.sophos.com/reference/endpoint-v1/endpoint-isolation/get-endpoint-isolation-by-id/",
+      "document_sha256": "5fd418afd1693fd756d0db91884a9fb22a1b3481a47aa0e1827bcc3fecd56605",
+      "document_url": "https://developer.sophos.com/reference/endpoint-v1/endpoint-isolation/get-endpoint-isolation-by-id/",
+      "request": {
+        "method": "GET",
+        "url": "https://api-us01.central.sophos.com/endpoint/v1/endpoints/11111111-1111-4111-8111-111111111111/isolation"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api-us01.central.sophos.com",
+        "path": "/endpoint/v1/endpoints/11111111-1111-4111-8111-111111111111/isolation",
+        "status": 200,
+        "body": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/isolate_endpoint.json",
+      "url": "https://developer.sophos.com/reference/endpoint-v1/endpoint-isolation/update-endpoint-isolation-by-id/",
+      "document_sha256": "80846ab79966c9d49866a61509830b2fb59fee8ab4582843df973424ffe52cab",
+      "document_url": "https://developer.sophos.com/reference/endpoint-v1/endpoint-isolation/update-endpoint-isolation-by-id/",
+      "request": {
+        "method": "PATCH",
+        "url": "https://api-us01.central.sophos.com/endpoint/v1/endpoints/11111111-1111-4111-8111-111111111111/isolation",
+        "json": {
+          "enabled": true
+        }
+      },
+      "response": {
+        "method": "PATCH",
+        "host": "api-us01.central.sophos.com",
+        "path": "/endpoint/v1/endpoints/11111111-1111-4111-8111-111111111111/isolation",
+        "status": 200,
+        "body": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/release_endpoint.json",
+      "url": "https://developer.sophos.com/reference/endpoint-v1/endpoint-isolation/update-endpoint-isolation-by-id/",
+      "document_sha256": "80846ab79966c9d49866a61509830b2fb59fee8ab4582843df973424ffe52cab",
+      "document_url": "https://developer.sophos.com/reference/endpoint-v1/endpoint-isolation/update-endpoint-isolation-by-id/",
+      "request": {
+        "method": "PATCH",
+        "url": "https://api-us01.central.sophos.com/endpoint/v1/endpoints/11111111-1111-4111-8111-111111111111/isolation",
+        "json": {
+          "enabled": false
+        }
+      },
+      "response": {
+        "method": "PATCH",
+        "host": "api-us01.central.sophos.com",
+        "path": "/endpoint/v1/endpoints/11111111-1111-4111-8111-111111111111/isolation",
+        "status": 200,
+        "body": {
+          "enabled": false
+        }
+      }
+    }
+  ]
+}

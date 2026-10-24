@@ -1,0 +1,190 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "cloudflare_zero_trust_lists",
+  "display_name": "Cloudflare Zero Trust lists",
+  "description": "Cloudflare Zero Trust lists response actions. Containment and inverse actions require approval.",
+  "vendor": "Cloudflare",
+  "categories": [
+    "network"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "account_id",
+      "label": "Cloudflare account ID",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "api.cloudflare.com",
+      "path_prefixes": [
+        "/client/v4/accounts"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "API_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "API_TOKEN",
+      "label": "Api Token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_list": {
+      "display_name": "Get Gateway list",
+      "description": "Read the selected list and its reported entries. API documentation: https://developers.cloudflare.com/api/resources/zero_trust/subresources/gateway/subresources/lists/methods/get/",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "list_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://api.cloudflare.com/client/v4/accounts/{{config.account_id}}/gateway/lists/{{input.list_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "result.id",
+            "non_empty": true,
+            "fields": {
+              "success": true,
+              "errors": []
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "list": "steps.request.result"
+      },
+      "fixtures": [
+        "fixtures/get_list.json"
+      ]
+    },
+    "add_domain": {
+      "display_name": "Add Domain",
+      "description": "Patch one domain in an existing Gateway list; the response is the list receipt, not a claim about downstream policy enforcement. API documentation: https://developers.cloudflare.com/api/resources/zero_trust/subresources/gateway/subresources/lists/methods/edit/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "list_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "domain",
+          "type": "domain",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PATCH",
+            "url": "https://api.cloudflare.com/client/v4/accounts/{{config.account_id}}/gateway/lists/{{input.list_id}}",
+            "json": {
+              "append": [
+                {
+                  "value": "{{input.domain}}"
+                }
+              ]
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "result.id",
+            "non_empty": true,
+            "fields": {
+              "success": true,
+              "errors": []
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "list": "steps.request.result"
+      },
+      "fixtures": [
+        "fixtures/add_domain.json"
+      ],
+      "rollback": "remove_domain"
+    },
+    "remove_domain": {
+      "display_name": "Remove Domain",
+      "description": "Patch one domain in an existing Gateway list; the response is the list receipt, not a claim about downstream policy enforcement. API documentation: https://developers.cloudflare.com/api/resources/zero_trust/subresources/gateway/subresources/lists/methods/edit/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "list_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "domain",
+          "type": "domain",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PATCH",
+            "url": "https://api.cloudflare.com/client/v4/accounts/{{config.account_id}}/gateway/lists/{{input.list_id}}",
+            "json": {
+              "remove": [
+                "{{input.domain}}"
+              ]
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "result.id",
+            "non_empty": true,
+            "fields": {
+              "success": true,
+              "errors": []
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "list": "steps.request.result"
+      },
+      "fixtures": [
+        "fixtures/remove_domain.json"
+      ],
+      "rollback": "add_domain"
+    }
+  }
+}

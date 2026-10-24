@@ -1,0 +1,58 @@
+{
+  "action": "list_items",
+  "config": {
+    "account_id": "0123456789abcdef0123456789abcdef"
+  },
+  "inputs": {
+    "list_id": "0123456789abcdef0123456789abcdef"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.cloudflare.com/client/v4/accounts/0123456789abcdef0123456789abcdef/rules/lists/0123456789abcdef0123456789abcdef/items",
+        "query": {
+          "per_page": "100"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.cloudflare.com",
+        "path": "/client/v4/accounts/0123456789abcdef0123456789abcdef/rules/lists/0123456789abcdef0123456789abcdef/items",
+        "status": 200,
+        "body": {
+          "success": true,
+          "errors": [],
+          "messages": [],
+          "result": [
+            {
+              "id": "0123456789abcdef0123456789abcdef",
+              "ip": "192.0.2.1"
+            }
+          ],
+          "result_info": {
+            "cursors": {
+              "after": ""
+            }
+          }
+        },
+        "query": {
+          "per_page": "100"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "items": [
+      {
+        "id": "0123456789abcdef0123456789abcdef",
+        "ip": "192.0.2.1"
+      }
+    ],
+    "cursors": {
+      "after": ""
+    }
+  },
+  "source": "https://developers.cloudflare.com/api/resources/rules/subresources/lists/subresources/items/methods/list/",
+  "request_evidence": "independent_http_mock"
+}

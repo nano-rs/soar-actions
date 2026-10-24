@@ -1,0 +1,47 @@
+{
+  "action": "remove_profile_value",
+  "config": {
+    "base_url": "https://example.goskope.com"
+  },
+  "inputs": {
+    "profile_id": "11111111-1111-4111-8111-111111111111",
+    "value": "example.net"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://example.goskope.com/api/v2/profiles/destinations/11111111-1111-4111-8111-111111111111/values",
+        "json": {
+          "operation": {
+            "op": "remove",
+            "values": [
+              "example.net"
+            ]
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "example.goskope.com",
+        "path": "/api/v2/profiles/destinations/11111111-1111-4111-8111-111111111111/values",
+        "status": 200,
+        "body": {
+          "id": "11111111-1111-4111-8111-111111111111",
+          "name": "Example response profile",
+          "type": "insensitive",
+          "values_count": 0,
+          "values": [],
+          "status": "applied"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "profile_id": "11111111-1111-4111-8111-111111111111",
+    "status": "applied",
+    "values_count": 0
+  },
+  "source": "https://docs.netskope.com/en/threat-exchange-plugin/",
+  "request_evidence": "independent_http_mock"
+}
