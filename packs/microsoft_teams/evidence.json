@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/post_message.json",
+      "url": "https://learn.microsoft.com/en-us/graph/api/channel-post-messages?view=graph-rest-1.0",
+      "document_url": "https://learn.microsoft.com/en-us/graph/api/channel-post-messages?view=graph-rest-1.0",
+      "document_sha256": "77704a92e4fee3cc0b0197e73c5c51fd576d0bc6eebda4f2bd81ff3b14607fe1",
+      "request": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/teams/fbe2bf47-16c8-47cf-b4a5-4b9b187c508b/channels/19%3A4a95f7d8db4c4e7fae857bcebe0623e6%40thread.tacv2/messages",
+        "json": {
+          "body": {
+            "contentType": "text",
+            "content": "Case 00000000-0000-4000-8000-000000000001 needs investigation."
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/teams/fbe2bf47-16c8-47cf-b4a5-4b9b187c508b/channels/19%3A4a95f7d8db4c4e7fae857bcebe0623e6%40thread.tacv2/messages",
+        "status": 201,
+        "body": {
+          "id": "1710000000001",
+          "body": {
+            "contentType": "text",
+            "content": "Case 00000000-0000-4000-8000-000000000001 needs investigation."
+          }
+        }
+      }
+    }
+  ]
+}

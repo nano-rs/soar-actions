@@ -1,0 +1,44 @@
+{
+  "action": "trigger",
+  "config": {},
+  "inputs": {
+    "case_id": "00000000-0000-4000-8000-000000000001",
+    "summary": "Case 00000000-0000-4000-8000-000000000001 needs investigation.",
+    "severity": "critical"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://events.pagerduty.com/v2/enqueue",
+        "json": {
+          "event_action": "trigger",
+          "dedup_key": "00000000-0000-4000-8000-000000000001",
+          "routing_key": "fixture-only-ROUTING_KEY-not-a-secret",
+          "payload": {
+            "summary": "Case 00000000-0000-4000-8000-000000000001 needs investigation.",
+            "source": "nano Security Lake",
+            "severity": "critical"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "events.pagerduty.com",
+        "path": "/v2/enqueue",
+        "status": 202,
+        "body": {
+          "status": "success",
+          "message": "Event processed",
+          "dedup_key": "00000000-0000-4000-8000-000000000001"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "accepted_status": "success",
+    "dedup_key": "00000000-0000-4000-8000-000000000001"
+  },
+  "source": "https://raw.githubusercontent.com/PagerDuty/api-schema/main/reference/events-v2/openapiv3.json",
+  "request_evidence": "independent_http_mock"
+}

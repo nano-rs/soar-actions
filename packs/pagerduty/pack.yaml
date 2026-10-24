@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "pagerduty",
+  "display_name": "PagerDuty Events API v2 notifications",
+  "description": "PagerDuty Events API v2 notifications. Notifications require approval. Uncertain mutations are never automatically resent.",
+  "vendor": "PagerDuty",
+  "categories": [
+    "notifications"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "events.pagerduty.com",
+      "path_prefixes": [
+        "/v2/enqueue"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "json_body_credential",
+    "credential": "ROUTING_KEY",
+    "field": "routing_key"
+  },
+  "credentials": [
+    {
+      "name": "ROUTING_KEY",
+      "label": "Events API v2 integration routing key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "trigger": {
+      "display_name": "trigger an event for a case",
+      "description": "Submit trigger with dedup_key equal to the required case_id. A 202 success receipt proves acceptance, not incident completion or delivery to an on-call user. API schema: https://raw.githubusercontent.com/PagerDuty/api-schema/main/reference/events-v2/openapiv3.json",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "case_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89aAbB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "summary",
+          "type": "string",
+          "required": true,
+          "pattern": "^[\\s\\S]{1,1024}$"
+        },
+        {
+          "name": "severity",
+          "type": "string",
+          "required": true,
+          "pattern": "^(critical|error|warning|info)$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://events.pagerduty.com/v2/enqueue",
+            "json": {
+              "event_action": "trigger",
+              "dedup_key": "{{input.case_id}}",
+              "payload": {
+                "summary": "{{input.summary}}",
+                "source": "nano Security Lake",
+                "severity": "{{input.severity}}"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              202
+            ],
+            "path": "dedup_key",
+            "non_empty": true,
+            "fields": {
+              "status": "success"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "accepted_status": "steps.request.status",
+        "dedup_key": "steps.request.dedup_key"
+      },
+      "fixtures": [
+        "fixtures/trigger.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "A delivered notification, page or external workflow cannot be recalled. No automatic inverse is supplied."
+    },
+    "acknowledge": {
+      "display_name": "acknowledge an event for a case",
+      "description": "Submit acknowledge with dedup_key equal to the required case_id. A 202 success receipt proves acceptance, not incident completion or delivery to an on-call user. API schema: https://raw.githubusercontent.com/PagerDuty/api-schema/main/reference/events-v2/openapiv3.json",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "case_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89aAbB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://events.pagerduty.com/v2/enqueue",
+            "json": {
+              "event_action": "acknowledge",
+              "dedup_key": "{{input.case_id}}"
+            }
+          },
+          "expect": {
+            "status": [
+              202
+            ],
+            "path": "dedup_key",
+            "non_empty": true,
+            "fields": {
+              "status": "success"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "accepted_status": "steps.request.status",
+        "dedup_key": "steps.request.dedup_key"
+      },
+      "fixtures": [
+        "fixtures/acknowledge.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "A delivered notification, page or external workflow cannot be recalled. No automatic inverse is supplied."
+    },
+    "resolve": {
+      "display_name": "resolve an event for a case",
+      "description": "Submit resolve with dedup_key equal to the required case_id. A 202 success receipt proves acceptance, not incident completion or delivery to an on-call user. API schema: https://raw.githubusercontent.com/PagerDuty/api-schema/main/reference/events-v2/openapiv3.json",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "case_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89aAbB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://events.pagerduty.com/v2/enqueue",
+            "json": {
+              "event_action": "resolve",
+              "dedup_key": "{{input.case_id}}"
+            }
+          },
+          "expect": {
+            "status": [
+              202
+            ],
+            "path": "dedup_key",
+            "non_empty": true,
+            "fields": {
+              "status": "success"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "accepted_status": "steps.request.status",
+        "dedup_key": "steps.request.dedup_key"
+      },
+      "fixtures": [
+        "fixtures/resolve.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "A delivered notification, page or external workflow cannot be recalled. No automatic inverse is supplied."
+    }
+  }
+}

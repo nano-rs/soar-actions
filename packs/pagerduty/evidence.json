@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/trigger.json",
+      "url": "https://raw.githubusercontent.com/PagerDuty/api-schema/main/reference/events-v2/openapiv3.json",
+      "document_url": "https://raw.githubusercontent.com/PagerDuty/api-schema/main/reference/events-v2/openapiv3.json",
+      "document_sha256": "f5570ec1049850501363447415a9202118586281286c3ccc8cd996f8429d1908",
+      "request": {
+        "method": "POST",
+        "url": "https://events.pagerduty.com/v2/enqueue",
+        "json": {
+          "event_action": "trigger",
+          "dedup_key": "00000000-0000-4000-8000-000000000001",
+          "routing_key": "fixture-only-ROUTING_KEY-not-a-secret",
+          "payload": {
+            "summary": "Case 00000000-0000-4000-8000-000000000001 needs investigation.",
+            "source": "nano Security Lake",
+            "severity": "critical"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "events.pagerduty.com",
+        "path": "/v2/enqueue",
+        "status": 202,
+        "body": {
+          "status": "success",
+          "message": "Event processed",
+          "dedup_key": "00000000-0000-4000-8000-000000000001"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/acknowledge.json",
+      "url": "https://raw.githubusercontent.com/PagerDuty/api-schema/main/reference/events-v2/openapiv3.json",
+      "document_url": "https://raw.githubusercontent.com/PagerDuty/api-schema/main/reference/events-v2/openapiv3.json",
+      "document_sha256": "f5570ec1049850501363447415a9202118586281286c3ccc8cd996f8429d1908",
+      "request": {
+        "method": "POST",
+        "url": "https://events.pagerduty.com/v2/enqueue",
+        "json": {
+          "event_action": "acknowledge",
+          "dedup_key": "00000000-0000-4000-8000-000000000001",
+          "routing_key": "fixture-only-ROUTING_KEY-not-a-secret"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "events.pagerduty.com",
+        "path": "/v2/enqueue",
+        "status": 202,
+        "body": {
+          "status": "success",
+          "message": "Event processed",
+          "dedup_key": "00000000-0000-4000-8000-000000000001"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/resolve.json",
+      "url": "https://raw.githubusercontent.com/PagerDuty/api-schema/main/reference/events-v2/openapiv3.json",
+      "document_url": "https://raw.githubusercontent.com/PagerDuty/api-schema/main/reference/events-v2/openapiv3.json",
+      "document_sha256": "f5570ec1049850501363447415a9202118586281286c3ccc8cd996f8429d1908",
+      "request": {
+        "method": "POST",
+        "url": "https://events.pagerduty.com/v2/enqueue",
+        "json": {
+          "event_action": "resolve",
+          "dedup_key": "00000000-0000-4000-8000-000000000001",
+          "routing_key": "fixture-only-ROUTING_KEY-not-a-secret"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "events.pagerduty.com",
+        "path": "/v2/enqueue",
+        "status": 202,
+        "body": {
+          "status": "success",
+          "message": "Event processed",
+          "dedup_key": "00000000-0000-4000-8000-000000000001"
+        }
+      }
+    }
+  ]
+}
