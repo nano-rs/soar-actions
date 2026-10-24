@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_list.json",
+      "url": "https://developers.cloudflare.com/api/resources/zero_trust/subresources/gateway/subresources/lists/methods/get/",
+      "document_sha256": "38ceeaf836b6feb4755b15efdb4d0289b6f51c90486b5cf491bfc583b493217b",
+      "document_url": "https://developers.cloudflare.com/api/resources/zero_trust/subresources/gateway/subresources/lists/methods/get/",
+      "request": {
+        "method": "GET",
+        "url": "https://api.cloudflare.com/client/v4/accounts/0123456789abcdef0123456789abcdef/gateway/lists/11111111-1111-4111-8111-111111111111"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.cloudflare.com",
+        "path": "/client/v4/accounts/0123456789abcdef0123456789abcdef/gateway/lists/11111111-1111-4111-8111-111111111111",
+        "status": 200,
+        "body": {
+          "success": true,
+          "errors": [],
+          "messages": [],
+          "result": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "name": "Example response list",
+            "type": "DOMAIN",
+            "count": 1,
+            "items": [
+              {
+                "value": "example.net"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/add_domain.json",
+      "url": "https://developers.cloudflare.com/api/resources/zero_trust/subresources/gateway/subresources/lists/methods/edit/",
+      "document_sha256": "a119f89b235d151024e15ccdbe0921f723a25cff2161c1f070038ce409fef338",
+      "document_url": "https://developers.cloudflare.com/api/resources/zero_trust/subresources/gateway/subresources/lists/methods/edit/",
+      "request": {
+        "method": "PATCH",
+        "url": "https://api.cloudflare.com/client/v4/accounts/0123456789abcdef0123456789abcdef/gateway/lists/11111111-1111-4111-8111-111111111111",
+        "json": {
+          "append": [
+            {
+              "value": "example.net"
+            }
+          ]
+        }
+      },
+      "response": {
+        "method": "PATCH",
+        "host": "api.cloudflare.com",
+        "path": "/client/v4/accounts/0123456789abcdef0123456789abcdef/gateway/lists/11111111-1111-4111-8111-111111111111",
+        "status": 200,
+        "body": {
+          "success": true,
+          "errors": [],
+          "messages": [],
+          "result": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "name": "Example response list",
+            "type": "DOMAIN",
+            "count": 1,
+            "items": [
+              {
+                "value": "example.net"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/remove_domain.json",
+      "url": "https://developers.cloudflare.com/api/resources/zero_trust/subresources/gateway/subresources/lists/methods/edit/",
+      "document_sha256": "a119f89b235d151024e15ccdbe0921f723a25cff2161c1f070038ce409fef338",
+      "document_url": "https://developers.cloudflare.com/api/resources/zero_trust/subresources/gateway/subresources/lists/methods/edit/",
+      "request": {
+        "method": "PATCH",
+        "url": "https://api.cloudflare.com/client/v4/accounts/0123456789abcdef0123456789abcdef/gateway/lists/11111111-1111-4111-8111-111111111111",
+        "json": {
+          "remove": [
+            "example.net"
+          ]
+        }
+      },
+      "response": {
+        "method": "PATCH",
+        "host": "api.cloudflare.com",
+        "path": "/client/v4/accounts/0123456789abcdef0123456789abcdef/gateway/lists/11111111-1111-4111-8111-111111111111",
+        "status": 200,
+        "body": {
+          "success": true,
+          "errors": [],
+          "messages": [],
+          "result": {
+            "id": "11111111-1111-4111-8111-111111111111",
+            "name": "Example response list",
+            "type": "DOMAIN",
+            "count": 0,
+            "items": []
+          }
+        }
+      }
+    }
+  ]
+}

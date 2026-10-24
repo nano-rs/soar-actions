@@ -1,0 +1,38 @@
+{
+  "action": "get_bulk_operation",
+  "config": {
+    "account_id": "0123456789abcdef0123456789abcdef"
+  },
+  "inputs": {
+    "operation_id": "0123456789abcdef0123456789abcdef"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.cloudflare.com/client/v4/accounts/0123456789abcdef0123456789abcdef/rules/lists/bulk_operations/0123456789abcdef0123456789abcdef"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.cloudflare.com",
+        "path": "/client/v4/accounts/0123456789abcdef0123456789abcdef/rules/lists/bulk_operations/0123456789abcdef0123456789abcdef",
+        "status": 200,
+        "body": {
+          "success": true,
+          "errors": [],
+          "messages": [],
+          "result": {
+            "id": "0123456789abcdef0123456789abcdef",
+            "status": "pending"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "operation_id": "0123456789abcdef0123456789abcdef",
+    "status": "pending"
+  },
+  "source": "https://developers.cloudflare.com/api/resources/rules/subresources/lists/subresources/bulk_operations/methods/get/",
+  "request_evidence": "independent_http_mock"
+}

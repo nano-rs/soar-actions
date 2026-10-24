@@ -1,0 +1,265 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "palo_alto_cortex_xdr",
+  "display_name": "Palo Alto Cortex XDR",
+  "description": "Palo Alto Cortex XDR response actions. Containment and inverse actions require approval.",
+  "vendor": "Palo Alto Networks",
+  "categories": [
+    "edr"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Cortex XDR API origin",
+      "required": true
+    },
+    {
+      "name": "api_key_id",
+      "label": "Standard API key ID",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "host_suffixes": [
+        ".paloaltonetworks.com"
+      ],
+      "path_prefixes": [
+        "/public_api/v1/endpoints",
+        "/public_api/v1/actions"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "Authorization",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "Api Key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_endpoint": {
+      "display_name": "Get endpoint",
+      "description": "Read the endpoint selected by its immutable ID. API documentation: https://cortex-docs.paloaltonetworks.com/xdr-5-api/cortex-platform/endpoint-management.md",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "endpoint_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/public_api/v1/endpoints/get_endpoint",
+            "headers": {
+              "x-xdr-auth-id": "{{config.api_key_id}}"
+            },
+            "json": {
+              "request_data": {
+                "filters": [
+                  {
+                    "field": "endpoint_id_list",
+                    "operator": "in",
+                    "value": [
+                      "{{input.endpoint_id}}"
+                    ]
+                  }
+                ],
+                "search_from": 0,
+                "search_to": 1
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "reply.endpoints",
+            "items": 1
+          }
+        }
+      ],
+      "outputs": {
+        "endpoints": "steps.request.reply.endpoints"
+      },
+      "fixtures": [
+        "fixtures/get_endpoint.json"
+      ],
+      "output_types": {
+        "endpoints": "array"
+      }
+    },
+    "get_action_status": {
+      "display_name": "Get action status",
+      "description": "Read reported response-action state; a successful lookup does not assert that every endpoint succeeded. API documentation: https://cortex-docs.paloaltonetworks.com/xdr-5-api/cortex-platform/response-action.md",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "group_action_id",
+          "type": "int",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/public_api/v1/actions/get_action_status",
+            "headers": {
+              "x-xdr-auth-id": "{{config.api_key_id}}"
+            },
+            "json": {
+              "request_data": {
+                "group_action_id": "{{input.group_action_id}}"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "reply.data",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "status_by_agent": "steps.request.reply.data"
+      },
+      "fixtures": [
+        "fixtures/get_action_status.json"
+      ],
+      "output_types": {
+        "status_by_agent": "object"
+      }
+    },
+    "isolate_endpoint": {
+      "display_name": "Isolate Endpoint",
+      "description": "Dispatch one endpoint response action. Read its state separately; this receipt is not completion. API documentation: https://cortex-docs.paloaltonetworks.com/xdr-5-api/cortex-platform/response-action.md",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "endpoint_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/public_api/v1/endpoints/isolate",
+            "headers": {
+              "x-xdr-auth-id": "{{config.api_key_id}}"
+            },
+            "json": {
+              "request_data": {
+                "endpoint_id": "{{input.endpoint_id}}"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "reply.action_id",
+            "non_empty": true,
+            "fields": {
+              "reply.endpoints_count": "1"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.reply.action_id",
+        "endpoints_count": "steps.request.reply.endpoints_count"
+      },
+      "fixtures": [
+        "fixtures/isolate_endpoint.json"
+      ],
+      "rollback": "unisolate_endpoint",
+      "output_types": {
+        "action_id": "string",
+        "endpoints_count": "string"
+      }
+    },
+    "unisolate_endpoint": {
+      "display_name": "Unisolate Endpoint",
+      "description": "Dispatch one endpoint response action. Read its state separately; this receipt is not completion. API documentation: https://cortex-docs.paloaltonetworks.com/xdr-5-api/cortex-platform/response-action.md",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "endpoint_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/public_api/v1/endpoints/unisolate",
+            "headers": {
+              "x-xdr-auth-id": "{{config.api_key_id}}"
+            },
+            "json": {
+              "request_data": {
+                "endpoint_id": "{{input.endpoint_id}}"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "reply.action_id",
+            "non_empty": true,
+            "fields": {
+              "reply.endpoints_count": "1"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.reply.action_id",
+        "endpoints_count": "steps.request.reply.endpoints_count"
+      },
+      "fixtures": [
+        "fixtures/unisolate_endpoint.json"
+      ],
+      "rollback": "isolate_endpoint",
+      "output_types": {
+        "action_id": "string",
+        "endpoints_count": "string"
+      }
+    }
+  }
+}

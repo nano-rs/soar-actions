@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "netskope",
+  "display_name": "Netskope",
+  "description": "Netskope response actions. Containment and inverse actions require approval.",
+  "vendor": "Netskope",
+  "categories": [
+    "network"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Netskope tenant API origin",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "host_suffixes": [
+        ".goskope.com"
+      ],
+      "path_prefixes": [
+        "/api/v2/profiles/destinations"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "Netskope-API-Token",
+    "credential": "API_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "API_TOKEN",
+      "label": "Api Token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "list_destination_profiles": {
+      "display_name": "List destination profiles",
+      "description": "Read one offset page of destination profiles. API documentation: https://docs.netskope.com/en/threat-exchange-plugin/",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "offset",
+          "type": "int",
+          "required": false
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v2/profiles/destinations",
+            "query": {
+              "fields": "id,name,type,values_count",
+              "offset": "{{input.offset}}",
+              "limit": "100"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "total_count",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "profiles": "steps.request.elements",
+        "total_count": "steps.request.total_count"
+      },
+      "fixtures": [
+        "fixtures/list_destination_profiles.json"
+      ],
+      "output_types": {
+        "profiles": "array",
+        "total_count": "integer"
+      }
+    },
+    "add_profile_value": {
+      "display_name": "Add Profile Value",
+      "description": "Update one destination-profile value. Returned status is vendor state; this action does not deploy pending policies. API documentation: https://docs.netskope.com/en/threat-exchange-plugin/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "profile_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9./:_?=&%#-]{0,1023}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/v2/profiles/destinations/{{input.profile_id}}/values",
+            "json": {
+              "operation": {
+                "op": "append",
+                "values": [
+                  "{{input.value}}"
+                ]
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "profile_id": "steps.request.id",
+        "status": "steps.request.status",
+        "values_count": "steps.request.values_count"
+      },
+      "fixtures": [
+        "fixtures/add_profile_value.json"
+      ],
+      "rollback": "remove_profile_value",
+      "output_types": {
+        "profile_id": "string",
+        "status": "string",
+        "values_count": "integer"
+      }
+    },
+    "remove_profile_value": {
+      "display_name": "Remove Profile Value",
+      "description": "Update one destination-profile value. Returned status is vendor state; this action does not deploy pending policies. API documentation: https://docs.netskope.com/en/threat-exchange-plugin/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "profile_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9./:_?=&%#-]{0,1023}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/v2/profiles/destinations/{{input.profile_id}}/values",
+            "json": {
+              "operation": {
+                "op": "remove",
+                "values": [
+                  "{{input.value}}"
+                ]
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "profile_id": "steps.request.id",
+        "status": "steps.request.status",
+        "values_count": "steps.request.values_count"
+      },
+      "fixtures": [
+        "fixtures/remove_profile_value.json"
+      ],
+      "rollback": "add_profile_value",
+      "output_types": {
+        "profile_id": "string",
+        "status": "string",
+        "values_count": "integer"
+      }
+    }
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "sophos_central",
+  "display_name": "Sophos Central",
+  "description": "Sophos Central response actions. Containment and inverse actions require approval.",
+  "vendor": "Sophos",
+  "categories": [
+    "edr"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Tenant regional API",
+      "required": true,
+      "default": "https://api-us01.central.sophos.com",
+      "one_of": [
+        "https://api-us01.central.sophos.com",
+        "https://api-us03.central.sophos.com",
+        "https://api-eu01.central.sophos.com",
+        "https://api-eu02.central.sophos.com",
+        "https://api-ca01.central.sophos.com",
+        "https://api-au01.central.sophos.com",
+        "https://api-jp01.central.sophos.com",
+        "https://api-br01.central.sophos.com",
+        "https://api-in01.central.sophos.com"
+      ]
+    },
+    {
+      "name": "tenant_id",
+      "label": "Sophos tenant UUID",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/endpoint/v1/endpoints"
+      ]
+    },
+    {
+      "host": "id.sophos.com",
+      "path_prefixes": [
+        "/api/v2/oauth2/token"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "oauth2_client_credentials",
+    "token_url": "https://id.sophos.com/api/v2/oauth2/token",
+    "client_id": "CLIENT_ID",
+    "client_secret": "CLIENT_SECRET",
+    "scope": "token"
+  },
+  "credentials": [
+    {
+      "name": "CLIENT_ID",
+      "label": "Client Id"
+    },
+    {
+      "name": "CLIENT_SECRET",
+      "label": "Client Secret"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_isolation": {
+      "display_name": "Get isolation settings",
+      "description": "Read requested isolation settings for one endpoint. API documentation: https://developer.sophos.com/reference/endpoint-v1/endpoint-isolation/get-endpoint-isolation-by-id/",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "endpoint_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/endpoint/v1/endpoints/{{input.endpoint_id}}/isolation",
+            "headers": {
+              "X-Tenant-ID": "{{config.tenant_id}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "enabled",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "enabled": "steps.request.enabled"
+      },
+      "fixtures": [
+        "fixtures/get_isolation.json"
+      ],
+      "output_types": {
+        "enabled": "boolean"
+      }
+    },
+    "isolate_endpoint": {
+      "display_name": "Isolate Endpoint",
+      "description": "Request the isolation setting for one explicit endpoint; acknowledgment does not prove agent completion. API documentation: https://developer.sophos.com/reference/endpoint-v1/endpoint-isolation/update-endpoint-isolation-by-id/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "endpoint_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PATCH",
+            "url": "{{config.base_url}}/endpoint/v1/endpoints/{{input.endpoint_id}}/isolation",
+            "headers": {
+              "X-Tenant-ID": "{{config.tenant_id}}"
+            },
+            "json": {
+              "enabled": true
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "enabled",
+            "equals": true
+          }
+        }
+      ],
+      "outputs": {
+        "enabled": "steps.request.enabled"
+      },
+      "fixtures": [
+        "fixtures/isolate_endpoint.json"
+      ],
+      "rollback": "release_endpoint",
+      "output_types": {
+        "enabled": "boolean"
+      }
+    },
+    "release_endpoint": {
+      "display_name": "Release Endpoint",
+      "description": "Request the isolation setting for one explicit endpoint; acknowledgment does not prove agent completion. API documentation: https://developer.sophos.com/reference/endpoint-v1/endpoint-isolation/update-endpoint-isolation-by-id/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "endpoint_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PATCH",
+            "url": "{{config.base_url}}/endpoint/v1/endpoints/{{input.endpoint_id}}/isolation",
+            "headers": {
+              "X-Tenant-ID": "{{config.tenant_id}}"
+            },
+            "json": {
+              "enabled": false
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "enabled",
+            "equals": false
+          }
+        }
+      ],
+      "outputs": {
+        "enabled": "steps.request.enabled"
+      },
+      "fixtures": [
+        "fixtures/release_endpoint.json"
+      ],
+      "rollback": "isolate_endpoint",
+      "output_types": {
+        "enabled": "boolean"
+      }
+    }
+  }
+}

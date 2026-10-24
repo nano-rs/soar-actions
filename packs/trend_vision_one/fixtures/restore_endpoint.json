@@ -1,0 +1,44 @@
+{
+  "action": "restore_endpoint",
+  "config": {
+    "base_url": "https://api.xdr.trendmicro.com"
+  },
+  "inputs": {
+    "agent_guid": "cb9c8412-1f64-4fa0-a36b-76bf41a07ede"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.xdr.trendmicro.com/v3.0/response/endpoints/restore",
+        "json": [
+          {
+            "agentGuid": "cb9c8412-1f64-4fa0-a36b-76bf41a07ede"
+          }
+        ]
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.xdr.trendmicro.com",
+        "path": "/v3.0/response/endpoints/restore",
+        "status": 207,
+        "body": [
+          {
+            "status": 202,
+            "headers": [
+              {
+                "name": "Operation-Location",
+                "value": "https://api.xdr.trendmicro.com/v3.0/response/tasks/RM-20231124-00001"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {
+    "operation_location": "https://api.xdr.trendmicro.com/v3.0/response/tasks/RM-20231124-00001"
+  },
+  "source": "https://automation.trendmicro.com/sp-api-open-v3.0.json",
+  "request_evidence": "independent_http_mock"
+}

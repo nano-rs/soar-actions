@@ -1,0 +1,41 @@
+{
+  "action": "unisolate_endpoint",
+  "config": {
+    "base_url": "https://api-example.xdr.us.paloaltonetworks.com",
+    "api_key_id": "1"
+  },
+  "inputs": {
+    "endpoint_id": "0123456789abcdef0123456789abcdef"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api-example.xdr.us.paloaltonetworks.com/public_api/v1/endpoints/unisolate",
+        "json": {
+          "request_data": {
+            "endpoint_id": "0123456789abcdef0123456789abcdef"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api-example.xdr.us.paloaltonetworks.com",
+        "path": "/public_api/v1/endpoints/unisolate",
+        "status": 200,
+        "body": {
+          "reply": {
+            "action_id": "12345",
+            "endpoints_count": "1"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "action_id": "12345",
+    "endpoints_count": "1"
+  },
+  "source": "https://cortex-docs.paloaltonetworks.com/xdr-5-api/cortex-platform/response-action.md",
+  "request_evidence": "independent_http_mock"
+}

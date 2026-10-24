@@ -1,0 +1,198 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "trend_vision_one",
+  "display_name": "Trend Vision One",
+  "description": "Trend Vision One response actions. Containment and inverse actions require approval.",
+  "vendor": "Trend Micro",
+  "categories": [
+    "edr"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Vision One region",
+      "required": true,
+      "default": "https://api.xdr.trendmicro.com",
+      "one_of": [
+        "https://api.xdr.trendmicro.com",
+        "https://api.eu.xdr.trendmicro.com",
+        "https://api.sg.xdr.trendmicro.com",
+        "https://api.xdr.trendmicro.co.jp",
+        "https://api.au.xdr.trendmicro.com",
+        "https://api.in.xdr.trendmicro.com",
+        "https://api.mea.xdr.trendmicro.com",
+        "https://api.uk.xdr.trendmicro.com",
+        "https://api.ca.xdr.trendmicro.com"
+      ]
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/v3.0/response/endpoints",
+        "/v3.0/response/tasks"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "API_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "API_TOKEN",
+      "label": "Api Token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_response_task": {
+      "display_name": "Get response task",
+      "description": "Read response-task results without interpreting task status as success of this action. API documentation: https://automation.trendmicro.com/sp-api-open-v3.0.json",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "task_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,36}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/v3.0/response/tasks/{{input.task_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "task_id": "steps.request.id",
+        "status": "steps.request.status"
+      },
+      "fixtures": [
+        "fixtures/get_response_task.json"
+      ],
+      "output_types": {
+        "task_id": "string",
+        "status": "string"
+      }
+    },
+    "isolate_endpoint": {
+      "display_name": "Isolate Endpoint",
+      "description": "Request a response for exactly one agent. The accepted task receipt does not assert endpoint completion. API documentation: https://automation.trendmicro.com/sp-api-open-v3.0.json",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "agent_guid",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/v3.0/response/endpoints/isolate",
+            "json": [
+              {
+                "agentGuid": "{{input.agent_guid}}"
+              }
+            ]
+          },
+          "expect": {
+            "status": [
+              207
+            ],
+            "path": "",
+            "items": 1,
+            "fields": {
+              "0.status": 202,
+              "0.headers.0.name": "Operation-Location"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "operation_location": "steps.request.0.headers.0.value"
+      },
+      "fixtures": [
+        "fixtures/isolate_endpoint.json"
+      ],
+      "rollback": "restore_endpoint",
+      "output_types": {
+        "operation_location": "string"
+      }
+    },
+    "restore_endpoint": {
+      "display_name": "Restore Endpoint",
+      "description": "Request a response for exactly one agent. The accepted task receipt does not assert endpoint completion. API documentation: https://automation.trendmicro.com/sp-api-open-v3.0.json",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "agent_guid",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/v3.0/response/endpoints/restore",
+            "json": [
+              {
+                "agentGuid": "{{input.agent_guid}}"
+              }
+            ]
+          },
+          "expect": {
+            "status": [
+              207
+            ],
+            "path": "",
+            "items": 1,
+            "fields": {
+              "0.status": 202,
+              "0.headers.0.name": "Operation-Location"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "operation_location": "steps.request.0.headers.0.value"
+      },
+      "fixtures": [
+        "fixtures/restore_endpoint.json"
+      ],
+      "rollback": "isolate_endpoint",
+      "output_types": {
+        "operation_location": "string"
+      }
+    }
+  }
+}

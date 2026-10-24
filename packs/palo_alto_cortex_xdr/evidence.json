@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_endpoint.json",
+      "url": "https://cortex-docs.paloaltonetworks.com/xdr-5-api/cortex-platform/endpoint-management.md",
+      "document_sha256": "0ae9dd5b6d7ace71dbfcd57f008b76249609072b872f9a062034cfab5050839a",
+      "document_url": "https://cortex-docs.paloaltonetworks.com/xdr-5-api/cortex-platform/endpoint-management.md",
+      "request": {
+        "method": "POST",
+        "url": "https://api-example.xdr.us.paloaltonetworks.com/public_api/v1/endpoints/get_endpoint",
+        "json": {
+          "request_data": {
+            "filters": [
+              {
+                "field": "endpoint_id_list",
+                "operator": "in",
+                "value": [
+                  "0123456789abcdef0123456789abcdef"
+                ]
+              }
+            ],
+            "search_from": 0,
+            "search_to": 1
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api-example.xdr.us.paloaltonetworks.com",
+        "path": "/public_api/v1/endpoints/get_endpoint",
+        "status": 200,
+        "body": {
+          "reply": {
+            "total_count": 1,
+            "result_count": 1,
+            "endpoints": [
+              {
+                "endpoint_id": "0123456789abcdef0123456789abcdef",
+                "is_isolated": "AGENT_UNISOLATED"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/get_action_status.json",
+      "url": "https://cortex-docs.paloaltonetworks.com/xdr-5-api/cortex-platform/response-action.md",
+      "document_sha256": "d7343df3995437ab27d1731a478d4409a0e06275d03ed9aa14b01024f297694b",
+      "document_url": "https://cortex-docs.paloaltonetworks.com/xdr-5-api/cortex-platform/response-action.md",
+      "request": {
+        "method": "POST",
+        "url": "https://api-example.xdr.us.paloaltonetworks.com/public_api/v1/actions/get_action_status",
+        "json": {
+          "request_data": {
+            "group_action_id": 12345
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api-example.xdr.us.paloaltonetworks.com",
+        "path": "/public_api/v1/actions/get_action_status",
+        "status": 200,
+        "body": {
+          "reply": {
+            "data": {
+              "agent_id": "COMPLETED_SUCCESSFULLY"
+            }
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/isolate_endpoint.json",
+      "url": "https://cortex-docs.paloaltonetworks.com/xdr-5-api/cortex-platform/response-action.md",
+      "document_sha256": "d7343df3995437ab27d1731a478d4409a0e06275d03ed9aa14b01024f297694b",
+      "document_url": "https://cortex-docs.paloaltonetworks.com/xdr-5-api/cortex-platform/response-action.md",
+      "request": {
+        "method": "POST",
+        "url": "https://api-example.xdr.us.paloaltonetworks.com/public_api/v1/endpoints/isolate",
+        "json": {
+          "request_data": {
+            "endpoint_id": "0123456789abcdef0123456789abcdef"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api-example.xdr.us.paloaltonetworks.com",
+        "path": "/public_api/v1/endpoints/isolate",
+        "status": 200,
+        "body": {
+          "reply": {
+            "action_id": "12345",
+            "endpoints_count": "1"
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/unisolate_endpoint.json",
+      "url": "https://cortex-docs.paloaltonetworks.com/xdr-5-api/cortex-platform/response-action.md",
+      "document_sha256": "d7343df3995437ab27d1731a478d4409a0e06275d03ed9aa14b01024f297694b",
+      "document_url": "https://cortex-docs.paloaltonetworks.com/xdr-5-api/cortex-platform/response-action.md",
+      "request": {
+        "method": "POST",
+        "url": "https://api-example.xdr.us.paloaltonetworks.com/public_api/v1/endpoints/unisolate",
+        "json": {
+          "request_data": {
+            "endpoint_id": "0123456789abcdef0123456789abcdef"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api-example.xdr.us.paloaltonetworks.com",
+        "path": "/public_api/v1/endpoints/unisolate",
+        "status": 200,
+        "body": {
+          "reply": {
+            "action_id": "12345",
+            "endpoints_count": "1"
+          }
+        }
+      }
+    }
+  ]
+}

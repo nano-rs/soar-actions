@@ -1,0 +1,4 @@
+Vendor names and API documentation belong to their respective owners.
+Action selection informed by demisto/content (MIT).
+Reference: https://github.com/demisto/content/tree/767c807ebe7953527951d205dffa74453d356b47/Packs/NetskopeV2/Integrations
+No XSOAR code is included.

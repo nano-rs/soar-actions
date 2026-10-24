@@ -1,0 +1,38 @@
+{
+  "action": "get_response_task",
+  "config": {
+    "base_url": "https://api.xdr.trendmicro.com"
+  },
+  "inputs": {
+    "task_id": "RM-20231124-00001"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.xdr.trendmicro.com/v3.0/response/tasks/RM-20231124-00001"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.xdr.trendmicro.com",
+        "path": "/v3.0/response/tasks/RM-20231124-00001",
+        "status": 200,
+        "body": {
+          "id": "RM-20231124-00001",
+          "status": "succeeded",
+          "createdDateTime": "2026-01-01T00:00:00Z",
+          "lastActionDateTime": "2026-01-01T00:00:00Z",
+          "action": "isolate",
+          "agentGuid": "cb9c8412-1f64-4fa0-a36b-76bf41a07ede",
+          "endpointName": "example-endpoint"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "task_id": "RM-20231124-00001",
+    "status": "succeeded"
+  },
+  "source": "https://automation.trendmicro.com/sp-api-open-v3.0.json",
+  "request_evidence": "independent_http_mock"
+}

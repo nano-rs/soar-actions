@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_response_task.json",
+      "url": "https://automation.trendmicro.com/sp-api-open-v3.0.json",
+      "document_sha256": "d7e9185ff051f52d4450ec1e2ce3efec37c6d6c254b102f5da2613c9a48cf76c",
+      "document_url": "https://automation.trendmicro.com/sp-api-open-v3.0.json",
+      "request": {
+        "method": "GET",
+        "url": "https://api.xdr.trendmicro.com/v3.0/response/tasks/RM-20231124-00001"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.xdr.trendmicro.com",
+        "path": "/v3.0/response/tasks/RM-20231124-00001",
+        "status": 200,
+        "body": {
+          "id": "RM-20231124-00001",
+          "status": "succeeded",
+          "createdDateTime": "2026-01-01T00:00:00Z",
+          "lastActionDateTime": "2026-01-01T00:00:00Z",
+          "action": "isolate",
+          "agentGuid": "cb9c8412-1f64-4fa0-a36b-76bf41a07ede",
+          "endpointName": "example-endpoint"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/isolate_endpoint.json",
+      "url": "https://automation.trendmicro.com/sp-api-open-v3.0.json",
+      "document_sha256": "d7e9185ff051f52d4450ec1e2ce3efec37c6d6c254b102f5da2613c9a48cf76c",
+      "document_url": "https://automation.trendmicro.com/sp-api-open-v3.0.json",
+      "request": {
+        "method": "POST",
+        "url": "https://api.xdr.trendmicro.com/v3.0/response/endpoints/isolate",
+        "json": [
+          {
+            "agentGuid": "cb9c8412-1f64-4fa0-a36b-76bf41a07ede"
+          }
+        ]
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.xdr.trendmicro.com",
+        "path": "/v3.0/response/endpoints/isolate",
+        "status": 207,
+        "body": [
+          {
+            "status": 202,
+            "headers": [
+              {
+                "name": "Operation-Location",
+                "value": "https://api.xdr.trendmicro.com/v3.0/response/tasks/RM-20231124-00001"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fixture": "fixtures/restore_endpoint.json",
+      "url": "https://automation.trendmicro.com/sp-api-open-v3.0.json",
+      "document_sha256": "d7e9185ff051f52d4450ec1e2ce3efec37c6d6c254b102f5da2613c9a48cf76c",
+      "document_url": "https://automation.trendmicro.com/sp-api-open-v3.0.json",
+      "request": {
+        "method": "POST",
+        "url": "https://api.xdr.trendmicro.com/v3.0/response/endpoints/restore",
+        "json": [
+          {
+            "agentGuid": "cb9c8412-1f64-4fa0-a36b-76bf41a07ede"
+          }
+        ]
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.xdr.trendmicro.com",
+        "path": "/v3.0/response/endpoints/restore",
+        "status": 207,
+        "body": [
+          {
+            "status": 202,
+            "headers": [
+              {
+                "name": "Operation-Location",
+                "value": "https://api.xdr.trendmicro.com/v3.0/response/tasks/RM-20231124-00001"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
