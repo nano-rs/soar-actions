@@ -91,6 +91,56 @@
       ],
       "rollback_unavailable": true,
       "rollback_unavailable_reason": "A delivered notification, page or external workflow cannot be recalled. No automatic inverse is supplied."
+    },
+    "notify_event": {
+      "display_name": "Notify with a canonical alert or case",
+      "description": "Render the canonical nano alert/case event with the shared core vendor formatter. Existing freeform actions are unchanged. Requires backend support for notification_body (NAN-4478).",
+      "effect": "write",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "team_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89aAbB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "channel_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^19:[A-Za-z0-9_-]{1,200}@thread\\.(tacv2|skype)$"
+        },
+        {
+          "name": "notification",
+          "type": "notification",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://graph.microsoft.com/v1.0/teams/{{input.team_id}}/channels/{{input.channel_id}}/messages",
+            "json_text": "{{notification_body \"teams\" input.notification \"\"}}"
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "message_id": "steps.request.id"
+      },
+      "fixtures": [
+        "fixtures/notify_event.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "A delivered notification, page or external workflow cannot be recalled. No automatic inverse is supplied."
     }
   }
 }

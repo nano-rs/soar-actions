@@ -12,3 +12,31 @@ Propose changes in a pull request. Keep each change focused on one vendor or a s
 nano validates the pack and its request replay, reviews the exact content and approval policy, approves it, signs a release, and publishes it to the distribution index. A pull request, merge or download does not grant tenant execution. Tenants receive only signed releases through the distribution index API.
 
 Use the schema and authentication documentation linked in [README.md](README.md). Contributions use the repository's Apache-2.0 license.
+
+Structured notifications use `notify_event` with a typed canonical `notification`
+object (the alert/case `WebhookPayload`), rather than repeating a vendor body in a
+pack. `notification_body` calls the backend's canonical channel formatter. The
+legacy freeform actions keep their existing bodies and authentication.
+
+Run `node scripts/check-notification-contract.mjs` here, then run
+`node scripts/validate-soar-notification-packs.mjs /path/to/soar-actions --conformance`
+from the backend checkout. The latter snapshots the actual four packs and runs
+core/native SOAR byte conformance and all their authored fixture replays through
+cargo-slot, including the farm. Catalog content is test input only; no pack is
+bundled in a binary. Update fixture evidence when intentionally changing a shape.
+
+CI in this public repository runs only
+`node scripts/check-notification-contract.mjs`, including for fork pull requests.
+It checks canonical helper bindings and fixture/evidence agreement. It never
+checks out private source or requires a private-repository credential.
+
+Cross-repository byte conformance runs entirely in the private nanosiem
+repository. That repository pins a reviewed public soar-actions commit in
+`scripts/notification-catalog-ref.txt` and tests it against the production core
+formatters and connector engine on a cargo-slot/farm-capable runner. Before
+catalog approval or publication, update the private pin to the candidate commit
+and run that private gate. No backend revision is pinned by this public catalog.
+
+New structured actions require the NAN-4478 backend before catalog approval or
+publication. A merge alone never installs a pack on a tenant. No runner,
+credential, catalog publication or live-tenant change is provisioned here.

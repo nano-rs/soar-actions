@@ -27,6 +27,37 @@
           "sha256": "64d5245a9101929025336e470e3737f118704001249d503c85a86e19fe9fbb01"
         }
       ]
+    },
+    {
+      "fixture": "fixtures/notify_event.json",
+      "url": "https://www.rfc-editor.org/rfc/rfc9110.txt",
+      "document_url": "https://www.rfc-editor.org/rfc/rfc9110.txt",
+      "document_sha256": "21c1cdce6ab0e5509b04d84a28000836c7a087cf786efe6f04877ebfff47232a",
+      "request": {
+        "method": "POST",
+        "url": "https://hooks.customer.example.com/inbox/case",
+        "json": {
+          "event_type": "case.created",
+          "kind": "case",
+          "rule_name": "Investigate sign-in",
+          "severity": "open",
+          "created_at": "2024-03-09T16:00:00Z",
+          "idempotency_key": "case.created:00000000-0000-4000-8000-000000000001"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "hooks.customer.example.com",
+        "path": "/inbox/case",
+        "status": 204,
+        "body": ""
+      },
+      "schema_documents": [
+        {
+          "url": "https://www.rfc-editor.org/rfc/rfc2104.txt",
+          "sha256": "64d5245a9101929025336e470e3737f118704001249d503c85a86e19fe9fbb01"
+        }
+      ]
     }
   ]
 }

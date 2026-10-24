@@ -1,0 +1,84 @@
+{
+  "action": "notify_event",
+  "config": {},
+  "inputs": {
+    "channel_id": "C0123456789",
+    "notification": {
+      "event_type": "case.created",
+      "kind": "case",
+      "rule_name": "Investigate sign-in",
+      "severity": "open",
+      "created_at": "2024-03-09T16:00:00Z",
+      "idempotency_key": "case.created:00000000-0000-4000-8000-000000000001"
+    }
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://slack.com/api/chat.postMessage",
+        "json": {
+          "channel": "C0123456789",
+          "parse": "none",
+          "unfurl_links": false,
+          "unfurl_media": false,
+          "text": "OPEN · Investigate sign-in",
+          "attachments": [
+            {
+              "color": "#6b7280",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Investigate sign-in",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Severity*\n`OPEN`"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Type*\n`case`"
+                    }
+                  ]
+                },
+                {
+                  "type": "context",
+                  "elements": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "nano · 2024-03-09T16:00:00+00:00"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "slack.com",
+        "path": "/api/chat.postMessage",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "channel": "C0123456789",
+          "ts": "1710000000.000001"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "channel": "C0123456789",
+    "message_ts": "1710000000.000001"
+  },
+  "source": "https://docs.slack.dev/reference/methods/chat.postMessage/",
+  "request_evidence": "independent_http_mock"
+}
