@@ -27,3 +27,5 @@ The pack uses existing native auth plugins; credentials stay in the connection s
 GET /admin/v2/orgs/{orgId}/directories/{directoryId}/users/{userId} uses the same account identifier as the suspend/restore routes. The official operation lists the path placeholder as userId and parameter component as accountId; only the placeholder name differs, not the wire position. Response: HTTP 200, MultiDirectoryUserDetails with data.accountId:string. Requires directory-read permission. Provides a Read action for the issue's per-pack test-mode smoke acceptance before any mutation.
 
 Official operation/schema reference: https://developer.atlassian.com/cloud/admin/organization/rest/api-group-users/
+
+Inverse pre-state requirement: the paired operations are separately approved opposite transitions, not a saved-state rollback transaction. Use the Read action to confirm the original resource is in the opposite state and that the forward action changed it before invoking its inverse. Do not undo a redundant forward operation or claim restoration of an unrecorded pre-state; re-read before a separately approved inverse. Concurrent external changes are not locked by this pack.

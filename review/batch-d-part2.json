@@ -37,7 +37,8 @@
       "actions": {
         "get_user_login": "read",
         "freeze_user": "destructive",
-        "unfreeze_user": "destructive"
+        "unfreeze_user": "destructive",
+        "restore_user_login_state": "destructive"
       },
       "unsupported": [],
       "document_prefixes": [

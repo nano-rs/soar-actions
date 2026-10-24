@@ -92,7 +92,7 @@
     },
     "freeze_user": {
       "display_name": "Freeze User",
-      "description": "Update one UserLogin IsFrozen boolean. Requires Manage Users and API access. This changes login eligibility; it does not delete the user, reclaim a license or promise existing-session revocation. Re-read via get_user_login to verify. Official endpoint reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm",
+      "description": "Read and bind the UserLogin identity first, capture prior IsFrozen, and refuse an already-requested state before PATCH. Restore only through the separately approved restore_user_login_state action with this result's user_login_id and prior_is_frozen wired as inputs; an opposite constant is not rollback. Update one UserLogin IsFrozen boolean. Requires Manage Users and API access. This changes login eligibility; it does not delete the user, reclaim a license or promise existing-session revocation. Re-read via get_user_login to verify. Official endpoint reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm",
       "effect": "destructive",
       "idempotent": false,
       "inputs": [
@@ -105,10 +105,30 @@
       ],
       "steps": [
         {
+          "id": "current",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/services/data/v68.0/sobjects/UserLogin/{{input.user_login_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "IsFrozen",
+            "json_type": "boolean",
+            "input_equals": {
+              "Id": "user_login_id"
+            },
+            "fields": {
+              "IsFrozen": false
+            }
+          }
+        },
+        {
           "id": "request",
           "request": {
             "method": "PATCH",
-            "url": "{{config.base_url}}/services/data/v68.0/sobjects/UserLogin/{{input.user_login_id}}",
+            "url": "{{config.base_url}}/services/data/v68.0/sobjects/UserLogin/{{steps.current.Id}}",
             "json": {
               "IsFrozen": true
             },
@@ -121,16 +141,22 @@
           }
         }
       ],
-      "outputs": {},
-      "output_types": {},
-      "rollback": "unfreeze_user",
+      "outputs": {
+        "user_login_id": "steps.current.Id",
+        "prior_is_frozen": "steps.current.IsFrozen"
+      },
+      "output_types": {
+        "user_login_id": "string",
+        "prior_is_frozen": "boolean"
+      },
+      "rollback": "restore_user_login_state",
       "fixtures": [
         "fixtures/freeze_user.json"
       ]
     },
     "unfreeze_user": {
       "display_name": "Unfreeze User",
-      "description": "Update one UserLogin IsFrozen boolean. Requires Manage Users and API access. This changes login eligibility; it does not delete the user, reclaim a license or promise existing-session revocation. Re-read via get_user_login to verify. Official endpoint reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm",
+      "description": "Read and bind the UserLogin identity first, capture prior IsFrozen, and refuse an already-requested state before PATCH. Restore only through the separately approved restore_user_login_state action with this result's user_login_id and prior_is_frozen wired as inputs; an opposite constant is not rollback. Update one UserLogin IsFrozen boolean. Requires Manage Users and API access. This changes login eligibility; it does not delete the user, reclaim a license or promise existing-session revocation. Re-read via get_user_login to verify. Official endpoint reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm",
       "effect": "destructive",
       "idempotent": false,
       "inputs": [
@@ -143,10 +169,30 @@
       ],
       "steps": [
         {
+          "id": "current",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/services/data/v68.0/sobjects/UserLogin/{{input.user_login_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "IsFrozen",
+            "json_type": "boolean",
+            "input_equals": {
+              "Id": "user_login_id"
+            },
+            "fields": {
+              "IsFrozen": true
+            }
+          }
+        },
+        {
           "id": "request",
           "request": {
             "method": "PATCH",
-            "url": "{{config.base_url}}/services/data/v68.0/sobjects/UserLogin/{{input.user_login_id}}",
+            "url": "{{config.base_url}}/services/data/v68.0/sobjects/UserLogin/{{steps.current.Id}}",
             "json": {
               "IsFrozen": false
             },
@@ -159,12 +205,86 @@
           }
         }
       ],
-      "outputs": {},
-      "output_types": {},
-      "rollback": "freeze_user",
+      "outputs": {
+        "user_login_id": "steps.current.Id",
+        "prior_is_frozen": "steps.current.IsFrozen"
+      },
+      "output_types": {
+        "user_login_id": "string",
+        "prior_is_frozen": "boolean"
+      },
+      "rollback": "restore_user_login_state",
       "fixtures": [
         "fixtures/unfreeze_user.json"
       ]
+    },
+    "restore_user_login_state": {
+      "display_name": "Restore captured UserLogin state",
+      "description": "Restore exactly the captured prior_is_frozen boolean for the original user_login_id from freeze_user/unfreeze_user outputs. Both inputs must be wired from the same original result and connection; do not guess a value or substitute another login. Re-read and bind the current UserLogin identity in this connection before PATCH. Requires a fresh destructive-action approval. This is explicit state restoration, not automatic rollback or session restoration. Official endpoint reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_login_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9]{15}([A-Za-z0-9]{3})?$"
+        },
+        {
+          "name": "prior_is_frozen",
+          "type": "boolean",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "current",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/services/data/v68.0/sobjects/UserLogin/{{input.user_login_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "IsFrozen",
+            "json_type": "boolean",
+            "input_equals": {
+              "Id": "user_login_id"
+            }
+          }
+        },
+        {
+          "id": "request",
+          "request": {
+            "method": "PATCH",
+            "url": "{{config.base_url}}/services/data/v68.0/sobjects/UserLogin/{{steps.current.Id}}",
+            "json": {
+              "IsFrozen": "{{input.prior_is_frozen}}"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {
+        "user_login_id": "steps.current.Id",
+        "prior_is_frozen": "steps.current.IsFrozen"
+      },
+      "output_types": {
+        "user_login_id": "string",
+        "prior_is_frozen": "boolean"
+      },
+      "fixtures": [
+        "fixtures/restore_prior_frozen.json",
+        "fixtures/restore_prior_unfrozen.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "This action restores an explicitly captured prior state. Further changes require another separately approved action with its own captured state; there is no unconditional opposite rollback."
     }
   }
 }
