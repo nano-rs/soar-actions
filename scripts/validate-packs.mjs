@@ -138,15 +138,20 @@ export function validateNative(content, names, binary, commit) {
     assert.equal(admitted, counts.actions);
     const supported = names.filter(name => fs.existsSync(path.join(subset, 'packs', name, 'pack.yaml')));
     for (const name of supported) {
-      for (const kind of ['foreign_host', 'invalid_input', 'upstream_error', 'redirect', 'body_error', 'wrong_output_type', 'undeclared_credential', 'incomplete_contract', 'missing_inverse']) {
+      const original = read(path.join(subset, 'packs', name, 'pack.yaml'));
+      const ipAction = Object.entries(original.actions).find(([, action]) => action.inputs.some(input => input.type === 'ip'));
+      const kinds = ['foreign_host', 'invalid_input', 'upstream_error', 'redirect', 'body_error', 'wrong_output_type', 'undeclared_credential', 'incomplete_contract', 'missing_inverse'];
+      if (ipAction) kinds.push('internal_ip');
+      for (const kind of kinds) {
         const candidate = path.join(temporary, name + '-' + kind);
         fs.mkdirSync(path.join(candidate, 'packs'), { recursive: true });
         fs.cpSync(path.join(subset, 'packs', name), path.join(candidate, 'packs', name), { recursive: true });
         const root = path.join(candidate, 'packs', name), file = path.join(root, 'pack.yaml');
-        const pack = read(file), actionName = Object.keys(pack.actions)[0], action = pack.actions[actionName];
+        const pack = read(file), actionName = kind === 'internal_ip' ? ipAction[0] : Object.keys(pack.actions)[0], action = pack.actions[actionName];
         const fixtureFile = path.join(root, action.fixtures[0]), fixture = read(fixtureFile);
         if (kind === 'foreign_host') action.steps[0].request.url = 'https://foreign.example.net/outside';
         if (kind === 'invalid_input') fixture.inputs[action.inputs.find(input => input.required).name] = { unexpected: 'object' };
+        if (kind === 'internal_ip') fixture.inputs[action.inputs.find(input => input.type === 'ip').name] = '10.0.0.1';
         if (kind === 'upstream_error') fixture.exchanges[0].response.status = 500;
         if (kind === 'redirect') { fixture.exchanges[0].response.status = 302; fixture.exchanges[0].response.headers = { location: 'https://foreign.example.net/outside' }; }
         if (kind === 'body_error') fixture.exchanges[0].response.body = { error: 'Vendor refused the lookup' };

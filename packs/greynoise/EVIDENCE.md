@@ -1,6 +1,6 @@
 # GreyNoise — batch=A
 
-Uses the documented Community API and `key` header; a business-email Community account is needed for key-level access. The endpoint supports routable IPv4 only, enforced by a bounded IPv4 grammar. A documented 404 containing IP/noise/riot is accepted as unobserved, with classification `unknown`; it is not a benign verdict. Invalid/auth/429/server responses fail. The Community quota is 50 searches/week shared with the Visualizer; this connection defaults to 5/day and account usage can still exhaust that allowance. There is no pagination and no asynchronous job.
+Uses the documented Community API and `key` header; a business-email Community account is needed for key-level access. The endpoint supports routable IPv4 only. The native IP artifact guard refuses private/reserved addresses before transport; public IPv6 is rejected by the provider as an invalid IPv4 lookup and never becomes a verdict. A documented 404 containing IP/noise/riot is accepted as unobserved, with classification `unknown`; it is not a benign verdict. Invalid/auth/429/server responses fail. The Community quota is 50 searches/week shared with the Visualizer; this connection defaults to 5/day and account usage can still exhaust that allowance. There is no pagination and no asynchronous job.
 
 ## Actions, permissions and official references
 
