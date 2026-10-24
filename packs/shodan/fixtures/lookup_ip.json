@@ -1,0 +1,63 @@
+{
+  "action": "lookup_ip",
+  "config": {},
+  "inputs": {
+    "ip": "8.8.8.8"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.shodan.io/shodan/host/8.8.8.8",
+        "query": {
+          "minify": "true",
+          "history": "false"
+        },
+        "auth_query_keys": [
+          "key"
+        ]
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.shodan.io",
+        "path": "/shodan/host/8.8.8.8",
+        "status": 200,
+        "body": {
+          "ip_str": "8.8.8.8",
+          "ports": [
+            53
+          ],
+          "hostnames": [
+            "dns.google"
+          ],
+          "domains": [
+            "dns.google"
+          ],
+          "org": "Google",
+          "asn": "AS15169",
+          "country_code": "US"
+        },
+        "query": {
+          "minify": "true",
+          "history": "false"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "ip": "8.8.8.8",
+    "ports": [
+      53
+    ],
+    "hostnames": [
+      "dns.google"
+    ],
+    "domains": [
+      "dns.google"
+    ],
+    "organization": "Google",
+    "asn": "AS15169"
+  },
+  "source": "https://developer.shodan.io/api#shodan-host-ip",
+  "request_evidence": "independent_http_mock"
+}

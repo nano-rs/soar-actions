@@ -1,0 +1,242 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "urlscan",
+  "display_name": "urlscan.io",
+  "description": "urlscan.io read-only threat intelligence lookups with checked JSON output types.",
+  "vendor": "urlscan.io",
+  "categories": [
+    "threat_intelligence",
+    "enrichment"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "urlscan.io",
+      "path_prefixes": [
+        "/api/v1/search",
+        "/api/v1/result"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "api-key",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "urlscan.io API key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "search_domain": {
+      "display_name": "Search existing scans by domain",
+      "description": "Search existing scans by domain. Returns typed JSON evidence from the documented lookup endpoint. Official API reference: https://docs.urlscan.io/apis/urlscan-openapi/search/searchdatasource",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "domain",
+          "type": "domain",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://urlscan.io/api/v1/search",
+            "headers": {
+              "Accept": "application/json"
+            },
+            "query": {
+              "q": "page.domain:{{input.domain}}",
+              "size": "25",
+              "datasource": "scans"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "results"
+          }
+        }
+      ],
+      "outputs": {
+        "rows": "steps.lookup.results",
+        "total_count": "steps.lookup.total",
+        "has_more": "steps.lookup.has_more"
+      },
+      "output_types": {
+        "rows": "array",
+        "total_count": "integer",
+        "has_more": "boolean"
+      },
+      "fixtures": [
+        "fixtures/search_domain.json"
+      ]
+    },
+    "search_ip": {
+      "display_name": "Search existing scans by ip",
+      "description": "Search existing scans by ip. Returns typed JSON evidence from the documented lookup endpoint. Official API reference: https://docs.urlscan.io/apis/urlscan-openapi/search/searchdatasource",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "ip",
+          "type": "ip",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://urlscan.io/api/v1/search",
+            "headers": {
+              "Accept": "application/json"
+            },
+            "query": {
+              "q": "page.ip:{{input.ip}}",
+              "size": "25",
+              "datasource": "scans"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "results"
+          }
+        }
+      ],
+      "outputs": {
+        "rows": "steps.lookup.results",
+        "total_count": "steps.lookup.total",
+        "has_more": "steps.lookup.has_more"
+      },
+      "output_types": {
+        "rows": "array",
+        "total_count": "integer",
+        "has_more": "boolean"
+      },
+      "fixtures": [
+        "fixtures/search_ip.json"
+      ]
+    },
+    "search_url": {
+      "display_name": "Search existing scans by url",
+      "description": "Search existing scans by url. Returns typed JSON evidence from the documented lookup endpoint. Official API reference: https://docs.urlscan.io/apis/urlscan-openapi/search/searchdatasource",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "url",
+          "type": "url",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://urlscan.io/api/v1/search",
+            "headers": {
+              "Accept": "application/json"
+            },
+            "query": {
+              "q": "page.url:{{json_quote input.url}}",
+              "size": "25",
+              "datasource": "scans"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "results"
+          }
+        }
+      ],
+      "outputs": {
+        "rows": "steps.lookup.results",
+        "total_count": "steps.lookup.total",
+        "has_more": "steps.lookup.has_more"
+      },
+      "output_types": {
+        "rows": "array",
+        "total_count": "integer",
+        "has_more": "boolean"
+      },
+      "fixtures": [
+        "fixtures/search_url.json"
+      ]
+    },
+    "get_result": {
+      "display_name": "Get completed scan result",
+      "description": "Get completed scan result. Returns typed JSON evidence from the documented lookup endpoint. Official API reference: https://docs.urlscan.io/apis/urlscan-openapi/scanning/getresult",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "scan_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://urlscan.io/api/v1/result/{{input.scan_id}}/",
+            "headers": {
+              "Accept": "application/json"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "task.uuid",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "scan_id": "steps.lookup.task.uuid",
+        "url": "steps.lookup.page.url",
+        "domain": "steps.lookup.page.domain",
+        "ip": "steps.lookup.page.ip",
+        "malicious_count": "steps.lookup.stats.malicious",
+        "verdicts": "steps.lookup.verdicts"
+      },
+      "output_types": {
+        "scan_id": "string",
+        "url": "string",
+        "domain": "string",
+        "ip": "string",
+        "malicious_count": "integer",
+        "verdicts": "object"
+      },
+      "fixtures": [
+        "fixtures/get_result.json"
+      ]
+    }
+  }
+}

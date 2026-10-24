@@ -1,0 +1,44 @@
+{
+  "action": "search_url",
+  "config": {},
+  "inputs": {
+    "url": "https://example.com/"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://urlscan.io/api/v1/search",
+        "query": {
+          "q": "page.url:\"https://example.com/\"",
+          "size": "25",
+          "datasource": "scans"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "urlscan.io",
+        "path": "/api/v1/search",
+        "status": 200,
+        "body": {
+          "results": [],
+          "total": 0,
+          "took": 3,
+          "has_more": false
+        },
+        "query": {
+          "q": "page.url:\"https://example.com/\"",
+          "size": "25",
+          "datasource": "scans"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "rows": [],
+    "total_count": 0,
+    "has_more": false
+  },
+  "source": "https://docs.urlscan.io/apis/urlscan-openapi/search/searchdatasource",
+  "request_evidence": "independent_http_mock"
+}

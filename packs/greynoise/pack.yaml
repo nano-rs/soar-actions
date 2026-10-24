@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "greynoise",
+  "display_name": "GreyNoise",
+  "description": "GreyNoise read-only threat intelligence lookups with checked JSON output types.",
+  "vendor": "GreyNoise",
+  "categories": [
+    "threat_intelligence",
+    "enrichment"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "api.greynoise.io",
+      "path_prefixes": [
+        "/v3/community"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "key",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "GreyNoise API key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 5,
+    "per_day": 5,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "lookup_ip": {
+      "display_name": "Look up community IPv4 context",
+      "description": "Look up community IPv4 context. Returns typed JSON evidence from the documented lookup endpoint. Official API reference: https://docs.greynoise.io/reference/getcommunityip",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "ip",
+          "type": "ip",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://api.greynoise.io/v3/community/{{input.ip}}",
+            "headers": {
+              "Accept": "application/json"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "ip",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "ip": "steps.lookup.ip",
+        "noise": "steps.lookup.noise",
+        "riot": "steps.lookup.riot",
+        "classification": "coalesce steps.lookup.classification \"unknown\"",
+        "last_seen": "coalesce steps.lookup.last_seen \"unknown\""
+      },
+      "output_types": {
+        "ip": "string",
+        "noise": "boolean",
+        "riot": "boolean",
+        "classification": "string",
+        "last_seen": "string"
+      },
+      "fixtures": [
+        "fixtures/lookup_ip.json"
+      ]
+    }
+  }
+}

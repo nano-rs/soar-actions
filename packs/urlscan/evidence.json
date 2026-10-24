@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/search_domain.json",
+      "url": "https://docs.urlscan.io/apis/urlscan-openapi/search/searchdatasource",
+      "document_url": "https://docs.urlscan.io/apis/urlscan-openapi/search/searchdatasource",
+      "document_sha256": "d4034dd64f5a017a20be744316f68c83c92dcb8a6eeef45b447b9b6c28c417ac",
+      "request": {
+        "method": "GET",
+        "url": "https://urlscan.io/api/v1/search",
+        "query": {
+          "q": "page.domain:example.com",
+          "size": "25",
+          "datasource": "scans"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "urlscan.io",
+        "path": "/api/v1/search",
+        "status": 200,
+        "body": {
+          "results": [],
+          "total": 0,
+          "took": 3,
+          "has_more": false
+        },
+        "query": {
+          "q": "page.domain:example.com",
+          "size": "25",
+          "datasource": "scans"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/search_ip.json",
+      "url": "https://docs.urlscan.io/apis/urlscan-openapi/search/searchdatasource",
+      "document_url": "https://docs.urlscan.io/apis/urlscan-openapi/search/searchdatasource",
+      "document_sha256": "d4034dd64f5a017a20be744316f68c83c92dcb8a6eeef45b447b9b6c28c417ac",
+      "request": {
+        "method": "GET",
+        "url": "https://urlscan.io/api/v1/search",
+        "query": {
+          "q": "page.ip:8.8.8.8",
+          "size": "25",
+          "datasource": "scans"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "urlscan.io",
+        "path": "/api/v1/search",
+        "status": 200,
+        "body": {
+          "results": [],
+          "total": 0,
+          "took": 3,
+          "has_more": false
+        },
+        "query": {
+          "q": "page.ip:8.8.8.8",
+          "size": "25",
+          "datasource": "scans"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/search_url.json",
+      "url": "https://docs.urlscan.io/apis/urlscan-openapi/search/searchdatasource",
+      "document_url": "https://docs.urlscan.io/apis/urlscan-openapi/search/searchdatasource",
+      "document_sha256": "d4034dd64f5a017a20be744316f68c83c92dcb8a6eeef45b447b9b6c28c417ac",
+      "request": {
+        "method": "GET",
+        "url": "https://urlscan.io/api/v1/search",
+        "query": {
+          "q": "page.url:\"https://example.com/\"",
+          "size": "25",
+          "datasource": "scans"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "urlscan.io",
+        "path": "/api/v1/search",
+        "status": 200,
+        "body": {
+          "results": [],
+          "total": 0,
+          "took": 3,
+          "has_more": false
+        },
+        "query": {
+          "q": "page.url:\"https://example.com/\"",
+          "size": "25",
+          "datasource": "scans"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/get_result.json",
+      "url": "https://docs.urlscan.io/apis/urlscan-openapi/scanning/getresult",
+      "document_url": "https://docs.urlscan.io/apis/urlscan-openapi/scanning/getresult",
+      "document_sha256": "5edbdd6285368eae128a5e0f404be6a968cacd693d6f118e4ae9d7fc80e648b2",
+      "request": {
+        "method": "GET",
+        "url": "https://urlscan.io/api/v1/result/00000000-0000-4000-8000-000000000001/"
+      },
+      "response": {
+        "method": "GET",
+        "host": "urlscan.io",
+        "path": "/api/v1/result/00000000-0000-4000-8000-000000000001/",
+        "status": 200,
+        "body": {
+          "task": {
+            "uuid": "00000000-0000-4000-8000-000000000001",
+            "url": "https://example.com/"
+          },
+          "page": {
+            "url": "https://example.com/",
+            "domain": "example.com",
+            "ip": "93.184.215.14"
+          },
+          "stats": {
+            "malicious": 0
+          },
+          "verdicts": {
+            "overall": {
+              "score": 0,
+              "malicious": false
+            }
+          }
+        }
+      }
+    }
+  ]
+}

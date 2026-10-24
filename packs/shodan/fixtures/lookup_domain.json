@@ -1,0 +1,65 @@
+{
+  "action": "lookup_domain",
+  "config": {},
+  "inputs": {
+    "domain": "example.com"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.shodan.io/dns/domain/example.com",
+        "query": {
+          "page": "1",
+          "history": "false"
+        },
+        "auth_query_keys": [
+          "key"
+        ]
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.shodan.io",
+        "path": "/dns/domain/example.com",
+        "status": 200,
+        "body": {
+          "domain": "example.com",
+          "tags": [],
+          "data": [
+            {
+              "subdomain": "www",
+              "type": "A",
+              "value": "93.184.215.14",
+              "last_seen": "2026-01-01T00:00:00+00:00"
+            }
+          ],
+          "subdomains": [
+            "www"
+          ],
+          "more": false
+        },
+        "query": {
+          "page": "1",
+          "history": "false"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "domain": "example.com",
+    "rows": [
+      {
+        "subdomain": "www",
+        "type": "A",
+        "value": "93.184.215.14",
+        "last_seen": "2026-01-01T00:00:00+00:00"
+      }
+    ],
+    "subdomains": [
+      "www"
+    ],
+    "more": false
+  },
+  "source": "https://developer.shodan.io/api#dns-domain",
+  "request_evidence": "independent_http_mock"
+}

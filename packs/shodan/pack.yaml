@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "shodan",
+  "display_name": "Shodan",
+  "description": "Shodan read-only threat intelligence lookups with checked JSON output types.",
+  "vendor": "Shodan",
+  "categories": [
+    "threat_intelligence",
+    "enrichment"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "api.shodan.io",
+      "path_prefixes": [
+        "/shodan/host",
+        "/dns/domain"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_query",
+    "param": "key",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "Shodan API key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "lookup_ip": {
+      "display_name": "Look up host service summary",
+      "description": "Look up host service summary. Returns typed JSON evidence from the documented lookup endpoint. Official API reference: https://developer.shodan.io/api#shodan-host-ip",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "ip",
+          "type": "ip",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://api.shodan.io/shodan/host/{{input.ip}}",
+            "headers": {
+              "Accept": "application/json"
+            },
+            "query": {
+              "minify": "true",
+              "history": "false"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "ip_str",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "ip": "steps.lookup.ip_str",
+        "ports": "steps.lookup.ports",
+        "hostnames": "steps.lookup.hostnames",
+        "domains": "steps.lookup.domains",
+        "organization": "steps.lookup.org",
+        "asn": "steps.lookup.asn"
+      },
+      "output_types": {
+        "ip": "string",
+        "ports": "array",
+        "hostnames": "array",
+        "domains": "array",
+        "organization": "string",
+        "asn": "string"
+      },
+      "fixtures": [
+        "fixtures/lookup_ip.json"
+      ]
+    },
+    "lookup_domain": {
+      "display_name": "Look up first page of DNS information",
+      "description": "Look up first page of DNS information. Returns typed JSON evidence from the documented lookup endpoint. Official API reference: https://developer.shodan.io/api#dns-domain",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "domain",
+          "type": "domain",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://api.shodan.io/dns/domain/{{input.domain}}",
+            "headers": {
+              "Accept": "application/json"
+            },
+            "query": {
+              "page": "1",
+              "history": "false"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "domain",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "domain": "steps.lookup.domain",
+        "rows": "steps.lookup.data",
+        "subdomains": "steps.lookup.subdomains",
+        "more": "steps.lookup.more"
+      },
+      "output_types": {
+        "domain": "string",
+        "rows": "array",
+        "subdomains": "array",
+        "more": "boolean"
+      },
+      "fixtures": [
+        "fixtures/lookup_domain.json"
+      ]
+    }
+  }
+}

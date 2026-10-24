@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/lookup_ip.json",
+      "url": "https://docs.virustotal.com/reference/ip-info",
+      "document_url": "https://docs.virustotal.com/reference/ip-info.md",
+      "document_sha256": "58b66a137d4ca1034b47b3766ddf5396af8002052b24e0744a59a4d5b0af5f4d",
+      "request": {
+        "method": "GET",
+        "url": "https://www.virustotal.com/api/v3/ip_addresses/8.8.8.8"
+      },
+      "response": {
+        "method": "GET",
+        "host": "www.virustotal.com",
+        "path": "/api/v3/ip_addresses/8.8.8.8",
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "8.8.8.8",
+            "type": "ip_address",
+            "attributes": {
+              "last_analysis_stats": {
+                "malicious": 0,
+                "suspicious": 0,
+                "harmless": 5,
+                "undetected": 3,
+                "timeout": 0
+              },
+              "reputation": 0
+            }
+          }
+        }
+      },
+      "supporting_documents": [
+        {
+          "url": "https://docs.virustotal.com/reference/ip-object.md",
+          "sha256": "5fbb141096820ee47c7ac2f145ecccbcdda4906add5b044d857f059f991334f3"
+        }
+      ]
+    },
+    {
+      "fixture": "fixtures/lookup_domain.json",
+      "url": "https://docs.virustotal.com/reference/domain-info",
+      "document_url": "https://docs.virustotal.com/reference/domain-info.md",
+      "document_sha256": "987cca58007399af9dd903e596ffa003e095f6494f3d135b8f1eed0306f9c8d3",
+      "request": {
+        "method": "GET",
+        "url": "https://www.virustotal.com/api/v3/domains/example.com"
+      },
+      "response": {
+        "method": "GET",
+        "host": "www.virustotal.com",
+        "path": "/api/v3/domains/example.com",
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "example.com",
+            "type": "domain",
+            "attributes": {
+              "last_analysis_stats": {
+                "malicious": 0,
+                "suspicious": 0,
+                "harmless": 5,
+                "undetected": 3,
+                "timeout": 0
+              },
+              "reputation": 0
+            }
+          }
+        }
+      },
+      "supporting_documents": [
+        {
+          "url": "https://docs.virustotal.com/reference/domains-object.md",
+          "sha256": "d3acbdb4a57f99648fbad3b66ec5ac59914c0252badb31bad0616e9be426de29"
+        }
+      ]
+    },
+    {
+      "fixture": "fixtures/lookup_hash.json",
+      "url": "https://docs.virustotal.com/reference/file-info",
+      "document_url": "https://docs.virustotal.com/reference/file-info.md",
+      "document_sha256": "60920b35779639629a06e72ccc7f8529b4952f4dbb89f03a25a71b8bc6cf40f5",
+      "request": {
+        "method": "GET",
+        "url": "https://www.virustotal.com/api/v3/files/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "response": {
+        "method": "GET",
+        "host": "www.virustotal.com",
+        "path": "/api/v3/files/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "type": "file",
+            "attributes": {
+              "last_analysis_stats": {
+                "malicious": 0,
+                "suspicious": 0,
+                "harmless": 5,
+                "undetected": 3,
+                "timeout": 0
+              },
+              "reputation": 0
+            }
+          }
+        }
+      },
+      "supporting_documents": [
+        {
+          "url": "https://docs.virustotal.com/reference/files.md",
+          "sha256": "4c0db189a6c6e1c8f8d6674f1cc51bcbaf8c91db6d352020d2e97ab3653155b0"
+        }
+      ]
+    },
+    {
+      "fixture": "fixtures/lookup_url.json",
+      "url": "https://docs.virustotal.com/reference/url-info",
+      "document_url": "https://docs.virustotal.com/reference/url-info.md",
+      "document_sha256": "000c014be1ec57366c52a65c36a8dfe1b550f6547c670981a80298a170f36028",
+      "request": {
+        "method": "GET",
+        "url": "https://www.virustotal.com/api/v3/urls/aHR0cHM6Ly9leGFtcGxlLmNvbS8"
+      },
+      "response": {
+        "method": "GET",
+        "host": "www.virustotal.com",
+        "path": "/api/v3/urls/aHR0cHM6Ly9leGFtcGxlLmNvbS8",
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "0f115db062b7c0dd030b16878c99dea5c354b49dc37b38eb8846179c7783e9d7",
+            "type": "url",
+            "attributes": {
+              "last_analysis_stats": {
+                "malicious": 0,
+                "suspicious": 0,
+                "harmless": 5,
+                "undetected": 3,
+                "timeout": 0
+              },
+              "reputation": 0,
+              "url": "https://example.com/"
+            }
+          }
+        }
+      },
+      "supporting_documents": [
+        {
+          "url": "https://docs.virustotal.com/reference/url-object.md",
+          "sha256": "3aafdfa7e84f304317edbbc8cd29ed1045cc2025b46137aa52dab54c4f5c57f5"
+        },
+        {
+          "url": "https://docs.virustotal.com/reference/url.md",
+          "sha256": "c3e818667524e7ab1add1195aa018ff18a5aaafdec1a4bb68e395d50f11743af"
+        }
+      ]
+    }
+  ]
+}
