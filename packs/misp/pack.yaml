@@ -297,5 +297,6 @@
         "fixtures/lookup_sha256.json"
       ]
     }
-  }
+  },
+  "deployment": "self_hosted"
 }
