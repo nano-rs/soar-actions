@@ -1,0 +1,301 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "misp",
+  "display_name": "MISP",
+  "description": "MISP explicit Read lookups with checked JSON output contracts.",
+  "vendor": "MISP",
+  "categories": [
+    "threat_intelligence",
+    "enrichment",
+    "self_hosted"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "search_endpoint",
+      "label": "Self-hosted/sovereign MISP public HTTPS attributes/restSearch endpoint",
+      "required": true,
+      "format": "https_endpoint"
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.search_endpoint}}",
+      "path_prefixes": [
+        "/attributes/restSearch"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "Authorization",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "MISP API key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "lookup_ip_source": {
+      "display_name": "Search ip-src attributes",
+      "description": "Search ip-src attributes. Reads existing provider evidence. Official API reference: https://www.misp-project.org/openapi/#tag/Attributes/operation/restSearchAttributes",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "indicator",
+          "type": "ip",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "POST",
+            "url": "{{config.search_endpoint}}",
+            "headers": {
+              "Accept": "application/json"
+            },
+            "json": {
+              "returnFormat": "json",
+              "value": "{{input.indicator}}",
+              "type": "ip-src",
+              "limit": 25,
+              "page": 1,
+              "withAttachments": false
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "response.Attribute"
+          }
+        }
+      ],
+      "outputs": {
+        "rows": "steps.lookup.response.Attribute",
+        "first_attribute_id": "coalesce steps.lookup.response.Attribute.0.id \"unknown\""
+      },
+      "output_types": {
+        "rows": "array",
+        "first_attribute_id": "string"
+      },
+      "fixtures": [
+        "fixtures/lookup_ip_source.json"
+      ]
+    },
+    "lookup_ip_destination": {
+      "display_name": "Search ip-dst attributes",
+      "description": "Search ip-dst attributes. Reads existing provider evidence. Official API reference: https://www.misp-project.org/openapi/#tag/Attributes/operation/restSearchAttributes",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "indicator",
+          "type": "ip",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "POST",
+            "url": "{{config.search_endpoint}}",
+            "headers": {
+              "Accept": "application/json"
+            },
+            "json": {
+              "returnFormat": "json",
+              "value": "{{input.indicator}}",
+              "type": "ip-dst",
+              "limit": 25,
+              "page": 1,
+              "withAttachments": false
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "response.Attribute"
+          }
+        }
+      ],
+      "outputs": {
+        "rows": "steps.lookup.response.Attribute",
+        "first_attribute_id": "coalesce steps.lookup.response.Attribute.0.id \"unknown\""
+      },
+      "output_types": {
+        "rows": "array",
+        "first_attribute_id": "string"
+      },
+      "fixtures": [
+        "fixtures/lookup_ip_destination.json"
+      ]
+    },
+    "lookup_domain": {
+      "display_name": "Search domain attributes",
+      "description": "Search domain attributes. Reads existing provider evidence. Official API reference: https://www.misp-project.org/openapi/#tag/Attributes/operation/restSearchAttributes",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "indicator",
+          "type": "domain",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "POST",
+            "url": "{{config.search_endpoint}}",
+            "headers": {
+              "Accept": "application/json"
+            },
+            "json": {
+              "returnFormat": "json",
+              "value": "{{input.indicator}}",
+              "type": "domain",
+              "limit": 25,
+              "page": 1,
+              "withAttachments": false
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "response.Attribute"
+          }
+        }
+      ],
+      "outputs": {
+        "rows": "steps.lookup.response.Attribute",
+        "first_attribute_id": "coalesce steps.lookup.response.Attribute.0.id \"unknown\""
+      },
+      "output_types": {
+        "rows": "array",
+        "first_attribute_id": "string"
+      },
+      "fixtures": [
+        "fixtures/lookup_domain.json"
+      ]
+    },
+    "lookup_url": {
+      "display_name": "Search url attributes",
+      "description": "Search url attributes. Reads existing provider evidence. Official API reference: https://www.misp-project.org/openapi/#tag/Attributes/operation/restSearchAttributes",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "indicator",
+          "type": "url",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "POST",
+            "url": "{{config.search_endpoint}}",
+            "headers": {
+              "Accept": "application/json"
+            },
+            "json": {
+              "returnFormat": "json",
+              "value": "{{input.indicator}}",
+              "type": "url",
+              "limit": 25,
+              "page": 1,
+              "withAttachments": false
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "response.Attribute"
+          }
+        }
+      ],
+      "outputs": {
+        "rows": "steps.lookup.response.Attribute",
+        "first_attribute_id": "coalesce steps.lookup.response.Attribute.0.id \"unknown\""
+      },
+      "output_types": {
+        "rows": "array",
+        "first_attribute_id": "string"
+      },
+      "fixtures": [
+        "fixtures/lookup_url.json"
+      ]
+    },
+    "lookup_sha256": {
+      "display_name": "Search sha256 attributes",
+      "description": "Search sha256 attributes. Reads existing provider evidence. Official API reference: https://www.misp-project.org/openapi/#tag/Attributes/operation/restSearchAttributes",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "indicator",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "POST",
+            "url": "{{config.search_endpoint}}",
+            "headers": {
+              "Accept": "application/json"
+            },
+            "json": {
+              "returnFormat": "json",
+              "value": "{{input.indicator}}",
+              "type": "sha256",
+              "limit": 25,
+              "page": 1,
+              "withAttachments": false
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "response.Attribute"
+          }
+        }
+      ],
+      "outputs": {
+        "rows": "steps.lookup.response.Attribute",
+        "first_attribute_id": "coalesce steps.lookup.response.Attribute.0.id \"unknown\""
+      },
+      "output_types": {
+        "rows": "array",
+        "first_attribute_id": "string"
+      },
+      "fixtures": [
+        "fixtures/lookup_sha256.json"
+      ]
+    }
+  }
+}

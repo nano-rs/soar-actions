@@ -1,0 +1,50 @@
+{
+  "action": "lookup_email",
+  "config": {},
+  "inputs": {
+    "email": "account-exists@hibp-integration-tests.com"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://haveibeenpwned.com/api/v3/breachedaccount/account-exists%40hibp-integration-tests.com",
+        "query": {
+          "truncateResponse": "true",
+          "includeUnverified": "false"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "haveibeenpwned.com",
+        "path": "/api/v3/breachedaccount/account-exists%40hibp-integration-tests.com",
+        "status": 200,
+        "body": [
+          {
+            "Name": "Adobe"
+          },
+          {
+            "Name": "Gawker"
+          }
+        ],
+        "query": {
+          "truncateResponse": "true",
+          "includeUnverified": "false"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "rows": [
+      {
+        "Name": "Adobe"
+      },
+      {
+        "Name": "Gawker"
+      }
+    ],
+    "first_breach": "Adobe"
+  },
+  "source": "https://haveibeenpwned.com/API/v3#BreachesForAccount",
+  "request_evidence": "independent_http_mock"
+}

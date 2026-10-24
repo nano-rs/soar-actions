@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "have_i_been_pwned",
+  "display_name": "Have I Been Pwned",
+  "description": "Have I Been Pwned explicit Read lookups with checked JSON output contracts.",
+  "vendor": "Have I Been Pwned",
+  "categories": [
+    "threat_intelligence",
+    "enrichment"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "haveibeenpwned.com",
+      "path_prefixes": [
+        "/api/v3/breachedaccount"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "hibp-api-key",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "Have I Been Pwned API key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 5,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "lookup_email": {
+      "display_name": "Look up breach names for an email",
+      "description": "Look up breach names for an email. Reads existing provider evidence. Official API reference: https://haveibeenpwned.com/API/v3#BreachesForAccount",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "email",
+          "type": "email",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://haveibeenpwned.com/api/v3/breachedaccount/{{input.email}}",
+            "headers": {
+              "Accept": "application/json",
+              "User-Agent": "nano-soar-actions"
+            },
+            "query": {
+              "truncateResponse": "true",
+              "includeUnverified": "false"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "0.Name",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "rows": "steps.lookup",
+        "first_breach": "steps.lookup.0.Name"
+      },
+      "output_types": {
+        "rows": "array",
+        "first_breach": "string"
+      },
+      "fixtures": [
+        "fixtures/lookup_email.json"
+      ]
+    }
+  }
+}

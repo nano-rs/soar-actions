@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/lookup_email.json",
+      "url": "https://haveibeenpwned.com/API/v3#BreachesForAccount",
+      "document_url": "https://haveibeenpwned.com/API/v3",
+      "document_sha256": "8a2c19ed38956befc271ffdb578559b476e0fc2183ee222cf11db137e512bce2",
+      "request": {
+        "method": "GET",
+        "url": "https://haveibeenpwned.com/api/v3/breachedaccount/account-exists%40hibp-integration-tests.com",
+        "query": {
+          "truncateResponse": "true",
+          "includeUnverified": "false"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "haveibeenpwned.com",
+        "path": "/api/v3/breachedaccount/account-exists%40hibp-integration-tests.com",
+        "status": 200,
+        "body": [
+          {
+            "Name": "Adobe"
+          },
+          {
+            "Name": "Gawker"
+          }
+        ],
+        "query": {
+          "truncateResponse": "true",
+          "includeUnverified": "false"
+        }
+      }
+    }
+  ]
+}
