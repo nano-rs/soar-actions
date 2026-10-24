@@ -1,0 +1,355 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "jamf_pro",
+  "display_name": "Jamf Pro",
+  "description": "Jamf Pro bounded native response actions. Mutations require explicit approval; receipts do not establish asynchronous completion.",
+  "vendor": "Jamf Pro",
+  "categories": [
+    "device_management"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Jamf Pro Cloud HTTPS origin (.jamfcloud.com)",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/api/oauth/token",
+        "/api/v4/computers-inventory",
+        "/api/v2/mdm/commands"
+      ],
+      "host_suffixes": [
+        ".jamfcloud.com"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "oauth2_json_credential",
+    "oauth2": {
+      "token_url": "{{config.base_url}}/api/oauth/token",
+      "client_id_credential": "CLIENT_ID",
+      "client_secret_credential": "CLIENT_SECRET"
+    },
+    "credential": "LOCK_PIN",
+    "field_pointer": "/commandData/pin",
+    "selector_pointer": "/commandData/commandType",
+    "selector_value": "DEVICE_LOCK",
+    "format": "six_digit_pin"
+  },
+  "credentials": [
+    {
+      "name": "CLIENT_ID",
+      "label": "Jamf API client ID"
+    },
+    {
+      "name": "CLIENT_SECRET",
+      "label": "Jamf API client secret"
+    },
+    {
+      "name": "LOCK_PIN",
+      "label": "Six-digit device unlock PIN (native credential; required by this connection)",
+      "required": true
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 30
+  },
+  "actions": {
+    "get_computer": {
+      "display_name": "Get computer inventory",
+      "description": "Get the General section of one computer using the current v4 inventory endpoint. Requires Read Computers. The General data includes the management ID used by MDM commands; inventory record IDs are not substituted for management IDs. Official endpoint reference: https://developer.jamf.com/jamf-pro/reference/get_v4-computers-inventory-id",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "computer_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[1-9][0-9]{0,9}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v4/computers-inventory/{{input.computer_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "computer_id": "steps.request.id",
+        "computer": "steps.request"
+      },
+      "output_types": {
+        "computer_id": "string",
+        "computer": "object"
+      },
+      "fixtures": [
+        "fixtures/get_computer.json"
+      ]
+    },
+    "lock_computer": {
+      "display_name": "Lock Computer",
+      "description": "First read the selected identity in this same approved connection/run and require exact nonempty string identity matches; missing or unrelated evidence refuses before command dispatch. Queue one fixed MDM command for the management UUID returned for the selected inventory record. Requires Read Computers for identity lookup plus View MDM command information plus permission to send the selected command. A nonempty first command ID and typed receipt array are required; all returned receipts are preserved. HTTP 201 means queued, not completed. A device lock has no generic remote device-unlock inverse. The authorized operator must retain the transient unlock PIN and use the supported physical unlock procedure; the PIN is held in native credential storage and injected only into DEVICE_LOCK requests. Official endpoint reference: https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "computer_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[1-9][0-9]{0,9}$"
+        },
+        {
+          "name": "management_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "identity",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v4/computers-inventory/{{input.computer_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true,
+            "input_equals": {
+              "id": "computer_id",
+              "general.managementId": "management_id"
+            }
+          }
+        },
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/v2/mdm/commands",
+            "json": {
+              "clientData": [
+                {
+                  "managementId": "{{steps.identity.general.managementId}}"
+                }
+              ],
+              "commandData": {
+                "commandType": "DEVICE_LOCK"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "0.id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "command_id": "steps.request.0.id",
+        "receipt_url": "steps.request.0.href",
+        "receipts": "steps.request"
+      },
+      "output_types": {
+        "command_id": "string",
+        "receipt_url": "string",
+        "receipts": "array"
+      },
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "A device lock has no generic remote device-unlock inverse. The authorized operator must retain the transient unlock PIN and use the supported physical unlock procedure; the PIN is held in native credential storage and injected only into DEVICE_LOCK requests.",
+      "fixtures": [
+        "fixtures/lock_computer.json"
+      ]
+    },
+    "unlock_user_account": {
+      "display_name": "Unlock User Account",
+      "description": "First read the selected identity in this same approved connection/run and require exact nonempty string identity matches; missing or unrelated evidence refuses before command dispatch. Queue one fixed MDM command for the management UUID returned for the selected inventory record. Requires Read Computers for identity lookup plus View MDM command information plus permission to send the selected command. A nonempty first command ID and typed receipt array are required; all returned receipts are preserved. HTTP 201 means queued, not completed. Unlocking a local user account is not an inverse for DEVICE_LOCK. There is no paired MDM lock-user-account operation in this pack. Official endpoint reference: https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "computer_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[1-9][0-9]{0,9}$"
+        },
+        {
+          "name": "management_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "user_name",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9._-]{1,64}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "identity",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v4/computers-inventory/{{input.computer_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true,
+            "input_equals": {
+              "id": "computer_id",
+              "general.managementId": "management_id"
+            }
+          }
+        },
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/v2/mdm/commands",
+            "json": {
+              "clientData": [
+                {
+                  "managementId": "{{steps.identity.general.managementId}}"
+                }
+              ],
+              "commandData": {
+                "commandType": "UNLOCK_USER_ACCOUNT",
+                "userName": "{{input.user_name}}"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "0.id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "command_id": "steps.request.0.id",
+        "receipt_url": "steps.request.0.href",
+        "receipts": "steps.request"
+      },
+      "output_types": {
+        "command_id": "string",
+        "receipt_url": "string",
+        "receipts": "array"
+      },
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Unlocking a local user account is not an inverse for DEVICE_LOCK. There is no paired MDM lock-user-account operation in this pack.",
+      "fixtures": [
+        "fixtures/unlock_user_account.json"
+      ]
+    },
+    "restart_computer": {
+      "display_name": "Restart Computer",
+      "description": "First read the selected identity in this same approved connection/run and require exact nonempty string identity matches; missing or unrelated evidence refuses before command dispatch. Queue one fixed MDM command for the management UUID returned for the selected inventory record. Requires Read Computers for identity lookup plus View MDM command information plus permission to send the selected command. A nonempty first command ID and typed receipt array are required; all returned receipts are preserved. HTTP 201 means queued, not completed. A queued restart cannot be recalled or undone; this pack exposes no arbitrary command string. Official endpoint reference: https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "computer_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[1-9][0-9]{0,9}$"
+        },
+        {
+          "name": "management_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "identity",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v4/computers-inventory/{{input.computer_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true,
+            "input_equals": {
+              "id": "computer_id",
+              "general.managementId": "management_id"
+            }
+          }
+        },
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/v2/mdm/commands",
+            "json": {
+              "clientData": [
+                {
+                  "managementId": "{{steps.identity.general.managementId}}"
+                }
+              ],
+              "commandData": {
+                "commandType": "RESTART_DEVICE",
+                "notifyUser": true
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "0.id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "command_id": "steps.request.0.id",
+        "receipt_url": "steps.request.0.href",
+        "receipts": "steps.request"
+      },
+      "output_types": {
+        "command_id": "string",
+        "receipt_url": "string",
+        "receipts": "array"
+      },
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "A queued restart cannot be recalled or undone; this pack exposes no arbitrary command string.",
+      "fixtures": [
+        "fixtures/restart_computer.json"
+      ]
+    }
+  }
+}

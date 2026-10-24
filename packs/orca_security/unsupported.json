@@ -1,0 +1,14 @@
+{
+  "get_alerts": {
+    "reason": "The official reference redirects to Orca region-selection/login, without an accessible endpoint request/response schema. XSOAR commands are selection references only. No runtime endpoint or response shape is guessed.",
+    "documentation": [
+      "https://docs.orcasecurity.io/docs/api"
+    ]
+  },
+  "update_alert_status": {
+    "reason": "The official reference redirects to Orca region-selection/login, without an accessible endpoint request/response schema. XSOAR commands are selection references only. No runtime endpoint or response shape is guessed.",
+    "documentation": [
+      "https://docs.orcasecurity.io/docs/api"
+    ]
+  }
+}

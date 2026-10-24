@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "kandji",
+  "display_name": "Kandji",
+  "description": "Kandji bounded native response actions. Mutations require explicit approval; receipts do not establish asynchronous completion.",
+  "vendor": "Kandji",
+  "categories": [
+    "device_management"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Kandji API HTTPS origin (.api.kandji.io)",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/api/v1/devices"
+      ],
+      "host_suffixes": [
+        ".api.kandji.io"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "API_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "API_TOKEN",
+      "label": "Kandji API token with device Read permission"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 30
+  },
+  "actions": {
+    "get_device": {
+      "display_name": "Get device",
+      "description": "Get one device from the documented Kandji/Iru API. Optional fields remain in the typed device object; no command or unlock PIN is requested. Official endpoint reference: https://api-docs.iru.com/",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "device_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v1/devices/{{input.device_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "device_id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "device_id": "steps.request.device_id",
+        "device": "steps.request"
+      },
+      "output_types": {
+        "device_id": "string",
+        "device": "object"
+      },
+      "fixtures": [
+        "fixtures/get_device.json"
+      ]
+    },
+    "list_devices": {
+      "display_name": "List one device page",
+      "description": "Return at most 100 device records from one explicit offset page. The documented limit is at most 300; this pack uses 100. Empty pages are valid. This is not a complete inventory and does not follow response-supplied URLs. Official endpoint reference: https://api-docs.iru.com/",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "offset",
+          "type": "string",
+          "required": true,
+          "pattern": "^(0|[1-9][0-9]{0,6})$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v1/devices",
+            "query": {
+              "limit": "100",
+              "offset": "{{input.offset}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "",
+            "json_type": "array"
+          }
+        }
+      ],
+      "outputs": {
+        "devices": "steps.request"
+      },
+      "output_types": {
+        "devices": "array"
+      },
+      "fixtures": [
+        "fixtures/list_devices.json"
+      ]
+    }
+  }
+}

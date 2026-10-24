@@ -1,0 +1,9 @@
+{
+  "unlock_computer": {
+    "reason": "The official API documents DEVICE_LOCK and UNLOCK_USER_ACCOUNT, but no generic inverse that remotely unlocks a DEVICE_LOCK computer. Local user-account unlock is a different operation. No invented device-unlock command or inverse is executable.",
+    "documentation": [
+      "https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
+      "https://developer.jamf.com/jamf-pro/reference/computercommands"
+    ]
+  }
+}

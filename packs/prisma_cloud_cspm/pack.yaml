@@ -1,0 +1,224 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "prisma_cloud_cspm",
+  "display_name": "Prisma Cloud CSPM",
+  "description": "Prisma Cloud CSPM bounded native response actions. Mutations require explicit approval; receipts do not establish asynchronous completion.",
+  "vendor": "Prisma Cloud CSPM",
+  "categories": [
+    "cloud_security"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Prisma Cloud API region",
+      "required": true,
+      "default": "https://api.prismacloud.io",
+      "one_of": [
+        "https://api.prismacloud.io",
+        "https://api2.prismacloud.io",
+        "https://api3.prismacloud.io",
+        "https://api4.prismacloud.io",
+        "https://api.anz.prismacloud.io",
+        "https://api.eu.prismacloud.io",
+        "https://api2.eu.prismacloud.io",
+        "https://api.gov.prismacloud.io",
+        "https://api.prismacloud.cn",
+        "https://api.ca.prismacloud.io",
+        "https://api.sg.prismacloud.io",
+        "https://api.uk.prismacloud.io",
+        "https://api.ind.prismacloud.io",
+        "https://api.jp.prismacloud.io",
+        "https://api.fr.prismacloud.io"
+      ]
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/login",
+        "/alert"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "session_login",
+    "login_url": "{{config.base_url}}/login",
+    "credential_fields": {
+      "username": "ACCESS_KEY_ID",
+      "password": "SECRET_KEY"
+    },
+    "encoding": "json",
+    "response": {
+      "type": "json_token",
+      "pointer": "/token",
+      "header": "x-redlock-auth"
+    },
+    "expires_in_secs": 540
+  },
+  "credentials": [
+    {
+      "name": "ACCESS_KEY_ID",
+      "label": "Prisma Cloud access key ID"
+    },
+    {
+      "name": "SECRET_KEY",
+      "label": "Prisma Cloud secret key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 30
+  },
+  "actions": {
+    "get_alert": {
+      "display_name": "Get alert",
+      "description": "Get one CSPM alert by ID. Returns structured evidence only; there is no remediation or asset mutation. Official endpoint reference: https://pan.dev/prisma-cloud/api/cspm/get-alert/",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "alert_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/alert/{{input.alert_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "alert_id": "steps.request.id",
+        "alert": "steps.request"
+      },
+      "output_types": {
+        "alert_id": "string",
+        "alert": "object"
+      },
+      "fixtures": [
+        "fixtures/get_alert.json"
+      ]
+    },
+    "dismiss_alert": {
+      "display_name": "Dismiss Alert",
+      "description": "Change one explicit alert ID only. The required filter supplies an epoch-to-now range, and no policy IDs or broad user-controlled filters are accepted. Dismissal has no snooze interval. A 200 response acknowledges the requested status update; re-read the alert to verify state. Official endpoint reference: https://pan.dev/prisma-cloud/api/cspm/dismiss-alerts/ Only the expected empty 200 acknowledgment body is accepted; an unexpected nonempty body leaves the mutation unverified.",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "alert_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "required": true,
+          "pattern": "^[\\s\\S]{1,1024}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/alert/dismiss",
+            "json": {
+              "alerts": [
+                "{{input.alert_id}}"
+              ],
+              "filter": {
+                "timeRange": {
+                  "type": "to_now",
+                  "value": "EPOCH"
+                }
+              },
+              "dismissalNote": "{{input.reason}}"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "text",
+            "equals": ""
+          }
+        }
+      ],
+      "outputs": {},
+      "output_types": {},
+      "rollback": "reopen_alert",
+      "fixtures": [
+        "fixtures/dismiss_alert.json"
+      ]
+    },
+    "reopen_alert": {
+      "display_name": "Reopen Alert",
+      "description": "Change one explicit alert ID only. The required filter supplies an epoch-to-now range, and no policy IDs or broad user-controlled filters are accepted. Dismissal has no snooze interval. A 200 response acknowledges the requested status update; re-read the alert to verify state. Official endpoint reference: https://pan.dev/prisma-cloud/api/cspm/reopen-alerts/ Only the expected empty 200 acknowledgment body is accepted; an unexpected nonempty body leaves the mutation unverified.",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "alert_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/alert/reopen",
+            "json": {
+              "alerts": [
+                "{{input.alert_id}}"
+              ],
+              "filter": {
+                "timeRange": {
+                  "type": "to_now",
+                  "value": "EPOCH"
+                }
+              }
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "text",
+            "equals": ""
+          }
+        }
+      ],
+      "outputs": {},
+      "output_types": {},
+      "rollback": "dismiss_alert",
+      "fixtures": [
+        "fixtures/reopen_alert.json"
+      ]
+    }
+  }
+}

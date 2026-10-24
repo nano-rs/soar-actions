@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_device.json",
+      "url": "https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-get?view=graph-rest-1.0",
+      "document_url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/main/api-reference/v1.0/api/intune-devices-manageddevice-get.md",
+      "document_sha256": "5798c385fb090ff7f9821be1c601f7afa4af2e42d2273ebdca846a2b745b2a81",
+      "request": {
+        "method": "GET",
+        "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001"
+      },
+      "response": {
+        "method": "GET",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001",
+        "status": 200,
+        "body": {
+          "id": "00000000-0000-4000-8000-000000000001",
+          "deviceName": "nano-example-device",
+          "operatingSystem": "Windows",
+          "managementState": "managed",
+          "complianceState": "compliant"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/remote_lock.json",
+      "url": "https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-remotelock?view=graph-rest-1.0",
+      "document_url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/main/api-reference/v1.0/api/intune-devices-manageddevice-remotelock.md",
+      "document_sha256": "65fff03b113e8f3f6c77fc20f88d4928eed03345262b9d4bcc1eff9865bc15ae",
+      "request": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001/remoteLock"
+      },
+      "response": {
+        "method": "POST",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001/remoteLock",
+        "status": 204,
+        "body": ""
+      },
+      "prerequisites": [
+        {
+          "fixture": "fixtures/get_device.json",
+          "url": "https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-get?view=graph-rest-1.0",
+          "document_url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/main/api-reference/v1.0/api/intune-devices-manageddevice-get.md",
+          "document_sha256": "5798c385fb090ff7f9821be1c601f7afa4af2e42d2273ebdca846a2b745b2a81",
+          "request": {
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001"
+          },
+          "response": {
+            "method": "GET",
+            "host": "graph.microsoft.com",
+            "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001",
+            "status": 200,
+            "body": {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "deviceName": "nano-example-device",
+              "operatingSystem": "Windows",
+              "managementState": "managed",
+              "complianceState": "compliant"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "fixture": "fixtures/wipe.json",
+      "url": "https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-wipe?view=graph-rest-1.0",
+      "document_url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/main/api-reference/v1.0/api/intune-devices-manageddevice-wipe.md",
+      "document_sha256": "839f006eca779cf7f2597f2ee077dc7a60468a1244fd0a3fe62bb5a2fd88327d",
+      "request": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001/wipe",
+        "json": {
+          "keepEnrollmentData": false,
+          "keepUserData": false
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001/wipe",
+        "status": 204,
+        "body": ""
+      },
+      "prerequisites": [
+        {
+          "fixture": "fixtures/get_device.json",
+          "url": "https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-get?view=graph-rest-1.0",
+          "document_url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/main/api-reference/v1.0/api/intune-devices-manageddevice-get.md",
+          "document_sha256": "5798c385fb090ff7f9821be1c601f7afa4af2e42d2273ebdca846a2b745b2a81",
+          "request": {
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001"
+          },
+          "response": {
+            "method": "GET",
+            "host": "graph.microsoft.com",
+            "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001",
+            "status": 200,
+            "body": {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "deviceName": "nano-example-device",
+              "operatingSystem": "Windows",
+              "managementState": "managed",
+              "complianceState": "compliant"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "fixture": "fixtures/retire.json",
+      "url": "https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-retire?view=graph-rest-1.0",
+      "document_url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/main/api-reference/v1.0/api/intune-devices-manageddevice-retire.md",
+      "document_sha256": "77e7fb13a3b4dd31036dda2d8ef767a0eb870ddc7e08e36e98e7ed7cbdfeb4f1",
+      "request": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001/retire"
+      },
+      "response": {
+        "method": "POST",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001/retire",
+        "status": 204,
+        "body": ""
+      },
+      "prerequisites": [
+        {
+          "fixture": "fixtures/get_device.json",
+          "url": "https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-get?view=graph-rest-1.0",
+          "document_url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/main/api-reference/v1.0/api/intune-devices-manageddevice-get.md",
+          "document_sha256": "5798c385fb090ff7f9821be1c601f7afa4af2e42d2273ebdca846a2b745b2a81",
+          "request": {
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001"
+          },
+          "response": {
+            "method": "GET",
+            "host": "graph.microsoft.com",
+            "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001",
+            "status": 200,
+            "body": {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "deviceName": "nano-example-device",
+              "operatingSystem": "Windows",
+              "managementState": "managed",
+              "complianceState": "compliant"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

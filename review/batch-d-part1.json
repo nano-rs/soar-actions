@@ -1,0 +1,12 @@
+{
+  "batch": "D",
+  "part": 1,
+  "vendors": {
+    "microsoft_intune": {"actions":{"get_device":"read","remote_lock":"destructive","wipe":"destructive","retire":"destructive"},"unsupported":[],"document_prefixes":["https://learn.microsoft.com/","https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/"]},
+    "jamf_pro": {"actions":{"get_computer":"read","lock_computer":"destructive","unlock_user_account":"destructive","restart_computer":"destructive"},"unsupported":["unlock_computer"],"document_prefixes":["https://developer.jamf.com/"]},
+    "kandji": {"actions":{"get_device":"read","list_devices":"read"},"unsupported":[],"document_prefixes":["https://api-docs.iru.com/"]},
+    "prisma_cloud_cspm": {"actions":{"get_alert":"read","dismiss_alert":"destructive","reopen_alert":"destructive"},"unsupported":[],"document_prefixes":["https://pan.dev/","https://raw.githubusercontent.com/PaloAltoNetworks/pan.dev/"]},
+    "wiz": {"actions":{},"unsupported":["get_issues","get_vulnerabilities","update_issue_status"],"document_prefixes":["https://docs.wiz.io/"]},
+    "orca_security": {"actions":{},"unsupported":["get_alerts","update_alert_status"],"document_prefixes":["https://docs.orcasecurity.io/"]}
+  }
+}
