@@ -1,0 +1,38 @@
+{
+  "action": "get_user",
+  "config": {},
+  "inputs": {
+    "user_id": "1234567890"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.box.com/2.0/users/1234567890"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.box.com",
+        "path": "/2.0/users/1234567890",
+        "status": 200,
+        "body": {
+          "type": "user",
+          "id": "1234567890",
+          "name": "Synthetic User",
+          "login": "nano-example@example.invalid"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "user_id": "1234567890",
+    "user": {
+      "type": "user",
+      "id": "1234567890",
+      "name": "Synthetic User",
+      "login": "nano-example@example.invalid"
+    }
+  },
+  "source": "https://developer.box.com/reference/get-users-id/",
+  "request_evidence": "independent_http_mock"
+}

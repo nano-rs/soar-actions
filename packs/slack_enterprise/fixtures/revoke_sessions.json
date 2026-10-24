@@ -1,0 +1,32 @@
+{
+  "action": "revoke_sessions",
+  "config": {},
+  "inputs": {
+    "user_id": "U0NANOEXAMPLE"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://slack.com/api/admin.users.session.reset",
+        "form": {
+          "user_id": "U0NANOEXAMPLE"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "slack.com",
+        "path": "/api/admin.users.session.reset",
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "ok": true
+  },
+  "source": "https://docs.slack.dev/reference/methods/admin.users.session.reset/",
+  "request_evidence": "independent_http_mock"
+}

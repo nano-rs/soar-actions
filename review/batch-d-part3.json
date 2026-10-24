@@ -1,0 +1,28 @@
+{
+  "batch": "D",
+  "part": 3,
+  "vendors": {
+    "slack_enterprise": {
+      "actions": {
+        "get_user": "read",
+        "revoke_sessions": "destructive"
+      },
+      "unsupported": [],
+      "document_prefixes": [
+        "https://docs.slack.dev/",
+        "https://raw.githubusercontent.com/slackapi/"
+      ]
+    },
+    "box": {
+      "actions": {
+        "get_user": "read",
+        "end_sessions": "destructive"
+      },
+      "unsupported": [],
+      "document_prefixes": [
+        "https://developer.box.com/",
+        "https://raw.githubusercontent.com/box/"
+      ]
+    }
+  }
+}
