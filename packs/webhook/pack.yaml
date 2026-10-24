@@ -3,7 +3,7 @@
   "kind": "action_pack",
   "name": "webhook",
   "display_name": "Signed HTTPS case notifications",
-  "description": "Signed HTTPS case notifications. Notifications require approval. Uncertain mutations are never automatically resent.",
+  "description": "Signed HTTPS case notifications. Notification writes follow the flow approval policy; AI and API/agent-key runs require approval. Uncertain mutations are never automatically resent.",
   "vendor": "nano",
   "categories": [
     "notifications"
@@ -53,7 +53,7 @@
     "post": {
       "display_name": "POST a signed case notification",
       "description": "POST bounded JSON to the exact connection endpoint with native HMAC-SHA256. No script or secret template. Success means an HTTP receipt only. POST semantics: https://www.rfc-editor.org/rfc/rfc9110.txt",
-      "effect": "destructive",
+      "effect": "write",
       "idempotent": false,
       "inputs": [
         {

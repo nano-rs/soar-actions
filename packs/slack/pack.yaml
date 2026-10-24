@@ -3,7 +3,7 @@
   "kind": "action_pack",
   "name": "slack",
   "display_name": "Slack channel notifications",
-  "description": "Slack channel notifications. Notifications require approval. Uncertain mutations are never automatically resent.",
+  "description": "Slack channel notifications. Notification writes follow the flow approval policy; AI and API/agent-key runs require approval. Uncertain mutations are never automatically resent.",
   "vendor": "Slack",
   "categories": [
     "notifications"
@@ -39,7 +39,7 @@
     "post_message": {
       "display_name": "Post a plain-text channel message",
       "description": "Post plain text with markup and link/media unfurling disabled. Requires bot channel membership and chat:write, HTTP 200, ok=true and a message timestamp. API reference: https://docs.slack.dev/reference/methods/chat.postMessage/",
-      "effect": "destructive",
+      "effect": "write",
       "idempotent": false,
       "inputs": [
         {

@@ -3,7 +3,7 @@
   "kind": "action_pack",
   "name": "pagerduty",
   "display_name": "PagerDuty Events API v2 notifications",
-  "description": "PagerDuty Events API v2 notifications. Notifications require approval. Uncertain mutations are never automatically resent.",
+  "description": "PagerDuty Events API v2 notifications. Notification writes follow the flow approval policy; AI and API/agent-key runs require approval. Uncertain mutations are never automatically resent.",
   "vendor": "PagerDuty",
   "categories": [
     "notifications"
@@ -40,7 +40,7 @@
     "trigger": {
       "display_name": "trigger an event for a case",
       "description": "Submit trigger with dedup_key equal to the required case_id. A 202 success receipt proves acceptance, not incident completion or delivery to an on-call user. API schema: https://raw.githubusercontent.com/PagerDuty/api-schema/main/reference/events-v2/openapiv3.json",
-      "effect": "destructive",
+      "effect": "write",
       "idempotent": false,
       "inputs": [
         {
@@ -103,7 +103,7 @@
     "acknowledge": {
       "display_name": "acknowledge an event for a case",
       "description": "Submit acknowledge with dedup_key equal to the required case_id. A 202 success receipt proves acceptance, not incident completion or delivery to an on-call user. API schema: https://raw.githubusercontent.com/PagerDuty/api-schema/main/reference/events-v2/openapiv3.json",
-      "effect": "destructive",
+      "effect": "write",
       "idempotent": false,
       "inputs": [
         {
@@ -149,7 +149,7 @@
     "resolve": {
       "display_name": "resolve an event for a case",
       "description": "Submit resolve with dedup_key equal to the required case_id. A 202 success receipt proves acceptance, not incident completion or delivery to an on-call user. API schema: https://raw.githubusercontent.com/PagerDuty/api-schema/main/reference/events-v2/openapiv3.json",
-      "effect": "destructive",
+      "effect": "write",
       "idempotent": false,
       "inputs": [
         {
