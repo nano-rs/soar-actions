@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_case.json",
+      "url": "https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "document_url": "https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "document_sha256": "b8b114516c397fda6dd5f937a7ffbf8076ccdff6c8b75177b9cd352f8e56f372",
+      "request": {
+        "method": "GET",
+        "url": "https://thehive.customer.internal/api/v1/case/~123456789"
+      },
+      "response": {
+        "method": "GET",
+        "host": "thehive.customer.internal",
+        "path": "/api/v1/case/~123456789",
+        "status": 200,
+        "body": {
+          "_id": "~123456789",
+          "_type": "Case",
+          "number": 42,
+          "title": "Suspicious Ransomware Activity",
+          "description": "File encryption via PowerShell script detected on multiple workstations.",
+          "severity": 3,
+          "status": "New",
+          "stage": "New"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/create_case.json",
+      "url": "https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "document_url": "https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "document_sha256": "b8b114516c397fda6dd5f937a7ffbf8076ccdff6c8b75177b9cd352f8e56f372",
+      "request": {
+        "method": "POST",
+        "url": "https://thehive.customer.internal/api/v1/case",
+        "json": {
+          "title": "Suspicious Ransomware Activity",
+          "description": "File encryption via PowerShell script detected on multiple workstations.\nExample investigation note.",
+          "severity": 2,
+          "tlp": 2,
+          "pap": 2
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "thehive.customer.internal",
+        "path": "/api/v1/case",
+        "status": 201,
+        "body": {
+          "_id": "~123456789",
+          "_type": "Case",
+          "number": 42,
+          "title": "Suspicious Ransomware Activity",
+          "description": "File encryption via PowerShell script detected on multiple workstations.",
+          "severity": 3,
+          "status": "New",
+          "stage": "New"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/update_case.json",
+      "url": "https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "document_url": "https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "document_sha256": "b8b114516c397fda6dd5f937a7ffbf8076ccdff6c8b75177b9cd352f8e56f372",
+      "request": {
+        "method": "PATCH",
+        "url": "https://thehive.customer.internal/api/v1/case/~123456789",
+        "json": {
+          "title": "Suspicious Ransomware Activity",
+          "description": "Reviewed incident evidence\nUpdated investigation notes."
+        }
+      },
+      "response": {
+        "method": "PATCH",
+        "host": "thehive.customer.internal",
+        "path": "/api/v1/case/~123456789",
+        "status": 204,
+        "body": ""
+      }
+    },
+    {
+      "fixture": "fixtures/get_alert.json",
+      "url": "https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "document_url": "https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "document_sha256": "b8b114516c397fda6dd5f937a7ffbf8076ccdff6c8b75177b9cd352f8e56f372",
+      "request": {
+        "method": "GET",
+        "url": "https://thehive.customer.internal/api/v1/alert/~128458762"
+      },
+      "response": {
+        "method": "GET",
+        "host": "thehive.customer.internal",
+        "path": "/api/v1/alert/~128458762",
+        "status": 200,
+        "body": {
+          "_id": "~128458762",
+          "_type": "Alert",
+          "title": "File encrypted on CORP-LAPTOP-056",
+          "description": "File encryption detected via PowerShell script (encrypt.ps1) on CORP-LAPTOP-056.",
+          "type": "Endpoint Detection",
+          "source": "EDR",
+          "sourceRef": "MDATP-2025-004512",
+          "severity": 3,
+          "status": "New",
+          "stage": "New"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/create_alert.json",
+      "url": "https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "document_url": "https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "document_sha256": "b8b114516c397fda6dd5f937a7ffbf8076ccdff6c8b75177b9cd352f8e56f372",
+      "request": {
+        "method": "POST",
+        "url": "https://thehive.customer.internal/api/v1/alert",
+        "json": {
+          "title": "File encrypted on CORP-LAPTOP-056",
+          "description": "File encryption detected via PowerShell script (encrypt.ps1) on CORP-LAPTOP-056.\nExample investigation note.",
+          "severity": 2,
+          "tlp": 2,
+          "pap": 2,
+          "type": "Endpoint Detection",
+          "source": "nano Security Lake",
+          "sourceRef": "example-incident-42"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "thehive.customer.internal",
+        "path": "/api/v1/alert",
+        "status": 201,
+        "body": {
+          "_id": "~128458762",
+          "_type": "Alert",
+          "title": "File encrypted on CORP-LAPTOP-056",
+          "description": "File encryption detected via PowerShell script (encrypt.ps1) on CORP-LAPTOP-056.",
+          "type": "Endpoint Detection",
+          "source": "EDR",
+          "sourceRef": "MDATP-2025-004512",
+          "severity": 3,
+          "status": "New",
+          "stage": "New"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/update_alert.json",
+      "url": "https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "document_url": "https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "document_sha256": "b8b114516c397fda6dd5f937a7ffbf8076ccdff6c8b75177b9cd352f8e56f372",
+      "request": {
+        "method": "PATCH",
+        "url": "https://thehive.customer.internal/api/v1/alert/~128458762",
+        "json": {
+          "title": "File encrypted on CORP-LAPTOP-056",
+          "description": "Reviewed incident evidence\nUpdated investigation notes."
+        }
+      },
+      "response": {
+        "method": "PATCH",
+        "host": "thehive.customer.internal",
+        "path": "/api/v1/alert/~128458762",
+        "status": 204,
+        "body": ""
+      }
+    }
+  ]
+}

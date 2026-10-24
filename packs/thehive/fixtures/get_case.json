@@ -1,0 +1,47 @@
+{
+  "action": "get_case",
+  "config": {
+    "base_url": "https://thehive.customer.internal"
+  },
+  "inputs": {
+    "case_id": "~123456789"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://thehive.customer.internal/api/v1/case/~123456789"
+      },
+      "response": {
+        "method": "GET",
+        "host": "thehive.customer.internal",
+        "path": "/api/v1/case/~123456789",
+        "status": 200,
+        "body": {
+          "_id": "~123456789",
+          "_type": "Case",
+          "number": 42,
+          "title": "Suspicious Ransomware Activity",
+          "description": "File encryption via PowerShell script detected on multiple workstations.",
+          "severity": 3,
+          "status": "New",
+          "stage": "New"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "case": {
+      "_id": "~123456789",
+      "_type": "Case",
+      "number": 42,
+      "title": "Suspicious Ransomware Activity",
+      "description": "File encryption via PowerShell script detected on multiple workstations.",
+      "severity": 3,
+      "status": "New",
+      "stage": "New"
+    }
+  },
+  "source": "https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+  "request_evidence": "independent_http_mock"
+}

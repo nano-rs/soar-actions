@@ -1,0 +1,64 @@
+{
+  "action": "create_alert",
+  "config": {
+    "base_url": "https://thehive.customer.internal"
+  },
+  "inputs": {
+    "title": "File encrypted on CORP-LAPTOP-056",
+    "description": "File encryption detected via PowerShell script (encrypt.ps1) on CORP-LAPTOP-056.\nExample investigation note.",
+    "alert_type": "Endpoint Detection",
+    "source_reference": "example-incident-42"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://thehive.customer.internal/api/v1/alert",
+        "json": {
+          "title": "File encrypted on CORP-LAPTOP-056",
+          "description": "File encryption detected via PowerShell script (encrypt.ps1) on CORP-LAPTOP-056.\nExample investigation note.",
+          "severity": 2,
+          "tlp": 2,
+          "pap": 2,
+          "type": "Endpoint Detection",
+          "source": "nano Security Lake",
+          "sourceRef": "example-incident-42"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "thehive.customer.internal",
+        "path": "/api/v1/alert",
+        "status": 201,
+        "body": {
+          "_id": "~128458762",
+          "_type": "Alert",
+          "title": "File encrypted on CORP-LAPTOP-056",
+          "description": "File encryption detected via PowerShell script (encrypt.ps1) on CORP-LAPTOP-056.",
+          "type": "Endpoint Detection",
+          "source": "EDR",
+          "sourceRef": "MDATP-2025-004512",
+          "severity": 3,
+          "status": "New",
+          "stage": "New"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "alert": {
+      "_id": "~128458762",
+      "_type": "Alert",
+      "title": "File encrypted on CORP-LAPTOP-056",
+      "description": "File encryption detected via PowerShell script (encrypt.ps1) on CORP-LAPTOP-056.",
+      "type": "Endpoint Detection",
+      "source": "EDR",
+      "sourceRef": "MDATP-2025-004512",
+      "severity": 3,
+      "status": "New",
+      "stage": "New"
+    }
+  },
+  "source": "https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+  "request_evidence": "independent_http_mock"
+}
