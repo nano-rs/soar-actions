@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_incident.json",
+      "url": "https://learn.microsoft.com/en-us/rest/api/securityinsights/incidents/get?view=rest-securityinsights-2025-09-01",
+      "document_url": "https://learn.microsoft.com/en-us/rest/api/securityinsights/incidents/get?view=rest-securityinsights-2025-09-01",
+      "document_sha256": "9f045983027bbf2a30fc37546c6e9bfe9ad4f8f82dd3664d8a95c5ed773c49de",
+      "request": {
+        "method": "GET",
+        "url": "https://management.azure.com/subscriptions/00000000-0000-4000-8000-000000000001/resourceGroups/nano-example-rg/providers/Microsoft.OperationalInsights/workspaces/nano-example-workspace/providers/Microsoft.SecurityInsights/incidents/00000000-0000-4000-8000-000000000001",
+        "query": {
+          "api-version": "2025-09-01"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "management.azure.com",
+        "path": "/subscriptions/00000000-0000-4000-8000-000000000001/resourceGroups/nano-example-rg/providers/Microsoft.OperationalInsights/workspaces/nano-example-workspace/providers/Microsoft.SecurityInsights/incidents/00000000-0000-4000-8000-000000000001",
+        "status": 200,
+        "body": {
+          "id": "/subscriptions/00000000-0000-4000-8000-000000000001/resourceGroups/nano-example-rg/providers/Microsoft.OperationalInsights/workspaces/nano-example-workspace/providers/Microsoft.SecurityInsights/incidents/00000000-0000-4000-8000-000000000001",
+          "name": "00000000-0000-4000-8000-000000000001",
+          "type": "Microsoft.SecurityInsights/incidents",
+          "etag": "\"synthetic-etag\"",
+          "properties": {
+            "title": "Synthetic incident",
+            "severity": "High",
+            "status": "New",
+            "description": "Preserve this description",
+            "labels": [
+              {
+                "labelName": "keep",
+                "labelType": "User"
+              }
+            ],
+            "owner": {
+              "objectId": "00000000-0000-4000-8000-000000000001"
+            },
+            "incidentNumber": 42
+          }
+        },
+        "query": {
+          "api-version": "2025-09-01"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/update_incident_status.json",
+      "url": "https://learn.microsoft.com/en-us/rest/api/securityinsights/incidents/create-or-update?view=rest-securityinsights-2025-09-01",
+      "document_url": "https://learn.microsoft.com/en-us/rest/api/securityinsights/incidents/create-or-update?view=rest-securityinsights-2025-09-01",
+      "document_sha256": "457e9b28a6a00beeb622172d4aea80a522cd5202da02fd152f2ce5214223472e",
+      "request": {
+        "method": "PUT",
+        "url": "https://management.azure.com/subscriptions/00000000-0000-4000-8000-000000000001/resourceGroups/nano-example-rg/providers/Microsoft.OperationalInsights/workspaces/nano-example-workspace/providers/Microsoft.SecurityInsights/incidents/00000000-0000-4000-8000-000000000001",
+        "query": {
+          "api-version": "2025-09-01"
+        },
+        "json": {
+          "etag": "\"synthetic-etag\"",
+          "properties": {
+            "title": "Synthetic incident",
+            "severity": "High",
+            "status": "Active",
+            "description": "Preserve this description",
+            "labels": [
+              {
+                "labelName": "keep",
+                "labelType": "User"
+              }
+            ],
+            "owner": {
+              "objectId": "00000000-0000-4000-8000-000000000001"
+            },
+            "incidentNumber": 42
+          }
+        }
+      },
+      "response": {
+        "method": "PUT",
+        "host": "management.azure.com",
+        "path": "/subscriptions/00000000-0000-4000-8000-000000000001/resourceGroups/nano-example-rg/providers/Microsoft.OperationalInsights/workspaces/nano-example-workspace/providers/Microsoft.SecurityInsights/incidents/00000000-0000-4000-8000-000000000001",
+        "status": 200,
+        "body": {
+          "id": "/subscriptions/00000000-0000-4000-8000-000000000001/resourceGroups/nano-example-rg/providers/Microsoft.OperationalInsights/workspaces/nano-example-workspace/providers/Microsoft.SecurityInsights/incidents/00000000-0000-4000-8000-000000000001",
+          "name": "00000000-0000-4000-8000-000000000001",
+          "type": "Microsoft.SecurityInsights/incidents",
+          "etag": "\"synthetic-etag\"",
+          "properties": {
+            "title": "Synthetic incident",
+            "severity": "High",
+            "status": "Active",
+            "description": "Preserve this description",
+            "labels": [
+              {
+                "labelName": "keep",
+                "labelType": "User"
+              }
+            ],
+            "owner": {
+              "objectId": "00000000-0000-4000-8000-000000000001"
+            },
+            "incidentNumber": 42
+          }
+        },
+        "query": {
+          "api-version": "2025-09-01"
+        }
+      },
+      "prerequisites": [
+        {
+          "fixture": "fixtures/get_incident.json",
+          "url": "https://learn.microsoft.com/en-us/rest/api/securityinsights/incidents/get?view=rest-securityinsights-2025-09-01",
+          "document_url": "https://learn.microsoft.com/en-us/rest/api/securityinsights/incidents/get?view=rest-securityinsights-2025-09-01",
+          "document_sha256": "9f045983027bbf2a30fc37546c6e9bfe9ad4f8f82dd3664d8a95c5ed773c49de",
+          "request": {
+            "method": "GET",
+            "url": "https://management.azure.com/subscriptions/00000000-0000-4000-8000-000000000001/resourceGroups/nano-example-rg/providers/Microsoft.OperationalInsights/workspaces/nano-example-workspace/providers/Microsoft.SecurityInsights/incidents/00000000-0000-4000-8000-000000000001",
+            "query": {
+              "api-version": "2025-09-01"
+            }
+          },
+          "response": {
+            "method": "GET",
+            "host": "management.azure.com",
+            "path": "/subscriptions/00000000-0000-4000-8000-000000000001/resourceGroups/nano-example-rg/providers/Microsoft.OperationalInsights/workspaces/nano-example-workspace/providers/Microsoft.SecurityInsights/incidents/00000000-0000-4000-8000-000000000001",
+            "status": 200,
+            "body": {
+              "id": "/subscriptions/00000000-0000-4000-8000-000000000001/resourceGroups/nano-example-rg/providers/Microsoft.OperationalInsights/workspaces/nano-example-workspace/providers/Microsoft.SecurityInsights/incidents/00000000-0000-4000-8000-000000000001",
+              "name": "00000000-0000-4000-8000-000000000001",
+              "type": "Microsoft.SecurityInsights/incidents",
+              "etag": "\"synthetic-etag\"",
+              "properties": {
+                "title": "Synthetic incident",
+                "severity": "High",
+                "status": "New",
+                "description": "Preserve this description",
+                "labels": [
+                  {
+                    "labelName": "keep",
+                    "labelType": "User"
+                  }
+                ],
+                "owner": {
+                  "objectId": "00000000-0000-4000-8000-000000000001"
+                },
+                "incidentNumber": 42
+              }
+            },
+            "query": {
+              "api-version": "2025-09-01"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

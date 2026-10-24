@@ -1,0 +1,28 @@
+{
+  "action": "restore_user",
+  "config": {
+    "organization_id": "00000000-0000-4000-8000-000000000001",
+    "directory_id": "00000000-0000-4000-8000-000000000001"
+  },
+  "inputs": {
+    "account_id": "00000000-0000-4000-8000-000000000001"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.atlassian.com/admin/v2/orgs/00000000-0000-4000-8000-000000000001/directories/00000000-0000-4000-8000-000000000001/users/00000000-0000-4000-8000-000000000001/restore"
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.atlassian.com",
+        "path": "/admin/v2/orgs/00000000-0000-4000-8000-000000000001/directories/00000000-0000-4000-8000-000000000001/users/00000000-0000-4000-8000-000000000001/restore",
+        "status": 204,
+        "body": ""
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://developer.atlassian.com/cloud/admin/organization/rest/api-group-users/",
+  "request_evidence": "independent_http_mock"
+}

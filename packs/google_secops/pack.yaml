@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "google_secops",
+  "display_name": "Google SecOps",
+  "description": "Google SecOps bounded native response actions. Mutations require explicit approval; receipts do not establish asynchronous completion.",
+  "vendor": "Google SecOps",
+  "categories": [
+    "cloud_security"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "project_id",
+      "label": "Google Cloud project ID",
+      "required": true
+    },
+    {
+      "name": "location",
+      "label": "Instance location",
+      "required": true,
+      "default": "us",
+      "one_of": [
+        "us"
+      ]
+    },
+    {
+      "name": "instance_id",
+      "label": "Chronicle instance UUID",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "us-chronicle.googleapis.com",
+      "path_prefixes": [
+        "/v1/projects"
+      ]
+    },
+    {
+      "host": "oauth2.googleapis.com",
+      "path_prefixes": [
+        "/token"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "google_service_account",
+    "token_url": "https://oauth2.googleapis.com/token",
+    "scope": "https://www.googleapis.com/auth/cloud-platform",
+    "client_email_credential": "CLIENT_EMAIL",
+    "private_key_credential": "PRIVATE_KEY"
+  },
+  "credentials": [
+    {
+      "name": "CLIENT_EMAIL",
+      "label": "Google service account email"
+    },
+    {
+      "name": "PRIVATE_KEY",
+      "label": "Google service account private key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 30
+  },
+  "actions": {
+    "get_case": {
+      "display_name": "Get Case",
+      "description": "Read one native Chronicle v1 resource only. No legacy SOAR API, workflow, connector or playbook is invoked. Requires chronicle.cases.get or chronicle.caseAlerts.get respectively and availability of the native resource in the instance. Official endpoint reference: https://docs.cloud.google.com/chronicle/docs/reference/rest/v1/projects.locations.instances.cases/get",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "case_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://us-chronicle.googleapis.com/v1/projects/{{config.project_id}}/locations/{{config.location}}/instances/{{config.instance_id}}/cases/{{input.case_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "name",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "name": "steps.request.name",
+        "record": "steps.request"
+      },
+      "output_types": {
+        "name": "string",
+        "record": "object"
+      },
+      "fixtures": [
+        "fixtures/get_case.json"
+      ]
+    },
+    "get_case_alert": {
+      "display_name": "Get Case Alert",
+      "description": "Read one native Chronicle v1 resource only. No legacy SOAR API, workflow, connector or playbook is invoked. Requires chronicle.cases.get or chronicle.caseAlerts.get respectively and availability of the native resource in the instance. Official endpoint reference: https://docs.cloud.google.com/chronicle/docs/reference/rest/v1/projects.locations.instances.cases.caseAlerts/get",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "case_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        },
+        {
+          "name": "alert_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://us-chronicle.googleapis.com/v1/projects/{{config.project_id}}/locations/{{config.location}}/instances/{{config.instance_id}}/cases/{{input.case_id}}/caseAlerts/{{input.alert_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "name",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "name": "steps.request.name",
+        "record": "steps.request"
+      },
+      "output_types": {
+        "name": "string",
+        "record": "object"
+      },
+      "fixtures": [
+        "fixtures/get_case_alert.json"
+      ]
+    }
+  }
+}

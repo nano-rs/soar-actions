@@ -1,0 +1,37 @@
+{
+  "action": "get_case_alert",
+  "config": {
+    "project_id": "nano-example-project",
+    "location": "us",
+    "instance_id": "00000000-0000-4000-8000-000000000001"
+  },
+  "inputs": {
+    "case_id": "1",
+    "alert_id": "nano-example-alert"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://us-chronicle.googleapis.com/v1/projects/nano-example-project/locations/us/instances/00000000-0000-4000-8000-000000000001/cases/1/caseAlerts/nano-example-alert"
+      },
+      "response": {
+        "method": "GET",
+        "host": "us-chronicle.googleapis.com",
+        "path": "/v1/projects/nano-example-project/locations/us/instances/00000000-0000-4000-8000-000000000001/cases/1/caseAlerts/nano-example-alert",
+        "status": 200,
+        "body": {
+          "name": "projects/nano-example-project/locations/us/instances/00000000-0000-4000-8000-000000000001/cases/1/caseAlerts/nano-example-alert"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "name": "projects/nano-example-project/locations/us/instances/00000000-0000-4000-8000-000000000001/cases/1/caseAlerts/nano-example-alert",
+    "record": {
+      "name": "projects/nano-example-project/locations/us/instances/00000000-0000-4000-8000-000000000001/cases/1/caseAlerts/nano-example-alert"
+    }
+  },
+  "source": "https://docs.cloud.google.com/chronicle/docs/reference/rest/v1/projects.locations.instances.cases.caseAlerts/get",
+  "request_evidence": "independent_http_mock"
+}

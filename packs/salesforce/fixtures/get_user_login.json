@@ -1,0 +1,71 @@
+{
+  "action": "get_user_login",
+  "config": {
+    "base_url": "https://nano-example.my.salesforce.com"
+  },
+  "inputs": {
+    "user_id": "005000000000001"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://nano-example.my.salesforce.com/services/data/v68.0/query",
+        "query": {
+          "q": "SELECT Id, UserId, IsFrozen FROM UserLogin WHERE UserId = '005000000000001' LIMIT 1"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "nano-example.my.salesforce.com",
+        "path": "/services/data/v68.0/query",
+        "status": 200,
+        "body": {
+          "totalSize": 1,
+          "done": true,
+          "records": [
+            {
+              "attributes": {
+                "type": "UserLogin"
+              },
+              "Id": "0Yw000000000001",
+              "UserId": "005000000000001",
+              "IsFrozen": false
+            }
+          ]
+        },
+        "query": {
+          "q": "SELECT Id, UserId, IsFrozen FROM UserLogin WHERE UserId = '005000000000001' LIMIT 1"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "records": [
+      {
+        "attributes": {
+          "type": "UserLogin"
+        },
+        "Id": "0Yw000000000001",
+        "UserId": "005000000000001",
+        "IsFrozen": false
+      }
+    ],
+    "result": {
+      "totalSize": 1,
+      "done": true,
+      "records": [
+        {
+          "attributes": {
+            "type": "UserLogin"
+          },
+          "Id": "0Yw000000000001",
+          "UserId": "005000000000001",
+          "IsFrozen": false
+        }
+      ]
+    }
+  },
+  "source": "https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm",
+  "request_evidence": "independent_http_mock"
+}
