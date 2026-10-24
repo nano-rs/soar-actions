@@ -1,0 +1,61 @@
+{
+  "action": "add_domain",
+  "config": {},
+  "inputs": {
+    "list_id": 1234567,
+    "domain": "example.net"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.umbrella.com/policies/v2/destinationlists/1234567/destinations",
+        "json": [
+          {
+            "destination": "example.net"
+          }
+        ]
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.umbrella.com",
+        "path": "/policies/v2/destinationlists/1234567/destinations",
+        "status": 200,
+        "body": {
+          "status": {
+            "code": 200,
+            "text": "OK"
+          },
+          "data": {
+            "id": 1234567,
+            "organizationId": 1111111,
+            "access": "block",
+            "isGlobal": false,
+            "name": "Example response block list",
+            "thirdpartyCategoryId": 0,
+            "createdAt": 1767225600,
+            "modifiedAt": 1767225600,
+            "isMspDefault": false,
+            "markedForDeletion": false
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "list": {
+      "id": 1234567,
+      "organizationId": 1111111,
+      "access": "block",
+      "isGlobal": false,
+      "name": "Example response block list",
+      "thirdpartyCategoryId": 0,
+      "createdAt": 1767225600,
+      "modifiedAt": 1767225600,
+      "isMspDefault": false,
+      "markedForDeletion": false
+    }
+  },
+  "source": "https://developer.cisco.com/docs/cloud-security/umbrella-api-api-reference-policies-destination-lists-api-destinations-add-destinations-to-destination-list/",
+  "request_evidence": "independent_http_mock"
+}

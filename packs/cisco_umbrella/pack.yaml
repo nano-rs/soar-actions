@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "cisco_umbrella",
+  "display_name": "Cisco Umbrella destination response",
+  "description": "Cisco Umbrella destination response response actions. Containment and inverse actions require approval.",
+  "vendor": "Cisco",
+  "categories": [
+    "network"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "api.umbrella.com",
+      "path_prefixes": [
+        "/auth/v2/token",
+        "/policies/v2/destinationlists"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "oauth2_client_credentials",
+    "token_url": "https://api.umbrella.com/auth/v2/token",
+    "client_id": "CLIENT_ID",
+    "client_secret": "CLIENT_SECRET",
+    "client_auth": "basic"
+  },
+  "credentials": [
+    {
+      "name": "CLIENT_ID",
+      "label": "Client Id"
+    },
+    {
+      "name": "CLIENT_SECRET",
+      "label": "Client Secret"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "list_destinations": {
+      "display_name": "List destination page",
+      "description": "Read one destination page, preserving destination IDs for an exact inverse. API documentation: https://developer.cisco.com/docs/cloud-security/umbrella-api-api-reference-policies-destination-lists-api-destinations-get-destinations-in-destination-list/",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "list_id",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "page",
+          "type": "int",
+          "required": false
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://api.umbrella.com/policies/v2/destinationlists/{{input.list_id}}/destinations",
+            "query": {
+              "limit": "100",
+              "page": "{{input.page}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "meta",
+            "non_empty": true,
+            "fields": {
+              "status.code": 200
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "page": "steps.request"
+      },
+      "fixtures": [
+        "fixtures/list_destinations.json"
+      ]
+    },
+    "add_domain": {
+      "display_name": "Add Domain",
+      "description": "Mutate one domain/destination ID in an operator-approved blocking list; inspect the returned application status and resolve membership before inverse approval. API documentation: https://developer.cisco.com/docs/cloud-security/umbrella-api-api-reference-policies-destination-lists-api-destinations-add-destinations-to-destination-list/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "list_id",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "domain",
+          "type": "domain",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://api.umbrella.com/policies/v2/destinationlists/{{input.list_id}}/destinations",
+            "json": [
+              {
+                "destination": "{{input.domain}}"
+              }
+            ]
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.id",
+            "non_empty": true,
+            "fields": {
+              "status.code": 200,
+              "data.access": "block"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "list": "steps.request.data"
+      },
+      "fixtures": [
+        "fixtures/add_domain.json"
+      ],
+      "rollback": "remove_destination"
+    },
+    "remove_destination": {
+      "display_name": "Remove Destination",
+      "description": "Mutate one domain/destination ID in an operator-approved blocking list; inspect the returned application status and resolve membership before inverse approval. API documentation: https://developer.cisco.com/docs/cloud-security/umbrella-api-api-reference-policies-destination-lists-api-destinations-delete-destinations-from-destination-list/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "list_id",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "destination_id",
+          "type": "int",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "DELETE",
+            "url": "https://api.umbrella.com/policies/v2/destinationlists/{{input.list_id}}/destinations/remove",
+            "json": [
+              "{{input.destination_id}}"
+            ]
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.id",
+            "non_empty": true,
+            "fields": {
+              "status.code": 200,
+              "data.access": "block"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "list": "steps.request.data"
+      },
+      "fixtures": [
+        "fixtures/remove_destination.json"
+      ],
+      "rollback": "add_domain"
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_key.json",
+      "url": "https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys/get",
+      "document_sha256": "5df82348482e239995e5ebde7a4ff745f18b9258fbc0b02f842ed755a53ef5b8",
+      "document_url": "https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys/get",
+      "request": {
+        "method": "GET",
+        "url": "https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/incident-target%40example-project.iam.gserviceaccount.com/keys/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "response": {
+        "method": "GET",
+        "host": "iam.googleapis.com",
+        "path": "/v1/projects/example-project/serviceAccounts/incident-target%40example-project.iam.gserviceaccount.com/keys/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "status": 200,
+        "body": {
+          "name": "projects/example-project/serviceAccounts/incident-target@example-project.iam.gserviceaccount.com/keys/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "disabled": false,
+          "keyOrigin": "GOOGLE_PROVIDED",
+          "keyType": "USER_MANAGED",
+          "keyAlgorithm": "KEY_ALG_RSA_2048",
+          "validAfterTime": "2026-01-01T00:00:00Z",
+          "validBeforeTime": "9999-12-31T23:59:59Z"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/disable_key.json",
+      "url": "https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys/disable",
+      "document_sha256": "9d05ff5b9672a1b0800ab1f698d78e04cac1d64d0fce69a8e9850357de7ede2e",
+      "document_url": "https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys/disable",
+      "request": {
+        "method": "POST",
+        "url": "https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/incident-target%40example-project.iam.gserviceaccount.com/keys/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:disable"
+      },
+      "response": {
+        "method": "POST",
+        "host": "iam.googleapis.com",
+        "path": "/v1/projects/example-project/serviceAccounts/incident-target%40example-project.iam.gserviceaccount.com/keys/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:disable",
+        "status": 200,
+        "body": {}
+      }
+    },
+    {
+      "fixture": "fixtures/enable_key.json",
+      "url": "https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys/enable",
+      "document_sha256": "e9dec7999d8a4dcc3991921d17143e895ea535262a9704d140d2efb65ae0b5f1",
+      "document_url": "https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys/enable",
+      "request": {
+        "method": "POST",
+        "url": "https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/incident-target%40example-project.iam.gserviceaccount.com/keys/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:enable"
+      },
+      "response": {
+        "method": "POST",
+        "host": "iam.googleapis.com",
+        "path": "/v1/projects/example-project/serviceAccounts/incident-target%40example-project.iam.gserviceaccount.com/keys/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:enable",
+        "status": 200,
+        "body": {}
+      }
+    }
+  ]
+}

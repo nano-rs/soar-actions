@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/list_destinations.json",
+      "url": "https://developer.cisco.com/docs/cloud-security/umbrella-api-api-reference-policies-destination-lists-api-destinations-get-destinations-in-destination-list/",
+      "document_sha256": "c4b5d20225553ea682fec7e2670d83467d40d8ff53ef32ad6ef25fc3bdb875c3",
+      "document_url": "https://developer.cisco.com/docs/cloud-security/umbrella-api-api-reference-policies-destination-lists-api-destinations-get-destinations-in-destination-list/",
+      "request": {
+        "method": "GET",
+        "url": "https://api.umbrella.com/policies/v2/destinationlists/1234567/destinations",
+        "query": {
+          "limit": "100",
+          "page": "1"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.umbrella.com",
+        "path": "/policies/v2/destinationlists/1234567/destinations",
+        "status": 200,
+        "body": {
+          "status": {
+            "code": 200,
+            "text": "OK"
+          },
+          "meta": {
+            "page": 1,
+            "limit": 100,
+            "total": 1
+          },
+          "data": [
+            {
+              "id": "1234590",
+              "destination": "example.net",
+              "type": "domain",
+              "comment": "Example response fixture",
+              "createdAt": "2026-01-01 00:00:00"
+            }
+          ]
+        },
+        "query": {
+          "limit": "100",
+          "page": "1"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/add_domain.json",
+      "url": "https://developer.cisco.com/docs/cloud-security/umbrella-api-api-reference-policies-destination-lists-api-destinations-add-destinations-to-destination-list/",
+      "document_sha256": "bb73fa37aeac8f2cb260e971c0e339c4c691de24b2c70853d19b4a96ec2aa071",
+      "document_url": "https://developer.cisco.com/docs/cloud-security/umbrella-api-api-reference-policies-destination-lists-api-destinations-add-destinations-to-destination-list/",
+      "request": {
+        "method": "POST",
+        "url": "https://api.umbrella.com/policies/v2/destinationlists/1234567/destinations",
+        "json": [
+          {
+            "destination": "example.net"
+          }
+        ]
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.umbrella.com",
+        "path": "/policies/v2/destinationlists/1234567/destinations",
+        "status": 200,
+        "body": {
+          "status": {
+            "code": 200,
+            "text": "OK"
+          },
+          "data": {
+            "id": 1234567,
+            "organizationId": 1111111,
+            "access": "block",
+            "isGlobal": false,
+            "name": "Example response block list",
+            "thirdpartyCategoryId": 0,
+            "createdAt": 1767225600,
+            "modifiedAt": 1767225600,
+            "isMspDefault": false,
+            "markedForDeletion": false
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/remove_destination.json",
+      "url": "https://developer.cisco.com/docs/cloud-security/umbrella-api-api-reference-policies-destination-lists-api-destinations-delete-destinations-from-destination-list/",
+      "document_sha256": "bbaa4db760057dc35a198f58cf52fada58044e053d9a2a43f53a2dced12a1977",
+      "document_url": "https://developer.cisco.com/docs/cloud-security/umbrella-api-api-reference-policies-destination-lists-api-destinations-delete-destinations-from-destination-list/",
+      "request": {
+        "method": "DELETE",
+        "url": "https://api.umbrella.com/policies/v2/destinationlists/1234567/destinations/remove",
+        "json": [
+          1234590
+        ]
+      },
+      "response": {
+        "method": "DELETE",
+        "host": "api.umbrella.com",
+        "path": "/policies/v2/destinationlists/1234567/destinations/remove",
+        "status": 200,
+        "body": {
+          "status": {
+            "code": 200,
+            "text": "OK"
+          },
+          "data": {
+            "id": 1234567,
+            "organizationId": 1111111,
+            "access": "block",
+            "isGlobal": false,
+            "name": "Example response block list",
+            "thirdpartyCategoryId": 0,
+            "createdAt": 1767225600,
+            "modifiedAt": 1767225600,
+            "isMspDefault": false,
+            "markedForDeletion": false
+          }
+        }
+      }
+    }
+  ]
+}

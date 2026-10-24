@@ -1,0 +1,46 @@
+{
+  "action": "get_key",
+  "config": {
+    "project_id": "example-project"
+  },
+  "inputs": {
+    "service_account_email": "incident-target@example-project.iam.gserviceaccount.com",
+    "key_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/incident-target%40example-project.iam.gserviceaccount.com/keys/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "response": {
+        "method": "GET",
+        "host": "iam.googleapis.com",
+        "path": "/v1/projects/example-project/serviceAccounts/incident-target%40example-project.iam.gserviceaccount.com/keys/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "status": 200,
+        "body": {
+          "name": "projects/example-project/serviceAccounts/incident-target@example-project.iam.gserviceaccount.com/keys/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "disabled": false,
+          "keyOrigin": "GOOGLE_PROVIDED",
+          "keyType": "USER_MANAGED",
+          "keyAlgorithm": "KEY_ALG_RSA_2048",
+          "validAfterTime": "2026-01-01T00:00:00Z",
+          "validBeforeTime": "9999-12-31T23:59:59Z"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "metadata": {
+      "name": "projects/example-project/serviceAccounts/incident-target@example-project.iam.gserviceaccount.com/keys/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "disabled": false,
+      "keyOrigin": "GOOGLE_PROVIDED",
+      "keyType": "USER_MANAGED",
+      "keyAlgorithm": "KEY_ALG_RSA_2048",
+      "validAfterTime": "2026-01-01T00:00:00Z",
+      "validBeforeTime": "9999-12-31T23:59:59Z"
+    }
+  },
+  "source": "https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys/get",
+  "request_evidence": "independent_http_mock"
+}

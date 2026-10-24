@@ -1,0 +1,80 @@
+{
+  "action": "add_outbound_deny_rule",
+  "config": {
+    "directory_id": "11111111-1111-4111-8111-111111111111",
+    "subscription_id": "11111111-1111-4111-8111-111111111111"
+  },
+  "inputs": {
+    "resource_group": "example-response",
+    "nsg_name": "example-nsg",
+    "rule_name": "nano-soar-case-1",
+    "source_prefix": "10.0.0.10/32",
+    "priority": 100
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "PUT",
+        "url": "https://management.azure.com/subscriptions/11111111-1111-4111-8111-111111111111/resourceGroups/example-response/providers/Microsoft.Network/networkSecurityGroups/example-nsg/securityRules/nano-soar-case-1",
+        "query": {
+          "api-version": "2026-01-01"
+        },
+        "json": {
+          "properties": {
+            "protocol": "*",
+            "sourcePortRange": "*",
+            "destinationPortRange": "*",
+            "sourceAddressPrefix": "10.0.0.10/32",
+            "destinationAddressPrefix": "*",
+            "access": "Deny",
+            "priority": 100,
+            "direction": "Outbound"
+          }
+        }
+      },
+      "response": {
+        "method": "PUT",
+        "host": "management.azure.com",
+        "path": "/subscriptions/11111111-1111-4111-8111-111111111111/resourceGroups/example-response/providers/Microsoft.Network/networkSecurityGroups/example-nsg/securityRules/nano-soar-case-1",
+        "status": 200,
+        "body": {
+          "id": "/subscriptions/11111111-1111-4111-8111-111111111111/resourceGroups/example-response/providers/Microsoft.Network/networkSecurityGroups/example-nsg/securityRules/nano-soar-case-1",
+          "name": "nano-soar-case-1",
+          "properties": {
+            "protocol": "*",
+            "sourcePortRange": "*",
+            "destinationPortRange": "*",
+            "sourceAddressPrefix": "10.0.0.10/32",
+            "destinationAddressPrefix": "*",
+            "access": "Deny",
+            "priority": 100,
+            "direction": "Outbound",
+            "provisioningState": "Succeeded"
+          }
+        },
+        "query": {
+          "api-version": "2026-01-01"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "rule": {
+      "id": "/subscriptions/11111111-1111-4111-8111-111111111111/resourceGroups/example-response/providers/Microsoft.Network/networkSecurityGroups/example-nsg/securityRules/nano-soar-case-1",
+      "name": "nano-soar-case-1",
+      "properties": {
+        "protocol": "*",
+        "sourcePortRange": "*",
+        "destinationPortRange": "*",
+        "sourceAddressPrefix": "10.0.0.10/32",
+        "destinationAddressPrefix": "*",
+        "access": "Deny",
+        "priority": 100,
+        "direction": "Outbound",
+        "provisioningState": "Succeeded"
+      }
+    }
+  },
+  "source": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/security-rules/create-or-update?view=rest-virtualnetwork-2026-01-01",
+  "request_evidence": "independent_http_mock"
+}

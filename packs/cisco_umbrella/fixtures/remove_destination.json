@@ -1,0 +1,59 @@
+{
+  "action": "remove_destination",
+  "config": {},
+  "inputs": {
+    "list_id": 1234567,
+    "destination_id": 1234590
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "DELETE",
+        "url": "https://api.umbrella.com/policies/v2/destinationlists/1234567/destinations/remove",
+        "json": [
+          1234590
+        ]
+      },
+      "response": {
+        "method": "DELETE",
+        "host": "api.umbrella.com",
+        "path": "/policies/v2/destinationlists/1234567/destinations/remove",
+        "status": 200,
+        "body": {
+          "status": {
+            "code": 200,
+            "text": "OK"
+          },
+          "data": {
+            "id": 1234567,
+            "organizationId": 1111111,
+            "access": "block",
+            "isGlobal": false,
+            "name": "Example response block list",
+            "thirdpartyCategoryId": 0,
+            "createdAt": 1767225600,
+            "modifiedAt": 1767225600,
+            "isMspDefault": false,
+            "markedForDeletion": false
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "list": {
+      "id": 1234567,
+      "organizationId": 1111111,
+      "access": "block",
+      "isGlobal": false,
+      "name": "Example response block list",
+      "thirdpartyCategoryId": 0,
+      "createdAt": 1767225600,
+      "modifiedAt": 1767225600,
+      "isMspDefault": false,
+      "markedForDeletion": false
+    }
+  },
+  "source": "https://developer.cisco.com/docs/cloud-security/umbrella-api-api-reference-policies-destination-lists-api-destinations-delete-destinations-from-destination-list/",
+  "request_evidence": "independent_http_mock"
+}

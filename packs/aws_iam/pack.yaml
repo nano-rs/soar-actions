@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "aws_iam",
+  "display_name": "AWS IAM access keys",
+  "description": "AWS IAM access keys response actions. Containment and inverse actions require approval.",
+  "vendor": "AWS",
+  "categories": [
+    "identity"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "iam.amazonaws.com",
+      "path_prefixes": [
+        "/"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "aws_sigv4",
+    "region": "us-east-1",
+    "service": "iam",
+    "access_key_credential": "ACCESS_KEY_ID",
+    "secret_key_credential": "SECRET_ACCESS_KEY",
+    "session_token_credential": "SESSION_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "ACCESS_KEY_ID",
+      "label": "Access Key Id"
+    },
+    {
+      "name": "SECRET_ACCESS_KEY",
+      "label": "Secret Access Key"
+    },
+    {
+      "name": "SESSION_TOKEN",
+      "label": "Session Token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "list_access_keys": {
+      "display_name": "List user access keys",
+      "description": "Read one page of key IDs, statuses and creation metadata as the documented XML response; no secret access key is disclosed. API documentation: https://docs.aws.amazon.com/IAM/latest/APIReference/API_ListAccessKeys.html",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "user_name",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_+=,.@-]{1,128}$"
+        },
+        {
+          "name": "marker",
+          "type": "string",
+          "required": false,
+          "pattern": "^[!-~]{1,1024}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://iam.amazonaws.com/",
+            "query": {
+              "Action": "ListAccessKeys",
+              "Version": "2010-05-08",
+              "UserName": "{{input.user_name}}",
+              "MaxItems": "100",
+              "Marker": "{{input.marker}}"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "contains": "<ListAccessKeysResponse"
+          }
+        }
+      ],
+      "outputs": {
+        "response_xml": "steps.request.text"
+      },
+      "fixtures": [
+        "fixtures/list_access_keys.json"
+      ]
+    },
+    "disable_access_key": {
+      "display_name": "Disable Access Key",
+      "description": "Set one explicit IAM user key status. Preserve its original status and use a separate response principal. API documentation: https://docs.aws.amazon.com/IAM/latest/APIReference/API_UpdateAccessKey.html",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_name",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_+=,.@-]{1,128}$"
+        },
+        {
+          "name": "access_key_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_]{16,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://iam.amazonaws.com/",
+            "form": {
+              "Action": "UpdateAccessKey",
+              "Version": "2010-05-08",
+              "UserName": "{{input.user_name}}",
+              "AccessKeyId": "{{input.access_key_id}}",
+              "Status": "Inactive"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "contains": "<UpdateAccessKeyResponse"
+          }
+        }
+      ],
+      "outputs": {
+        "receipt_xml": "steps.request.text"
+      },
+      "fixtures": [
+        "fixtures/disable_access_key.json"
+      ],
+      "rollback": "enable_access_key"
+    },
+    "enable_access_key": {
+      "display_name": "Enable Access Key",
+      "description": "Set one explicit IAM user key status. Preserve its original status and use a separate response principal. API documentation: https://docs.aws.amazon.com/IAM/latest/APIReference/API_UpdateAccessKey.html",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_name",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_+=,.@-]{1,128}$"
+        },
+        {
+          "name": "access_key_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_]{16,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://iam.amazonaws.com/",
+            "form": {
+              "Action": "UpdateAccessKey",
+              "Version": "2010-05-08",
+              "UserName": "{{input.user_name}}",
+              "AccessKeyId": "{{input.access_key_id}}",
+              "Status": "Active"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "contains": "<UpdateAccessKeyResponse"
+          }
+        }
+      ],
+      "outputs": {
+        "receipt_xml": "steps.request.text"
+      },
+      "fixtures": [
+        "fixtures/enable_access_key.json"
+      ],
+      "rollback": "disable_access_key"
+    }
+  }
+}

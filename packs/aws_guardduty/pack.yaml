@@ -1,0 +1,207 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "aws_guardduty",
+  "display_name": "AWS GuardDuty findings",
+  "description": "AWS GuardDuty findings response actions. Containment and inverse actions require approval.",
+  "vendor": "AWS",
+  "categories": [
+    "edr"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "guardduty regional endpoint",
+      "required": true,
+      "default": "https://guardduty.us-east-1.amazonaws.com",
+      "one_of": [
+        "https://guardduty.us-east-1.amazonaws.com",
+        "https://guardduty.us-west-2.amazonaws.com",
+        "https://guardduty.eu-west-1.amazonaws.com"
+      ]
+    },
+    {
+      "name": "region",
+      "label": "AWS signing region",
+      "required": true,
+      "default": "us-east-1",
+      "one_of": [
+        "us-east-1",
+        "us-west-2",
+        "eu-west-1"
+      ]
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/detector"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "aws_sigv4",
+    "region": "{{config.region}}",
+    "service": "guardduty",
+    "access_key_credential": "ACCESS_KEY_ID",
+    "secret_key_credential": "SECRET_ACCESS_KEY",
+    "session_token_credential": "SESSION_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "ACCESS_KEY_ID",
+      "label": "Access Key Id"
+    },
+    {
+      "name": "SECRET_ACCESS_KEY",
+      "label": "Secret Access Key"
+    },
+    {
+      "name": "SESSION_TOKEN",
+      "label": "Session Token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "list_findings": {
+      "display_name": "List Findings",
+      "description": "Read one bounded page of finding identifiers and the returned pagination token. API documentation: https://docs.aws.amazon.com/guardduty/latest/APIReference/API_ListFindings.html",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "detector_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{32}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/detector/{{input.detector_id}}/findings",
+            "json": {
+              "maxResults": 50
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "page": "steps.request"
+      },
+      "fixtures": [
+        "fixtures/list_findings.json"
+      ]
+    },
+    "list_findings_page": {
+      "display_name": "List Findings Page",
+      "description": "Read one bounded page of finding identifiers and the returned pagination token. API documentation: https://docs.aws.amazon.com/guardduty/latest/APIReference/API_ListFindings.html",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "detector_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{32}$"
+        },
+        {
+          "name": "next_token",
+          "type": "string",
+          "required": true,
+          "pattern": "^[!-~]{1,1024}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/detector/{{input.detector_id}}/findings",
+            "json": {
+              "maxResults": 50,
+              "nextToken": "{{input.next_token}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "page": "steps.request"
+      },
+      "fixtures": [
+        "fixtures/list_findings_page.json"
+      ]
+    },
+    "get_finding": {
+      "display_name": "Get finding details",
+      "description": "Read one explicit finding and return its documented structured metadata. API documentation: https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetFindings.html",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "detector_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{32}$"
+        },
+        {
+          "name": "finding_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{32}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/detector/{{input.detector_id}}/findings/get",
+            "json": {
+              "findingIds": [
+                "{{input.finding_id}}"
+              ]
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "findings",
+            "items": 1
+          }
+        }
+      ],
+      "outputs": {
+        "findings": "steps.request.findings"
+      },
+      "fixtures": [
+        "fixtures/get_finding.json"
+      ]
+    }
+  }
+}

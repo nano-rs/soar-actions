@@ -1,0 +1,36 @@
+{
+  "action": "remove_response_rule",
+  "config": {
+    "directory_id": "11111111-1111-4111-8111-111111111111",
+    "subscription_id": "11111111-1111-4111-8111-111111111111"
+  },
+  "inputs": {
+    "resource_group": "example-response",
+    "nsg_name": "example-nsg",
+    "rule_name": "nano-soar-case-1"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "DELETE",
+        "url": "https://management.azure.com/subscriptions/11111111-1111-4111-8111-111111111111/resourceGroups/example-response/providers/Microsoft.Network/networkSecurityGroups/example-nsg/securityRules/nano-soar-case-1",
+        "query": {
+          "api-version": "2026-01-01"
+        }
+      },
+      "response": {
+        "method": "DELETE",
+        "host": "management.azure.com",
+        "path": "/subscriptions/11111111-1111-4111-8111-111111111111/resourceGroups/example-response/providers/Microsoft.Network/networkSecurityGroups/example-nsg/securityRules/nano-soar-case-1",
+        "status": 202,
+        "body": "",
+        "query": {
+          "api-version": "2026-01-01"
+        }
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/security-rules/delete?view=rest-virtualnetwork-2026-01-01",
+  "request_evidence": "independent_http_mock"
+}
