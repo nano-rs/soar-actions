@@ -1,0 +1,55 @@
+{
+  "action": "list_ticket_comments",
+  "config": {
+    "base_url": "https://example.zendesk.com"
+  },
+  "inputs": {
+    "ticket_id": 123456
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://example.zendesk.com/api/v2/tickets/123456/comments.json",
+        "query": {
+          "page[size]": "100"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "example.zendesk.com",
+        "path": "/api/v2/tickets/123456/comments.json",
+        "status": 200,
+        "body": {
+          "comments": [],
+          "meta": {
+            "has_more": false,
+            "after_cursor": "documented-after-cursor"
+          },
+          "links": {
+            "next": null,
+            "prev": null
+          }
+        },
+        "query": {
+          "page[size]": "100"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "page": {
+      "comments": [],
+      "meta": {
+        "has_more": false,
+        "after_cursor": "documented-after-cursor"
+      },
+      "links": {
+        "next": null,
+        "prev": null
+      }
+    }
+  },
+  "source": "https://developer.zendesk.com/api-reference/ticketing/tickets/ticket_comments/",
+  "request_evidence": "independent_http_mock"
+}

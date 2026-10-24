@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "tenable_io",
+  "display_name": "Tenable Vulnerability Management",
+  "description": "Tenable Vulnerability Management investigation and service actions.",
+  "vendor": "Tenable",
+  "categories": [
+    "vulnerability"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "cloud.tenable.com",
+      "path_prefixes": [
+        "/assets",
+        "/workbenches/assets",
+        "/workbenches/vulnerabilities"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "composite_token",
+    "header": "X-ApiKeys",
+    "prefix": "accessKey=",
+    "first_credential": "ACCESS_KEY",
+    "separator": "; secretKey=",
+    "second_credential": "SECRET_KEY"
+  },
+  "credentials": [
+    {
+      "name": "ACCESS_KEY",
+      "label": "Access Key"
+    },
+    {
+      "name": "SECRET_KEY",
+      "label": "Secret Key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 5,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_asset": {
+      "display_name": "Get asset details",
+      "description": "Read metadata for one authorized asset UUID. API documentation: https://developer.tenable.com/reference/assets-asset-info",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "asset_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://cloud.tenable.com/assets/{{input.asset_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "json_type": "string",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "asset": "steps.request"
+      },
+      "output_types": {
+        "asset": "object"
+      },
+      "fixtures": [
+        "fixtures/get_asset.json"
+      ]
+    },
+    "list_asset_vulnerabilities": {
+      "display_name": "List recorded asset vulnerabilities",
+      "description": "Read the provider-capped asset vulnerability view for the past 30 days; do not infer complete coverage from an empty or short result. API documentation: https://developer.tenable.com/reference/workbenches-asset-vulnerabilities",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "asset_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://cloud.tenable.com/workbenches/assets/{{input.asset_id}}/vulnerabilities",
+            "query": {
+              "date_range": "30"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "vulnerabilities",
+            "json_type": "array"
+          }
+        }
+      ],
+      "outputs": {
+        "page": "steps.request"
+      },
+      "output_types": {
+        "page": "object"
+      },
+      "fixtures": [
+        "fixtures/list_asset_vulnerabilities.json",
+        "fixtures/list_asset_vulnerabilities_empty.json"
+      ]
+    },
+    "get_vulnerability_info": {
+      "display_name": "Get plugin vulnerability metadata",
+      "description": "Read the selected plugin findings metadata within the same 30-day workbench view. API documentation: https://developer.tenable.com/reference/workbenches-vulnerability-info",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "plugin_id",
+          "type": "int",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://cloud.tenable.com/workbenches/vulnerabilities/{{input.plugin_id}}/info",
+            "query": {
+              "date_range": "30"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "info",
+            "json_type": "object",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "info": "steps.request.info"
+      },
+      "output_types": {
+        "info": "object"
+      },
+      "fixtures": [
+        "fixtures/get_vulnerability_info.json"
+      ]
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "action": "update_issue",
+  "config": {},
+  "inputs": {
+    "owner": "example-org",
+    "repository": "incident-response",
+    "issue_number": 42,
+    "title": "Example security incident",
+    "body": "Example incident evidence",
+    "state": "closed"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "PATCH",
+        "url": "https://api.github.com/repos/example-org/incident-response/issues/42",
+        "headers": {
+          "Accept": "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28"
+        },
+        "json": {
+          "title": "Example security incident",
+          "body": "Example incident evidence",
+          "state": "closed"
+        }
+      },
+      "response": {
+        "method": "PATCH",
+        "host": "api.github.com",
+        "path": "/repos/example-org/incident-response/issues/42",
+        "status": 200,
+        "body": {
+          "id": 456,
+          "number": 42,
+          "title": "Example security incident",
+          "body": "Example incident evidence",
+          "state": "closed",
+          "html_url": "https://github.com/example-org/incident-response/issues/42",
+          "updated_at": "2026-01-01T00:01:00Z"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "issue": {
+      "id": 456,
+      "number": 42,
+      "title": "Example security incident",
+      "body": "Example incident evidence",
+      "state": "closed",
+      "html_url": "https://github.com/example-org/incident-response/issues/42",
+      "updated_at": "2026-01-01T00:01:00Z"
+    }
+  },
+  "source": "https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28",
+  "request_evidence": "independent_http_mock"
+}

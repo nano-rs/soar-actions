@@ -1,0 +1,288 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_asset.json",
+      "url": "https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+      "document_url": "https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+      "document_sha256": "5d322d0ec815d1afd678b70300804a4af8b69fd94a7e058250d81c0426520abd",
+      "request": {
+        "method": "GET",
+        "url": "https://us.api.insight.rapid7.com/vm/v4/integration/assets/12344375-34a7-40d3-9821-90db0b5cc90e-default-asset-7912",
+        "query": {
+          "includeSame": "true"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "us.api.insight.rapid7.com",
+        "path": "/vm/v4/integration/assets/12344375-34a7-40d3-9821-90db0b5cc90e-default-asset-7912",
+        "status": 200,
+        "body": {
+          "id": "12344375-34a7-40d3-9821-90db0b5cc90e-default-asset-7912",
+          "host_name": "host.domain.com",
+          "ip": "10.1.0.128",
+          "assessed_for_vulnerabilities": true,
+          "last_assessed_for_vulnerabilities": "2019-02-14T21:19:41.090Z",
+          "risk_score": 74621.5625,
+          "total_vulnerabilities": 1,
+          "same": [
+            {
+              "check_id": "check_id",
+              "first_found": "2020-03-18T10:46:15Z",
+              "key": "key",
+              "last_found": "2020-03-20T19:18:13.611Z",
+              "nic": "eth0",
+              "port": 2,
+              "proof": "<p>proof</p>",
+              "protocol": "TCP",
+              "reintroduced": null,
+              "solution_fix": "Take a look at all possible solutions for vulnerability",
+              "solution_id": "unknown-acrobat-cve-2018-16015",
+              "solution_summary": "The solution is unknown for vuln acrobat-cve-2018-16015",
+              "solution_type": "workaround",
+              "status": "VULNERABLE_POTENTIAL",
+              "vulnerability_id": "acrobat-cve-2018-16015"
+            }
+          ]
+        },
+        "query": {
+          "includeSame": "true"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/search_assets.json",
+      "url": "https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+      "document_url": "https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+      "document_sha256": "5d322d0ec815d1afd678b70300804a4af8b69fd94a7e058250d81c0426520abd",
+      "request": {
+        "method": "POST",
+        "url": "https://us.api.insight.rapid7.com/vm/v4/integration/assets",
+        "query": {
+          "size": "50"
+        },
+        "json": {
+          "asset": "last_assessed_for_vulnerabilities >= '2025-09-13T00:02:01Z'",
+          "vulnerability": "cvss_score >= 9"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "us.api.insight.rapid7.com",
+        "path": "/vm/v4/integration/assets",
+        "status": 200,
+        "body": {
+          "data": [
+            {
+              "id": "452534235-25a7-40a3-9321-28ce0b5cc90e-default-asset-199",
+              "ip": "10.1.0.128",
+              "risk_score": 0,
+              "total_vulnerabilities": 2
+            }
+          ],
+          "metadata": {
+            "number": 0,
+            "size": 50,
+            "totalResources": 2195,
+            "totalPages": 1098,
+            "cursor": "<base64-encoded-cursor>",
+            "effectiveTime": "2024-01-25T00:00:00Z"
+          },
+          "links": [
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=0&size=2",
+              "rel": "first"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=0&size=2",
+              "rel": "self"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=1&size=2&cursor=<base64-encoded-cursor>",
+              "rel": "next"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=1097&size=2",
+              "rel": "last"
+            }
+          ]
+        },
+        "query": {
+          "size": "50"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/search_assets_empty.json",
+      "url": "https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+      "document_url": "https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+      "document_sha256": "5d322d0ec815d1afd678b70300804a4af8b69fd94a7e058250d81c0426520abd",
+      "request": {
+        "method": "POST",
+        "url": "https://us.api.insight.rapid7.com/vm/v4/integration/assets",
+        "query": {
+          "size": "50"
+        },
+        "json": {
+          "asset": "last_assessed_for_vulnerabilities >= '2025-09-13T00:02:01Z'",
+          "vulnerability": "cvss_score >= 9"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "us.api.insight.rapid7.com",
+        "path": "/vm/v4/integration/assets",
+        "status": 200,
+        "body": {
+          "data": [],
+          "metadata": {
+            "number": 0,
+            "size": 50,
+            "totalResources": 0,
+            "totalPages": 0,
+            "cursor": "<base64-encoded-cursor>",
+            "effectiveTime": "2024-01-25T00:00:00Z"
+          },
+          "links": [
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=0&size=2",
+              "rel": "first"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=0&size=2",
+              "rel": "self"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=1&size=2&cursor=<base64-encoded-cursor>",
+              "rel": "next"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=1097&size=2",
+              "rel": "last"
+            }
+          ]
+        },
+        "query": {
+          "size": "50"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/search_vulnerabilities.json",
+      "url": "https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+      "document_url": "https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+      "document_sha256": "5d322d0ec815d1afd678b70300804a4af8b69fd94a7e058250d81c0426520abd",
+      "request": {
+        "method": "POST",
+        "url": "https://us.api.insight.rapid7.com/vm/v4/integration/vulnerabilities",
+        "query": {
+          "size": "50"
+        },
+        "json": {
+          "vulnerability": "modified > 2020-01-01T00:00:00Z"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "us.api.insight.rapid7.com",
+        "path": "/vm/v4/integration/vulnerabilities",
+        "status": 200,
+        "body": {
+          "data": [
+            {
+              "added": "2018-05-16T00:00:00Z",
+              "cves": "CVE-2008-6536",
+              "id": "7-zip-cve-2008-6536",
+              "modified": "2018-06-08T00:00:00Z",
+              "risk_score": 885.16,
+              "severity": "critical",
+              "title": "7-Zip: CVE-2008-6536: Unspecified vulnerability in 7-zip before 4.5.7"
+            }
+          ],
+          "metadata": {
+            "number": 0,
+            "size": 50,
+            "totalResources": 81631,
+            "totalPages": 40816,
+            "cursor": "-37745434:::_S:::7-zip-cve-2016-2334"
+          },
+          "links": [
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=0&size=2&sort=id,asc",
+              "rel": "first"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=0&size=2&sort=id,asc",
+              "rel": "self"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=1&size=2&sort=id,asc&cursor=-37745434:::_S:::7-zip-cve-2016-2334",
+              "rel": "next"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=40815&size=2&sort=id,asc",
+              "rel": "last"
+            }
+          ]
+        },
+        "query": {
+          "size": "50"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/search_vulnerabilities_empty.json",
+      "url": "https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+      "document_url": "https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+      "document_sha256": "5d322d0ec815d1afd678b70300804a4af8b69fd94a7e058250d81c0426520abd",
+      "request": {
+        "method": "POST",
+        "url": "https://us.api.insight.rapid7.com/vm/v4/integration/vulnerabilities",
+        "query": {
+          "size": "50"
+        },
+        "json": {
+          "vulnerability": "modified > 2020-01-01T00:00:00Z"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "us.api.insight.rapid7.com",
+        "path": "/vm/v4/integration/vulnerabilities",
+        "status": 200,
+        "body": {
+          "data": [],
+          "metadata": {
+            "number": 0,
+            "size": 50,
+            "totalResources": 0,
+            "totalPages": 0,
+            "cursor": "-37745434:::_S:::7-zip-cve-2016-2334"
+          },
+          "links": [
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=0&size=2&sort=id,asc",
+              "rel": "first"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=0&size=2&sort=id,asc",
+              "rel": "self"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=1&size=2&sort=id,asc&cursor=-37745434:::_S:::7-zip-cve-2016-2334",
+              "rel": "next"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=40815&size=2&sort=id,asc",
+              "rel": "last"
+            }
+          ]
+        },
+        "query": {
+          "size": "50"
+        }
+      }
+    }
+  ]
+}

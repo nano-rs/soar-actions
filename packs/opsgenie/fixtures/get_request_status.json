@@ -1,0 +1,49 @@
+{
+  "action": "get_request_status",
+  "config": {
+    "base_url": "https://api.opsgenie.com"
+  },
+  "inputs": {
+    "request_id": "11111111-1111-4111-8111-111111111111"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.opsgenie.com/v2/alerts/requests/11111111-1111-4111-8111-111111111111"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.opsgenie.com",
+        "path": "/v2/alerts/requests/11111111-1111-4111-8111-111111111111",
+        "status": 200,
+        "body": {
+          "data": {
+            "success": true,
+            "action": "Create",
+            "processedAt": "2026-01-01T00:00:00Z",
+            "isSuccess": true,
+            "status": "Created alert",
+            "alertId": "11111111-1111-4111-8111-111111111111",
+            "alias": "nano-example-incident"
+          },
+          "requestId": "11111111-1111-4111-8111-111111111111",
+          "took": 0.1
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "request": {
+      "success": true,
+      "action": "Create",
+      "processedAt": "2026-01-01T00:00:00Z",
+      "isSuccess": true,
+      "status": "Created alert",
+      "alertId": "11111111-1111-4111-8111-111111111111",
+      "alias": "nano-example-incident"
+    }
+  },
+  "source": "https://docs.opsgenie.com/docs/alert-api",
+  "request_evidence": "independent_http_mock"
+}

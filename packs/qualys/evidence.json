@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_asset.json",
+      "url": "https://cdn2.qualys.com/docs/qualys-api-vmpc-user-guide.pdf",
+      "document_url": "https://cdn2.qualys.com/docs/qualys-api-vmpc-user-guide.pdf",
+      "document_sha256": "8eec4984c4fef88c3b4c6f8870d90801c287fbd559c9652b0ff8d4f517299929",
+      "request": {
+        "method": "GET",
+        "url": "https://qualysapi.qualys.com/api/2.0/fo/asset/host/",
+        "headers": {
+          "X-Requested-With": "nano Security Lake SOAR"
+        },
+        "query": {
+          "action": "list",
+          "ids": "12345",
+          "details": "Basic",
+          "truncation_limit": "1"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "qualysapi.qualys.com",
+        "path": "/api/2.0/fo/asset/host/",
+        "status": 200,
+        "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><HOST_LIST_OUTPUT><RESPONSE><DATETIME>2026-01-01T00:00:00Z</DATETIME><HOST_LIST><HOST><ID>12345</ID><IP>192.0.2.10</IP><TRACKING_METHOD>IP</TRACKING_METHOD><DNS>example-host.example.net</DNS></HOST></HOST_LIST></RESPONSE></HOST_LIST_OUTPUT>",
+        "query": {
+          "action": "list",
+          "ids": "12345",
+          "details": "Basic",
+          "truncation_limit": "1"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/get_asset_detections.json",
+      "url": "https://cdn2.qualys.com/docs/qualys-api-vmpc-user-guide.pdf",
+      "document_url": "https://cdn2.qualys.com/docs/qualys-api-vmpc-user-guide.pdf",
+      "document_sha256": "8eec4984c4fef88c3b4c6f8870d90801c287fbd559c9652b0ff8d4f517299929",
+      "request": {
+        "method": "GET",
+        "url": "https://qualysapi.qualys.com/api/2.0/fo/asset/host/vm/detection/",
+        "headers": {
+          "X-Requested-With": "nano Security Lake SOAR"
+        },
+        "query": {
+          "action": "list",
+          "ids": "12345",
+          "qids": "105015",
+          "truncation_limit": "1"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "qualysapi.qualys.com",
+        "path": "/api/2.0/fo/asset/host/vm/detection/",
+        "status": 200,
+        "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><HOST_LIST_VM_DETECTION_OUTPUT><RESPONSE><DATETIME>2026-01-01T00:00:00Z</DATETIME><HOST_LIST><HOST><ID>12345</ID><IP>192.0.2.10</IP><DETECTION_LIST><DETECTION><QID>105015</QID><TYPE>Confirmed</TYPE><SEVERITY>3</SEVERITY><STATUS>Active</STATUS><RESULTS>Example documented detection evidence</RESULTS></DETECTION></DETECTION_LIST></HOST></HOST_LIST></RESPONSE></HOST_LIST_VM_DETECTION_OUTPUT>",
+        "query": {
+          "action": "list",
+          "ids": "12345",
+          "qids": "105015",
+          "truncation_limit": "1"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/get_vulnerability.json",
+      "url": "https://cdn2.qualys.com/docs/qualys-api-vmpc-user-guide.pdf",
+      "document_url": "https://cdn2.qualys.com/docs/qualys-api-vmpc-user-guide.pdf",
+      "document_sha256": "8eec4984c4fef88c3b4c6f8870d90801c287fbd559c9652b0ff8d4f517299929",
+      "request": {
+        "method": "GET",
+        "url": "https://qualysapi.qualys.com/api/2.0/fo/knowledge_base/vuln/",
+        "headers": {
+          "X-Requested-With": "nano Security Lake SOAR"
+        },
+        "query": {
+          "action": "list",
+          "ids": "105015",
+          "details": "Basic"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "qualysapi.qualys.com",
+        "path": "/api/2.0/fo/knowledge_base/vuln/",
+        "status": 200,
+        "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><KNOWLEDGE_BASE_VULN_LIST_OUTPUT><RESPONSE><DATETIME>2026-01-01T00:00:00Z</DATETIME><VULN_LIST><VULN><QID>105015</QID><VULN_TYPE>Vulnerability</VULN_TYPE><SEVERITY_LEVEL>3</SEVERITY_LEVEL><TITLE>Example vulnerability metadata</TITLE></VULN></VULN_LIST></RESPONSE></KNOWLEDGE_BASE_VULN_LIST_OUTPUT>",
+        "query": {
+          "action": "list",
+          "ids": "105015",
+          "details": "Basic"
+        }
+      }
+    }
+  ]
+}

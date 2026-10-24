@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "qualys",
+  "display_name": "Qualys VMDR",
+  "description": "Qualys VMDR investigation and service actions.",
+  "vendor": "Qualys",
+  "categories": [
+    "vulnerability"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Qualys API platform origin",
+      "required": true,
+      "default": "https://qualysapi.qualys.com",
+      "one_of": [
+        "https://qualysapi.qualys.com",
+        "https://qualysapi.qg2.apps.qualys.com",
+        "https://qualysapi.qg3.apps.qualys.com",
+        "https://qualysapi.qg4.apps.qualys.com",
+        "https://qualysapi.qualys.eu",
+        "https://qualysapi.qg2.apps.qualys.eu",
+        "https://qualysapi.qg1.apps.qualys.in",
+        "https://qualysapi.qg1.apps.qualys.com.au",
+        "https://qualysapi.qg1.apps.qualys.ca",
+        "https://qualysapi.qg1.apps.qualys.co.uk",
+        "https://qualysapi.qg3.apps.qualys.it",
+        "https://qualysapi.qg1.apps.qualys.ae",
+        "https://qualysapi.qg1.apps.qualysksa.com",
+        "https://qualysapi.gov1.qualys.us"
+      ]
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/api/2.0/fo/asset/host",
+        "/api/2.0/fo/knowledge_base/vuln"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "username": "API_USERNAME",
+    "password": "API_PASSWORD"
+  },
+  "credentials": [
+    {
+      "name": "API_USERNAME",
+      "label": "Api Username"
+    },
+    {
+      "name": "API_PASSWORD",
+      "label": "Api Password"
+    }
+  ],
+  "defaults": {
+    "per_minute": 5,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_asset": {
+      "display_name": "Get Asset",
+      "description": "Read one explicit scanned host ID as the documented XML view. API documentation: https://cdn2.qualys.com/docs/qualys-api-vmpc-user-guide.pdf",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "host_id",
+          "type": "int",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/2.0/fo/asset/host/",
+            "headers": {
+              "X-Requested-With": "nano Security Lake SOAR"
+            },
+            "query": {
+              "action": "list",
+              "ids": "{{input.host_id}}",
+              "details": "Basic",
+              "truncation_limit": "1"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "contains": "<HOST_LIST_OUTPUT>"
+          }
+        }
+      ],
+      "outputs": {
+        "response_xml": "steps.request.text"
+      },
+      "output_types": {
+        "response_xml": "string"
+      },
+      "fixtures": [
+        "fixtures/get_asset.json"
+      ]
+    },
+    "get_asset_detections": {
+      "display_name": "Get Asset Detections",
+      "description": "Read the selected QID detections for one host, preserving all XML state and warning metadata. API documentation: https://cdn2.qualys.com/docs/qualys-api-vmpc-user-guide.pdf",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "host_id",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "qid",
+          "type": "int",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/2.0/fo/asset/host/vm/detection/",
+            "headers": {
+              "X-Requested-With": "nano Security Lake SOAR"
+            },
+            "query": {
+              "action": "list",
+              "ids": "{{input.host_id}}",
+              "qids": "{{input.qid}}",
+              "truncation_limit": "1"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "contains": "<HOST_LIST_VM_DETECTION_OUTPUT>"
+          }
+        }
+      ],
+      "outputs": {
+        "response_xml": "steps.request.text"
+      },
+      "output_types": {
+        "response_xml": "string"
+      },
+      "fixtures": [
+        "fixtures/get_asset_detections.json"
+      ]
+    },
+    "get_vulnerability": {
+      "display_name": "Get Vulnerability",
+      "description": "Read KnowledgeBase metadata for one explicit Qualys vulnerability ID. API documentation: https://cdn2.qualys.com/docs/qualys-api-vmpc-user-guide.pdf",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "qid",
+          "type": "int",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/2.0/fo/knowledge_base/vuln/",
+            "headers": {
+              "X-Requested-With": "nano Security Lake SOAR"
+            },
+            "query": {
+              "action": "list",
+              "ids": "{{input.qid}}",
+              "details": "Basic"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "contains": "<KNOWLEDGE_BASE_VULN_LIST_OUTPUT>"
+          }
+        }
+      ],
+      "outputs": {
+        "response_xml": "steps.request.text"
+      },
+      "output_types": {
+        "response_xml": "string"
+      },
+      "fixtures": [
+        "fixtures/get_vulnerability.json"
+      ]
+    }
+  }
+}

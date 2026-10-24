@@ -1,0 +1,47 @@
+{
+  "action": "add_issue_comment",
+  "config": {},
+  "inputs": {
+    "owner": "example-org",
+    "repository": "incident-response",
+    "issue_number": 42,
+    "body": "Example investigation note"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.github.com/repos/example-org/incident-response/issues/42/comments",
+        "headers": {
+          "Accept": "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28"
+        },
+        "json": {
+          "body": "Example investigation note"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.github.com",
+        "path": "/repos/example-org/incident-response/issues/42/comments",
+        "status": 201,
+        "body": {
+          "id": 789,
+          "body": "Example investigation note",
+          "html_url": "https://github.com/example-org/incident-response/issues/42#issuecomment-789",
+          "created_at": "2026-01-01T00:00:00Z"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "comment": {
+      "id": 789,
+      "body": "Example investigation note",
+      "html_url": "https://github.com/example-org/incident-response/issues/42#issuecomment-789",
+      "created_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  "source": "https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28",
+  "request_evidence": "independent_http_mock"
+}

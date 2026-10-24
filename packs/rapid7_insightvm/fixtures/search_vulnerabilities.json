@@ -1,0 +1,112 @@
+{
+  "action": "search_vulnerabilities",
+  "config": {
+    "base_url": "https://us.api.insight.rapid7.com"
+  },
+  "inputs": {
+    "vulnerability_filter": "modified > 2020-01-01T00:00:00Z"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://us.api.insight.rapid7.com/vm/v4/integration/vulnerabilities",
+        "query": {
+          "size": "50"
+        },
+        "json": {
+          "vulnerability": "modified > 2020-01-01T00:00:00Z"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "us.api.insight.rapid7.com",
+        "path": "/vm/v4/integration/vulnerabilities",
+        "status": 200,
+        "body": {
+          "data": [
+            {
+              "added": "2018-05-16T00:00:00Z",
+              "cves": "CVE-2008-6536",
+              "id": "7-zip-cve-2008-6536",
+              "modified": "2018-06-08T00:00:00Z",
+              "risk_score": 885.16,
+              "severity": "critical",
+              "title": "7-Zip: CVE-2008-6536: Unspecified vulnerability in 7-zip before 4.5.7"
+            }
+          ],
+          "metadata": {
+            "number": 0,
+            "size": 50,
+            "totalResources": 81631,
+            "totalPages": 40816,
+            "cursor": "-37745434:::_S:::7-zip-cve-2016-2334"
+          },
+          "links": [
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=0&size=2&sort=id,asc",
+              "rel": "first"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=0&size=2&sort=id,asc",
+              "rel": "self"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=1&size=2&sort=id,asc&cursor=-37745434:::_S:::7-zip-cve-2016-2334",
+              "rel": "next"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=40815&size=2&sort=id,asc",
+              "rel": "last"
+            }
+          ]
+        },
+        "query": {
+          "size": "50"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "page": {
+      "data": [
+        {
+          "added": "2018-05-16T00:00:00Z",
+          "cves": "CVE-2008-6536",
+          "id": "7-zip-cve-2008-6536",
+          "modified": "2018-06-08T00:00:00Z",
+          "risk_score": 885.16,
+          "severity": "critical",
+          "title": "7-Zip: CVE-2008-6536: Unspecified vulnerability in 7-zip before 4.5.7"
+        }
+      ],
+      "metadata": {
+        "number": 0,
+        "size": 50,
+        "totalResources": 81631,
+        "totalPages": 40816,
+        "cursor": "-37745434:::_S:::7-zip-cve-2016-2334"
+      },
+      "links": [
+        {
+          "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=0&size=2&sort=id,asc",
+          "rel": "first"
+        },
+        {
+          "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=0&size=2&sort=id,asc",
+          "rel": "self"
+        },
+        {
+          "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=1&size=2&sort=id,asc&cursor=-37745434:::_S:::7-zip-cve-2016-2334",
+          "rel": "next"
+        },
+        {
+          "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/vulnerabilities?page=40815&size=2&sort=id,asc",
+          "rel": "last"
+        }
+      ]
+    }
+  },
+  "source": "https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+  "request_evidence": "independent_http_mock"
+}

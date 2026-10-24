@@ -1,0 +1,43 @@
+{
+  "action": "update_description",
+  "config": {
+    "base_url": "https://api.opsgenie.com"
+  },
+  "inputs": {
+    "alert_id": "11111111-1111-4111-8111-111111111111",
+    "description": "Example updated description"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "PUT",
+        "url": "https://api.opsgenie.com/v2/alerts/11111111-1111-4111-8111-111111111111/description",
+        "query": {
+          "identifierType": "id"
+        },
+        "json": {
+          "description": "Example updated description"
+        }
+      },
+      "response": {
+        "method": "PUT",
+        "host": "api.opsgenie.com",
+        "path": "/v2/alerts/11111111-1111-4111-8111-111111111111/description",
+        "status": 202,
+        "body": {
+          "result": "Request will be processed",
+          "requestId": "11111111-1111-4111-8111-111111111111",
+          "took": 0.1
+        },
+        "query": {
+          "identifierType": "id"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "request_id": "11111111-1111-4111-8111-111111111111"
+  },
+  "source": "https://docs.opsgenie.com/docs/alert-api-continued",
+  "request_evidence": "independent_http_mock"
+}

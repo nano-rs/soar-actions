@@ -1,0 +1,96 @@
+{
+  "action": "search_assets",
+  "config": {
+    "base_url": "https://us.api.insight.rapid7.com"
+  },
+  "inputs": {
+    "asset_filter": "last_assessed_for_vulnerabilities >= '2025-09-13T00:02:01Z'",
+    "vulnerability_filter": "cvss_score >= 9"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://us.api.insight.rapid7.com/vm/v4/integration/assets",
+        "query": {
+          "size": "50"
+        },
+        "json": {
+          "asset": "last_assessed_for_vulnerabilities >= '2025-09-13T00:02:01Z'",
+          "vulnerability": "cvss_score >= 9"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "us.api.insight.rapid7.com",
+        "path": "/vm/v4/integration/assets",
+        "status": 200,
+        "body": {
+          "data": [],
+          "metadata": {
+            "number": 0,
+            "size": 50,
+            "totalResources": 0,
+            "totalPages": 0,
+            "cursor": "<base64-encoded-cursor>",
+            "effectiveTime": "2024-01-25T00:00:00Z"
+          },
+          "links": [
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=0&size=2",
+              "rel": "first"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=0&size=2",
+              "rel": "self"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=1&size=2&cursor=<base64-encoded-cursor>",
+              "rel": "next"
+            },
+            {
+              "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=1097&size=2",
+              "rel": "last"
+            }
+          ]
+        },
+        "query": {
+          "size": "50"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "page": {
+      "data": [],
+      "metadata": {
+        "number": 0,
+        "size": 50,
+        "totalResources": 0,
+        "totalPages": 0,
+        "cursor": "<base64-encoded-cursor>",
+        "effectiveTime": "2024-01-25T00:00:00Z"
+      },
+      "links": [
+        {
+          "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=0&size=2",
+          "rel": "first"
+        },
+        {
+          "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=0&size=2",
+          "rel": "self"
+        },
+        {
+          "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=1&size=2&cursor=<base64-encoded-cursor>",
+          "rel": "next"
+        },
+        {
+          "href": "https://us.api.insight.rapid7.com:443/vm/v4/integration/assets?page=1097&size=2",
+          "rel": "last"
+        }
+      ]
+    }
+  },
+  "source": "https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+  "request_evidence": "independent_http_mock"
+}

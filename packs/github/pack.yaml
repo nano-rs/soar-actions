@@ -1,0 +1,413 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "github",
+  "display_name": "GitHub",
+  "description": "GitHub investigation and service actions.",
+  "vendor": "GitHub",
+  "categories": [
+    "ticketing"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "api.github.com",
+      "path_prefixes": [
+        "/repos"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "API_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "API_TOKEN",
+      "label": "Api Token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 5,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_repository": {
+      "display_name": "Get repository",
+      "description": "Read repository metadata for the explicitly selected owner/name. API documentation: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9-]{0,38}$"
+        },
+        {
+          "name": "repository",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://api.github.com/repos/{{input.owner}}/{{input.repository}}",
+            "headers": {
+              "Accept": "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2022-11-28"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "full_name",
+            "json_type": "string",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "repository": "steps.request"
+      },
+      "output_types": {
+        "repository": "object"
+      },
+      "fixtures": [
+        "fixtures/get_repository.json"
+      ]
+    },
+    "get_issue": {
+      "display_name": "Get issue",
+      "description": "Read one issue-number resource; the GitHub issues API can also return pull-request metadata. API documentation: https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9-]{0,38}$"
+        },
+        {
+          "name": "repository",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}$"
+        },
+        {
+          "name": "issue_number",
+          "type": "int",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://api.github.com/repos/{{input.owner}}/{{input.repository}}/issues/{{input.issue_number}}",
+            "headers": {
+              "Accept": "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2022-11-28"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "number",
+            "json_type": "number"
+          }
+        }
+      ],
+      "outputs": {
+        "issue": "steps.request"
+      },
+      "output_types": {
+        "issue": "object"
+      },
+      "fixtures": [
+        "fixtures/get_issue.json"
+      ]
+    },
+    "list_issue_comments": {
+      "display_name": "List issue comment page",
+      "description": "Read one numbered page of comments. A short page is not treated as proof that another page cannot exist. API documentation: https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9-]{0,38}$"
+        },
+        {
+          "name": "repository",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}$"
+        },
+        {
+          "name": "issue_number",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "page",
+          "type": "int",
+          "required": false
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://api.github.com/repos/{{input.owner}}/{{input.repository}}/issues/{{input.issue_number}}/comments",
+            "headers": {
+              "Accept": "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2022-11-28"
+            },
+            "query": {
+              "per_page": "100",
+              "page": "{{input.page}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "",
+            "json_type": "array"
+          }
+        }
+      ],
+      "outputs": {
+        "comments": "steps.request"
+      },
+      "output_types": {
+        "comments": "array"
+      },
+      "fixtures": [
+        "fixtures/list_issue_comments.json",
+        "fixtures/list_issue_comments_empty.json"
+      ]
+    },
+    "create_issue": {
+      "display_name": "Create issue",
+      "description": "Create one issue in the explicit repository; notifications/automations may run. API documentation: https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28",
+      "effect": "write",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9-]{0,38}$"
+        },
+        {
+          "name": "repository",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}$"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "pattern": "^[\\s\\S]{1,256}$"
+        },
+        {
+          "name": "body",
+          "type": "string",
+          "required": true,
+          "pattern": "^[\\s\\S]{1,10000}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://api.github.com/repos/{{input.owner}}/{{input.repository}}/issues",
+            "headers": {
+              "Accept": "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2022-11-28"
+            },
+            "json": {
+              "title": "{{input.title}}",
+              "body": "{{input.body}}"
+            }
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "number",
+            "json_type": "number"
+          }
+        }
+      ],
+      "outputs": {
+        "issue": "steps.request"
+      },
+      "output_types": {
+        "issue": "object"
+      },
+      "fixtures": [
+        "fixtures/create_issue.json"
+      ]
+    },
+    "update_issue": {
+      "display_name": "Update issue fields",
+      "description": "Replace the explicitly supplied title/body/state after reading current values; no atomic collision guarantee is implied. API documentation: https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28",
+      "effect": "write",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9-]{0,38}$"
+        },
+        {
+          "name": "repository",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}$"
+        },
+        {
+          "name": "issue_number",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "pattern": "^[\\s\\S]{1,256}$"
+        },
+        {
+          "name": "body",
+          "type": "string",
+          "required": true,
+          "pattern": "^[\\s\\S]{1,10000}$"
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "required": true,
+          "pattern": "^(open|closed)$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PATCH",
+            "url": "https://api.github.com/repos/{{input.owner}}/{{input.repository}}/issues/{{input.issue_number}}",
+            "headers": {
+              "Accept": "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2022-11-28"
+            },
+            "json": {
+              "title": "{{input.title}}",
+              "body": "{{input.body}}",
+              "state": "{{input.state}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "number",
+            "json_type": "number"
+          }
+        }
+      ],
+      "outputs": {
+        "issue": "steps.request"
+      },
+      "output_types": {
+        "issue": "object"
+      },
+      "fixtures": [
+        "fixtures/update_issue.json"
+      ]
+    },
+    "add_issue_comment": {
+      "display_name": "Add issue comment",
+      "description": "Append one investigation comment; verify existing comments before a later attempt after an uncertain acknowledgment. API documentation: https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28",
+      "effect": "write",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9-]{0,38}$"
+        },
+        {
+          "name": "repository",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}$"
+        },
+        {
+          "name": "issue_number",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "body",
+          "type": "string",
+          "required": true,
+          "pattern": "^[\\s\\S]{1,10000}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://api.github.com/repos/{{input.owner}}/{{input.repository}}/issues/{{input.issue_number}}/comments",
+            "headers": {
+              "Accept": "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2022-11-28"
+            },
+            "json": {
+              "body": "{{input.body}}"
+            }
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "id",
+            "json_type": "number"
+          }
+        }
+      ],
+      "outputs": {
+        "comment": "steps.request"
+      },
+      "output_types": {
+        "comment": "object"
+      },
+      "fixtures": [
+        "fixtures/add_issue_comment.json"
+      ]
+    }
+  }
+}
