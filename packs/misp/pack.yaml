@@ -298,5 +298,5 @@
       ]
     }
   },
-  "deployment": "self_hosted"
+  "deployment_scope": "self_hosted_sovereign"
 }
