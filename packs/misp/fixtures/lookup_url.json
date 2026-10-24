@@ -1,0 +1,66 @@
+{
+  "action": "lookup_url",
+  "config": {
+    "search_endpoint": "https://misp.example.com/attributes/restSearch"
+  },
+  "inputs": {
+    "indicator": "https://example.com/"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://misp.example.com/attributes/restSearch",
+        "json": {
+          "returnFormat": "json",
+          "value": "https://example.com/",
+          "type": "url",
+          "limit": 25,
+          "page": 1,
+          "withAttachments": false
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "misp.example.com",
+        "path": "/attributes/restSearch",
+        "status": 200,
+        "body": {
+          "response": {
+            "Attribute": [
+              {
+                "id": "1001",
+                "event_id": "20",
+                "uuid": "00000000-0000-4000-8000-000000000001",
+                "type": "url",
+                "category": "Network activity",
+                "value": "https://example.com/",
+                "to_ids": true,
+                "timestamp": "1767225600",
+                "deleted": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "rows": [
+      {
+        "id": "1001",
+        "event_id": "20",
+        "uuid": "00000000-0000-4000-8000-000000000001",
+        "type": "url",
+        "category": "Network activity",
+        "value": "https://example.com/",
+        "to_ids": true,
+        "timestamp": "1767225600",
+        "deleted": false
+      }
+    ],
+    "first_attribute_id": "1001"
+  },
+  "source": "https://www.misp-project.org/openapi/#tag/Attributes/operation/restSearchAttributes",
+  "request_evidence": "independent_http_mock"
+}

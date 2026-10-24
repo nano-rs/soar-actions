@@ -1,0 +1,8 @@
+{
+  "private_endpoint": {
+    "reason": "Private/on-prem endpoints are restricted to self-hosted/sovereign deployments. The current native broker refuses private/reserved addresses and non-443 ports. A private-only MISP endpoint cannot safely execute without separately reviewed self-hosted routing; no bypass is added. Public HTTPS MISP REST searches are authored for self-hosted/sovereign operators.",
+    "documentation": [
+      "https://www.misp-project.org/openapi/"
+    ]
+  }
+}

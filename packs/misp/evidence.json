@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/lookup_ip_source.json",
+      "url": "https://www.misp-project.org/openapi/#tag/Attributes/operation/restSearchAttributes",
+      "document_url": "https://raw.githubusercontent.com/MISP/MISP/develop/app/webroot/doc/openapi.yaml",
+      "document_sha256": "7e5531c05025bfe167dad23e8c5ce58f8049a052595b9225b33ca66107d63d91",
+      "request": {
+        "method": "POST",
+        "url": "https://misp.example.com/attributes/restSearch",
+        "json": {
+          "returnFormat": "json",
+          "value": "8.8.8.8",
+          "type": "ip-src",
+          "limit": 25,
+          "page": 1,
+          "withAttachments": false
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "misp.example.com",
+        "path": "/attributes/restSearch",
+        "status": 200,
+        "body": {
+          "response": {
+            "Attribute": [
+              {
+                "id": "1001",
+                "event_id": "20",
+                "uuid": "00000000-0000-4000-8000-000000000001",
+                "type": "ip-src",
+                "category": "Network activity",
+                "value": "8.8.8.8",
+                "to_ids": true,
+                "timestamp": "1767225600",
+                "deleted": false
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/lookup_ip_destination.json",
+      "url": "https://www.misp-project.org/openapi/#tag/Attributes/operation/restSearchAttributes",
+      "document_url": "https://raw.githubusercontent.com/MISP/MISP/develop/app/webroot/doc/openapi.yaml",
+      "document_sha256": "7e5531c05025bfe167dad23e8c5ce58f8049a052595b9225b33ca66107d63d91",
+      "request": {
+        "method": "POST",
+        "url": "https://misp.example.com/attributes/restSearch",
+        "json": {
+          "returnFormat": "json",
+          "value": "8.8.8.8",
+          "type": "ip-dst",
+          "limit": 25,
+          "page": 1,
+          "withAttachments": false
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "misp.example.com",
+        "path": "/attributes/restSearch",
+        "status": 200,
+        "body": {
+          "response": {
+            "Attribute": [
+              {
+                "id": "1001",
+                "event_id": "20",
+                "uuid": "00000000-0000-4000-8000-000000000001",
+                "type": "ip-dst",
+                "category": "Network activity",
+                "value": "8.8.8.8",
+                "to_ids": true,
+                "timestamp": "1767225600",
+                "deleted": false
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/lookup_domain.json",
+      "url": "https://www.misp-project.org/openapi/#tag/Attributes/operation/restSearchAttributes",
+      "document_url": "https://raw.githubusercontent.com/MISP/MISP/develop/app/webroot/doc/openapi.yaml",
+      "document_sha256": "7e5531c05025bfe167dad23e8c5ce58f8049a052595b9225b33ca66107d63d91",
+      "request": {
+        "method": "POST",
+        "url": "https://misp.example.com/attributes/restSearch",
+        "json": {
+          "returnFormat": "json",
+          "value": "example.com",
+          "type": "domain",
+          "limit": 25,
+          "page": 1,
+          "withAttachments": false
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "misp.example.com",
+        "path": "/attributes/restSearch",
+        "status": 200,
+        "body": {
+          "response": {
+            "Attribute": [
+              {
+                "id": "1001",
+                "event_id": "20",
+                "uuid": "00000000-0000-4000-8000-000000000001",
+                "type": "domain",
+                "category": "Network activity",
+                "value": "example.com",
+                "to_ids": true,
+                "timestamp": "1767225600",
+                "deleted": false
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/lookup_url.json",
+      "url": "https://www.misp-project.org/openapi/#tag/Attributes/operation/restSearchAttributes",
+      "document_url": "https://raw.githubusercontent.com/MISP/MISP/develop/app/webroot/doc/openapi.yaml",
+      "document_sha256": "7e5531c05025bfe167dad23e8c5ce58f8049a052595b9225b33ca66107d63d91",
+      "request": {
+        "method": "POST",
+        "url": "https://misp.example.com/attributes/restSearch",
+        "json": {
+          "returnFormat": "json",
+          "value": "https://example.com/",
+          "type": "url",
+          "limit": 25,
+          "page": 1,
+          "withAttachments": false
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "misp.example.com",
+        "path": "/attributes/restSearch",
+        "status": 200,
+        "body": {
+          "response": {
+            "Attribute": [
+              {
+                "id": "1001",
+                "event_id": "20",
+                "uuid": "00000000-0000-4000-8000-000000000001",
+                "type": "url",
+                "category": "Network activity",
+                "value": "https://example.com/",
+                "to_ids": true,
+                "timestamp": "1767225600",
+                "deleted": false
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/lookup_sha256.json",
+      "url": "https://www.misp-project.org/openapi/#tag/Attributes/operation/restSearchAttributes",
+      "document_url": "https://raw.githubusercontent.com/MISP/MISP/develop/app/webroot/doc/openapi.yaml",
+      "document_sha256": "7e5531c05025bfe167dad23e8c5ce58f8049a052595b9225b33ca66107d63d91",
+      "request": {
+        "method": "POST",
+        "url": "https://misp.example.com/attributes/restSearch",
+        "json": {
+          "returnFormat": "json",
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "type": "sha256",
+          "limit": 25,
+          "page": 1,
+          "withAttachments": false
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "misp.example.com",
+        "path": "/attributes/restSearch",
+        "status": 200,
+        "body": {
+          "response": {
+            "Attribute": [
+              {
+                "id": "1001",
+                "event_id": "20",
+                "uuid": "00000000-0000-4000-8000-000000000001",
+                "type": "sha256",
+                "category": "Payload delivery",
+                "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "to_ids": true,
+                "timestamp": "1767225600",
+                "deleted": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
