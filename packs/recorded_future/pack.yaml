@@ -1,0 +1,206 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "recorded_future",
+  "display_name": "Recorded Future",
+  "description": "Recorded Future explicit Read lookups with checked JSON output contracts.",
+  "vendor": "Recorded Future",
+  "categories": [
+    "threat_intelligence",
+    "enrichment"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "api.recordedfuture.com",
+      "path_prefixes": [
+        "/v2/ip",
+        "/v2/domain",
+        "/v2/hash"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "X-RFToken",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "Recorded Future API key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "lookup_ip": {
+      "display_name": "Look up ip risk evidence",
+      "description": "Look up ip risk evidence. Reads existing provider evidence. Official API reference: https://docs.recordedfuture.com/reference/ip-lookup",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "ip",
+          "type": "ip",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://api.recordedfuture.com/v2/ip/ip:{{input.ip}}",
+            "query": {
+              "fields": "entity,risk"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.entity.id",
+            "non_empty": true,
+            "fields": {
+              "data.entity.type": "IpAddress"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "entity_id": "steps.lookup.data.entity.id",
+        "indicator": "steps.lookup.data.entity.name",
+        "risk_score": "steps.lookup.data.risk.score",
+        "criticality": "steps.lookup.data.risk.criticalityLabel",
+        "triggered_rules": "steps.lookup.data.risk.rules",
+        "risk_evidence": "steps.lookup.data.risk.evidenceDetails"
+      },
+      "output_types": {
+        "entity_id": "string",
+        "indicator": "string",
+        "risk_score": "integer",
+        "criticality": "string",
+        "triggered_rules": "integer",
+        "risk_evidence": "array"
+      },
+      "fixtures": [
+        "fixtures/lookup_ip.json"
+      ]
+    },
+    "lookup_domain": {
+      "display_name": "Look up domain risk evidence",
+      "description": "Look up domain risk evidence. Reads existing provider evidence. Official API reference: https://docs.recordedfuture.com/reference/domain-lookup",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "domain",
+          "type": "domain",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://api.recordedfuture.com/v2/domain/idn:{{input.domain}}",
+            "query": {
+              "fields": "entity,risk"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.entity.id",
+            "non_empty": true,
+            "fields": {
+              "data.entity.type": "InternetDomainName"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "entity_id": "steps.lookup.data.entity.id",
+        "indicator": "steps.lookup.data.entity.name",
+        "risk_score": "steps.lookup.data.risk.score",
+        "criticality": "steps.lookup.data.risk.criticalityLabel",
+        "triggered_rules": "steps.lookup.data.risk.rules",
+        "risk_evidence": "steps.lookup.data.risk.evidenceDetails"
+      },
+      "output_types": {
+        "entity_id": "string",
+        "indicator": "string",
+        "risk_score": "integer",
+        "criticality": "string",
+        "triggered_rules": "integer",
+        "risk_evidence": "array"
+      },
+      "fixtures": [
+        "fixtures/lookup_domain.json"
+      ]
+    },
+    "lookup_hash": {
+      "display_name": "Look up hash risk evidence",
+      "description": "Look up hash risk evidence. Reads existing provider evidence. Official API reference: https://docs.recordedfuture.com/reference/hash-lookup",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "hash",
+          "type": "hash",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://api.recordedfuture.com/v2/hash/hash:{{input.hash}}",
+            "query": {
+              "fields": "entity,risk"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.entity.id",
+            "non_empty": true,
+            "fields": {
+              "data.entity.type": "Hash"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "entity_id": "steps.lookup.data.entity.id",
+        "indicator": "steps.lookup.data.entity.name",
+        "risk_score": "steps.lookup.data.risk.score",
+        "criticality": "steps.lookup.data.risk.criticalityLabel",
+        "triggered_rules": "steps.lookup.data.risk.rules",
+        "risk_evidence": "steps.lookup.data.risk.evidenceDetails"
+      },
+      "output_types": {
+        "entity_id": "string",
+        "indicator": "string",
+        "risk_score": "integer",
+        "criticality": "string",
+        "triggered_rules": "integer",
+        "risk_evidence": "array"
+      },
+      "fixtures": [
+        "fixtures/lookup_hash.json"
+      ]
+    }
+  }
+}

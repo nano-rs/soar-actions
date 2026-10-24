@@ -1,0 +1,57 @@
+{
+  "action": "lookup_url",
+  "config": {},
+  "inputs": {
+    "url": "https://example.com/sample.exe"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://urlhaus-api.abuse.ch/v1/url/",
+        "form": {
+          "url": "https://example.com/sample.exe"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "urlhaus-api.abuse.ch",
+        "path": "/v1/url/",
+        "status": 200,
+        "body": {
+          "query_status": "ok",
+          "id": "1001",
+          "url": "https://example.com/sample.exe",
+          "url_status": "offline",
+          "host": "example.com",
+          "threat": "malware_download",
+          "tags": [
+            "exe"
+          ],
+          "payloads": [
+            {
+              "response_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "response_md5": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "file_type": "exe"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "id": "1001",
+    "url": "https://example.com/sample.exe",
+    "url_status": "offline",
+    "threat": "malware_download",
+    "payloads": [
+      {
+        "response_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "response_md5": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "file_type": "exe"
+      }
+    ]
+  },
+  "source": "https://urlhaus-api.abuse.ch/#url",
+  "request_evidence": "independent_http_mock"
+}

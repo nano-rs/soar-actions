@@ -1,0 +1,250 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "urlhaus",
+  "display_name": "URLhaus",
+  "description": "URLhaus explicit Read lookups with checked JSON output contracts.",
+  "vendor": "URLhaus",
+  "categories": [
+    "threat_intelligence",
+    "enrichment"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "urlhaus-api.abuse.ch",
+      "path_prefixes": [
+        "/v1/url",
+        "/v1/host",
+        "/v1/payload"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "Auth-Key",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "URLhaus API key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "lookup_ip": {
+      "display_name": "Look up ip malware URLs",
+      "description": "Look up ip malware URLs. Reads existing provider evidence. Official API reference: https://urlhaus-api.abuse.ch/#host",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "ip",
+          "type": "string",
+          "required": true,
+          "pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "POST",
+            "url": "https://urlhaus-api.abuse.ch/v1/host/",
+            "form": {
+              "host": "{{input.ip}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "urls",
+            "non_empty": true,
+            "fields": {
+              "query_status": "ok"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "host": "steps.lookup.host",
+        "url_count": "steps.lookup.url_count",
+        "rows": "steps.lookup.urls",
+        "first_seen": "steps.lookup.firstseen"
+      },
+      "output_types": {
+        "host": "string",
+        "url_count": "string",
+        "rows": "array",
+        "first_seen": "string"
+      },
+      "fixtures": [
+        "fixtures/lookup_ip.json"
+      ]
+    },
+    "lookup_domain": {
+      "display_name": "Look up domain malware URLs",
+      "description": "Look up domain malware URLs. Reads existing provider evidence. Official API reference: https://urlhaus-api.abuse.ch/#host",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "domain",
+          "type": "domain",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "POST",
+            "url": "https://urlhaus-api.abuse.ch/v1/host/",
+            "form": {
+              "host": "{{input.domain}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "urls",
+            "non_empty": true,
+            "fields": {
+              "query_status": "ok"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "host": "steps.lookup.host",
+        "url_count": "steps.lookup.url_count",
+        "rows": "steps.lookup.urls",
+        "first_seen": "steps.lookup.firstseen"
+      },
+      "output_types": {
+        "host": "string",
+        "url_count": "string",
+        "rows": "array",
+        "first_seen": "string"
+      },
+      "fixtures": [
+        "fixtures/lookup_domain.json"
+      ]
+    },
+    "lookup_url": {
+      "display_name": "Look up malware URL",
+      "description": "Look up malware URL. Reads existing provider evidence. Official API reference: https://urlhaus-api.abuse.ch/#url",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "url",
+          "type": "url",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "POST",
+            "url": "https://urlhaus-api.abuse.ch/v1/url/",
+            "form": {
+              "url": "{{input.url}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true,
+            "fields": {
+              "query_status": "ok"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "id": "steps.lookup.id",
+        "url": "steps.lookup.url",
+        "url_status": "steps.lookup.url_status",
+        "threat": "steps.lookup.threat",
+        "payloads": "steps.lookup.payloads"
+      },
+      "output_types": {
+        "id": "string",
+        "url": "string",
+        "url_status": "string",
+        "threat": "string",
+        "payloads": "array"
+      },
+      "fixtures": [
+        "fixtures/lookup_url.json"
+      ]
+    },
+    "lookup_sha256": {
+      "display_name": "Look up payload SHA256",
+      "description": "Look up payload SHA256. Reads existing provider evidence. Official API reference: https://urlhaus-api.abuse.ch/#payload",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "sha256",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "POST",
+            "url": "https://urlhaus-api.abuse.ch/v1/payload/",
+            "form": {
+              "sha256_hash": "{{input.sha256}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "sha256_hash",
+            "non_empty": true,
+            "fields": {
+              "query_status": "ok"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "sha256": "steps.lookup.sha256_hash",
+        "file_type": "steps.lookup.file_type",
+        "file_size_bytes": "steps.lookup.file_size",
+        "malware_family": "coalesce steps.lookup.signature \"unknown\"",
+        "rows": "steps.lookup.urls"
+      },
+      "output_types": {
+        "sha256": "string",
+        "file_type": "string",
+        "file_size_bytes": "string",
+        "malware_family": "string",
+        "rows": "array"
+      },
+      "fixtures": [
+        "fixtures/lookup_sha256.json"
+      ]
+    }
+  }
+}

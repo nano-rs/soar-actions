@@ -1,0 +1,54 @@
+{
+  "action": "lookup_ip",
+  "config": {},
+  "inputs": {
+    "ip": "192.0.2.10"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://urlhaus-api.abuse.ch/v1/host/",
+        "form": {
+          "host": "192.0.2.10"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "urlhaus-api.abuse.ch",
+        "path": "/v1/host/",
+        "status": 200,
+        "body": {
+          "query_status": "ok",
+          "host": "192.0.2.10",
+          "urlhaus_reference": "https://urlhaus.abuse.ch/host/192.0.2.10/",
+          "firstseen": "2026-01-01 00:00:00 UTC",
+          "url_count": "1",
+          "urls": [
+            {
+              "id": "1001",
+              "url": "https://example.com/sample.exe",
+              "url_status": "offline",
+              "threat": "malware_download"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "host": "192.0.2.10",
+    "url_count": "1",
+    "rows": [
+      {
+        "id": "1001",
+        "url": "https://example.com/sample.exe",
+        "url_status": "offline",
+        "threat": "malware_download"
+      }
+    ],
+    "first_seen": "2026-01-01 00:00:00 UTC"
+  },
+  "source": "https://urlhaus-api.abuse.ch/#host",
+  "request_evidence": "independent_http_mock"
+}

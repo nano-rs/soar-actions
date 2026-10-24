@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "ipinfo",
+  "display_name": "IPinfo",
+  "description": "IPinfo explicit Read lookups with checked JSON output contracts.",
+  "vendor": "IPinfo",
+  "categories": [
+    "threat_intelligence",
+    "enrichment"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "api.ipinfo.io",
+      "path_prefixes": [
+        "/lite"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_query",
+    "param": "token",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "IPinfo API key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "lookup_ip": {
+      "display_name": "Look up IP geolocation and ASN",
+      "description": "Look up IP geolocation and ASN. Reads existing provider evidence. Official API reference: https://ipinfo.io/developers/lite-api",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "ip",
+          "type": "ip",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://api.ipinfo.io/lite/{{input.ip}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "ip",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "ip": "steps.lookup.ip",
+        "asn": "coalesce steps.lookup.asn \"unknown\"",
+        "as_name": "coalesce steps.lookup.as_name \"unknown\"",
+        "as_domain": "coalesce steps.lookup.as_domain \"unknown\"",
+        "country_code": "coalesce steps.lookup.country_code \"unknown\"",
+        "country": "coalesce steps.lookup.country \"unknown\"",
+        "continent_code": "coalesce steps.lookup.continent_code \"unknown\"",
+        "continent": "coalesce steps.lookup.continent \"unknown\""
+      },
+      "output_types": {
+        "ip": "string",
+        "asn": "string",
+        "as_name": "string",
+        "as_domain": "string",
+        "country_code": "string",
+        "country": "string",
+        "continent_code": "string",
+        "continent": "string"
+      },
+      "fixtures": [
+        "fixtures/lookup_ip.json",
+        "fixtures/lookup_ip_minimal.json"
+      ]
+    }
+  }
+}
