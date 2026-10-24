@@ -41,3 +41,5 @@ Inputs: `url_value` (string). Outputs: `urls`.
 Inverse: `stage_block_url`.
 
 Official request-body examples: https://help.zscaler.com/sites/default/files/zia_cloud_service.postman_collection_10_09_2026.json?VersionId=l8zBKfgs9ljJzpf6DFkaGM4gOlZ44nZS (`document_sha256`: `9476b1d62aec10e6bbd88e4d04686aeb2da9b4a7250a76b76eed103d29ce63a5`). The incremental POST uses the documented blacklistUrls array with action=ADD_TO_LIST/REMOVE_FROM_LIST.
+
+Output contract: each action declares output_types for every extracted field. Native execution checks JSON types without coercion; missing/wrong-type data fails a Read and leaves an accepted mutation ambiguous. Private/on-prem origins are outside these SaaS packs. Any future support requires typed self-hosted/sovereign policy; hosted egress remains public-only.

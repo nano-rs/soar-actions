@@ -89,7 +89,12 @@
       },
       "fixtures": [
         "fixtures/get_user.json"
-      ]
+      ],
+      "output_types": {
+        "user_id": "string",
+        "username": "string",
+        "status": "string"
+      }
     },
     "disable_user": {
       "display_name": "Disable User",
@@ -134,7 +139,11 @@
       "fixtures": [
         "fixtures/disable_user.json"
       ],
-      "rollback": "enable_user"
+      "rollback": "enable_user",
+      "output_types": {
+        "user_id": "string",
+        "status": "string"
+      }
     },
     "enable_user": {
       "display_name": "Enable User",
@@ -179,7 +188,11 @@
       "fixtures": [
         "fixtures/enable_user.json"
       ],
-      "rollback": "disable_user"
+      "rollback": "disable_user",
+      "output_types": {
+        "user_id": "string",
+        "status": "string"
+      }
     }
   }
 }

@@ -84,11 +84,17 @@
         "threat_id": "steps.request.threatId",
         "recipient_count": "steps.request.recipientCount",
         "messages": "steps.request.messages",
-        "next_page": "steps.request.nextPageNumber"
+        "next_page": "coalesce steps.request.nextPageNumber 0"
       },
       "fixtures": [
         "fixtures/get_threat.json"
-      ]
+      ],
+      "output_types": {
+        "threat_id": "string",
+        "recipient_count": "integer",
+        "messages": "array",
+        "next_page": "integer"
+      }
     },
     "get_action_status": {
       "display_name": "Get threat action status",
@@ -131,7 +137,11 @@
       },
       "fixtures": [
         "fixtures/get_action_status.json"
-      ]
+      ],
+      "output_types": {
+        "status": "string",
+        "description": "string"
+      }
     },
     "remediate_threat": {
       "display_name": "Remediate Threat",
@@ -172,7 +182,11 @@
       "fixtures": [
         "fixtures/remediate_threat.json"
       ],
-      "rollback": "unremediate_threat"
+      "rollback": "unremediate_threat",
+      "output_types": {
+        "action_id": "string",
+        "status_url": "string"
+      }
     },
     "unremediate_threat": {
       "display_name": "Unremediate Threat",
@@ -213,7 +227,11 @@
       "fixtures": [
         "fixtures/unremediate_threat.json"
       ],
-      "rollback": "remediate_threat"
+      "rollback": "remediate_threat",
+      "output_types": {
+        "action_id": "string",
+        "status_url": "string"
+      }
     }
   }
 }

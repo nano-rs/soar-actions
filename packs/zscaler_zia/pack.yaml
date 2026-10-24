@@ -110,7 +110,10 @@
       },
       "fixtures": [
         "fixtures/get_staged_denylist.json"
-      ]
+      ],
+      "output_types": {
+        "urls": "array"
+      }
     },
     "stage_block_url": {
       "display_name": "Stage Block Url",
@@ -155,7 +158,10 @@
       "fixtures": [
         "fixtures/stage_block_url.json"
       ],
-      "rollback": "stage_unblock_url"
+      "rollback": "stage_unblock_url",
+      "output_types": {
+        "urls": "array"
+      }
     },
     "stage_unblock_url": {
       "display_name": "Stage Unblock Url",
@@ -200,7 +206,10 @@
       "fixtures": [
         "fixtures/stage_unblock_url.json"
       ],
-      "rollback": "stage_block_url"
+      "rollback": "stage_block_url",
+      "output_types": {
+        "urls": "array"
+      }
     }
   }
 }
