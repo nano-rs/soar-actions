@@ -1,0 +1,8 @@
+{
+  "lookup_url": {
+    "reason": "The official endpoint requires URL-encoded full URL entity identifiers in a path segment. Native egress rejects encoded path separators, so this operation cannot safely replay with the current URL policy. No unverified query alternate or egress exception is used.",
+    "documentation": [
+      "https://docs.recordedfuture.com/reference/url-lookup"
+    ]
+  }
+}

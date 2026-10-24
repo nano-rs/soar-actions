@@ -1,0 +1,250 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "threatfox",
+  "display_name": "ThreatFox",
+  "description": "ThreatFox explicit Read lookups with checked JSON output contracts.",
+  "vendor": "ThreatFox",
+  "categories": [
+    "threat_intelligence",
+    "enrichment"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "threatfox-api.abuse.ch",
+      "path_prefixes": [
+        "/api/v1"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "Auth-Key",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "ThreatFox API key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "lookup_ip": {
+      "display_name": "Search ip IOC context",
+      "description": "Search ip IOC context. Reads existing provider evidence. Official API reference: https://threatfox.abuse.ch/api/#search-ioc",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "ip",
+          "type": "ip",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "POST",
+            "url": "https://threatfox-api.abuse.ch/api/v1/",
+            "json": {
+              "query": "search_ioc",
+              "search_term": "{{input.ip}}",
+              "exact_match": true
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data",
+            "non_empty": true,
+            "fields": {
+              "query_status": "ok"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "query_status": "steps.lookup.query_status",
+        "rows": "steps.lookup.data",
+        "first_ioc": "steps.lookup.data.0.ioc",
+        "first_confidence": "steps.lookup.data.0.confidence_level"
+      },
+      "output_types": {
+        "query_status": "string",
+        "rows": "array",
+        "first_ioc": "string",
+        "first_confidence": "integer"
+      },
+      "fixtures": [
+        "fixtures/lookup_ip.json"
+      ]
+    },
+    "lookup_domain": {
+      "display_name": "Search domain IOC context",
+      "description": "Search domain IOC context. Reads existing provider evidence. Official API reference: https://threatfox.abuse.ch/api/#search-ioc",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "domain",
+          "type": "domain",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "POST",
+            "url": "https://threatfox-api.abuse.ch/api/v1/",
+            "json": {
+              "query": "search_ioc",
+              "search_term": "{{input.domain}}",
+              "exact_match": true
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data",
+            "non_empty": true,
+            "fields": {
+              "query_status": "ok"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "query_status": "steps.lookup.query_status",
+        "rows": "steps.lookup.data",
+        "first_ioc": "steps.lookup.data.0.ioc",
+        "first_confidence": "steps.lookup.data.0.confidence_level"
+      },
+      "output_types": {
+        "query_status": "string",
+        "rows": "array",
+        "first_ioc": "string",
+        "first_confidence": "integer"
+      },
+      "fixtures": [
+        "fixtures/lookup_domain.json"
+      ]
+    },
+    "lookup_url": {
+      "display_name": "Search url IOC context",
+      "description": "Search url IOC context. Reads existing provider evidence. Official API reference: https://threatfox.abuse.ch/api/#search-ioc",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "url",
+          "type": "url",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "POST",
+            "url": "https://threatfox-api.abuse.ch/api/v1/",
+            "json": {
+              "query": "search_ioc",
+              "search_term": "{{input.url}}",
+              "exact_match": true
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data",
+            "non_empty": true,
+            "fields": {
+              "query_status": "ok"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "query_status": "steps.lookup.query_status",
+        "rows": "steps.lookup.data",
+        "first_ioc": "steps.lookup.data.0.ioc",
+        "first_confidence": "steps.lookup.data.0.confidence_level"
+      },
+      "output_types": {
+        "query_status": "string",
+        "rows": "array",
+        "first_ioc": "string",
+        "first_confidence": "integer"
+      },
+      "fixtures": [
+        "fixtures/lookup_url.json"
+      ]
+    },
+    "lookup_hash": {
+      "display_name": "Search hash IOC context",
+      "description": "Search hash IOC context. Reads existing provider evidence. Official API reference: https://threatfox.abuse.ch/api/#search-hash",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "hash",
+          "type": "string",
+          "required": true,
+          "pattern": "^(?:[A-Fa-f0-9]{32}|[A-Fa-f0-9]{64})$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "POST",
+            "url": "https://threatfox-api.abuse.ch/api/v1/",
+            "json": {
+              "query": "search_hash",
+              "hash": "{{input.hash}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data",
+            "non_empty": true,
+            "fields": {
+              "query_status": "ok"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "query_status": "steps.lookup.query_status",
+        "rows": "steps.lookup.data",
+        "first_ioc": "steps.lookup.data.0.ioc",
+        "first_confidence": "steps.lookup.data.0.confidence_level"
+      },
+      "output_types": {
+        "query_status": "string",
+        "rows": "array",
+        "first_ioc": "string",
+        "first_confidence": "integer"
+      },
+      "fixtures": [
+        "fixtures/lookup_hash.json"
+      ]
+    }
+  }
+}

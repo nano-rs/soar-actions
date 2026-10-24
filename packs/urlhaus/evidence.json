@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/lookup_ip.json",
+      "url": "https://urlhaus-api.abuse.ch/#host",
+      "document_url": "https://urlhaus-api.abuse.ch/",
+      "document_sha256": "43b6fd0f099a34a48b9fed5fec854ede08494a17755944aea40845e26b88207c",
+      "request": {
+        "method": "POST",
+        "url": "https://urlhaus-api.abuse.ch/v1/host/",
+        "form": {
+          "host": "8.8.8.8"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "urlhaus-api.abuse.ch",
+        "path": "/v1/host/",
+        "status": 200,
+        "body": {
+          "query_status": "ok",
+          "host": "8.8.8.8",
+          "urlhaus_reference": "https://urlhaus.abuse.ch/host/8.8.8.8/",
+          "firstseen": "2026-01-01 00:00:00 UTC",
+          "url_count": "1",
+          "urls": [
+            {
+              "id": "1001",
+              "url": "https://example.com/sample.exe",
+              "url_status": "offline",
+              "threat": "malware_download"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/lookup_domain.json",
+      "url": "https://urlhaus-api.abuse.ch/#host",
+      "document_url": "https://urlhaus-api.abuse.ch/",
+      "document_sha256": "43b6fd0f099a34a48b9fed5fec854ede08494a17755944aea40845e26b88207c",
+      "request": {
+        "method": "POST",
+        "url": "https://urlhaus-api.abuse.ch/v1/host/",
+        "form": {
+          "host": "example.com"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "urlhaus-api.abuse.ch",
+        "path": "/v1/host/",
+        "status": 200,
+        "body": {
+          "query_status": "ok",
+          "host": "example.com",
+          "urlhaus_reference": "https://urlhaus.abuse.ch/host/example.com/",
+          "firstseen": "2026-01-01 00:00:00 UTC",
+          "url_count": "1",
+          "urls": [
+            {
+              "id": "1001",
+              "url": "https://example.com/sample.exe",
+              "url_status": "offline",
+              "threat": "malware_download"
+            }
+          ],
+          "blacklists": {
+            "spamhaus_dbl": "not listed",
+            "surbl": "not listed"
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/lookup_url.json",
+      "url": "https://urlhaus-api.abuse.ch/#url",
+      "document_url": "https://urlhaus-api.abuse.ch/",
+      "document_sha256": "43b6fd0f099a34a48b9fed5fec854ede08494a17755944aea40845e26b88207c",
+      "request": {
+        "method": "POST",
+        "url": "https://urlhaus-api.abuse.ch/v1/url/",
+        "form": {
+          "url": "https://example.com/sample.exe"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "urlhaus-api.abuse.ch",
+        "path": "/v1/url/",
+        "status": 200,
+        "body": {
+          "query_status": "ok",
+          "id": "1001",
+          "url": "https://example.com/sample.exe",
+          "url_status": "offline",
+          "host": "example.com",
+          "threat": "malware_download",
+          "tags": [
+            "exe"
+          ],
+          "payloads": [
+            {
+              "response_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "response_md5": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "file_type": "exe"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/lookup_sha256.json",
+      "url": "https://urlhaus-api.abuse.ch/#payload",
+      "document_url": "https://urlhaus-api.abuse.ch/",
+      "document_sha256": "43b6fd0f099a34a48b9fed5fec854ede08494a17755944aea40845e26b88207c",
+      "request": {
+        "method": "POST",
+        "url": "https://urlhaus-api.abuse.ch/v1/payload/",
+        "form": {
+          "sha256_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "urlhaus-api.abuse.ch",
+        "path": "/v1/payload/",
+        "status": 200,
+        "body": {
+          "query_status": "ok",
+          "sha256_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "md5_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "file_type": "exe",
+          "file_size": "241664",
+          "signature": "ExampleFamily",
+          "urls": [
+            {
+              "url": "https://example.com/sample.exe",
+              "url_status": "offline"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

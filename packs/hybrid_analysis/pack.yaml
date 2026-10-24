@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "hybrid_analysis",
+  "display_name": "Hybrid Analysis",
+  "description": "Hybrid Analysis explicit Read lookups with checked JSON output contracts.",
+  "vendor": "Hybrid Analysis",
+  "categories": [
+    "threat_intelligence",
+    "enrichment"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "hybrid-analysis.com",
+      "path_prefixes": [
+        "/api/v2/search/hash"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "api-key",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "Hybrid Analysis API key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "lookup_hash": {
+      "display_name": "Look up existing hash report identities",
+      "description": "Look up existing hash report identities. Reads existing provider evidence. Official API reference: https://www.hybrid-analysis.com/docs/api/v2",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "hash",
+          "type": "hash",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://hybrid-analysis.com/api/v2/search/hash",
+            "headers": {
+              "Accept": "application/json",
+              "User-Agent": "nano-soar-actions"
+            },
+            "query": {
+              "hash": "{{input.hash}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "sha256s"
+          }
+        }
+      ],
+      "outputs": {
+        "sha256s": "steps.lookup.sha256s",
+        "reports": "steps.lookup.reports",
+        "first_report_state": "coalesce steps.lookup.reports.0.state \"unknown\"",
+        "first_verdict": "coalesce steps.lookup.reports.0.verdict \"unknown\""
+      },
+      "output_types": {
+        "sha256s": "array",
+        "reports": "array",
+        "first_report_state": "string",
+        "first_verdict": "string"
+      },
+      "fixtures": [
+        "fixtures/lookup_hash.json"
+      ]
+    }
+  }
+}

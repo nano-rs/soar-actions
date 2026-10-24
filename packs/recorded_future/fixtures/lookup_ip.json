@@ -1,0 +1,53 @@
+{
+  "action": "lookup_ip",
+  "config": {},
+  "inputs": {
+    "ip": "8.8.8.8"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.recordedfuture.com/v2/ip/ip:8.8.8.8",
+        "query": {
+          "fields": "entity,risk"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.recordedfuture.com",
+        "path": "/v2/ip/ip:8.8.8.8",
+        "status": 200,
+        "body": {
+          "data": {
+            "entity": {
+              "id": "ip:8.8.8.8",
+              "name": "8.8.8.8",
+              "type": "IpAddress"
+            },
+            "risk": {
+              "score": 65,
+              "criticalityLabel": "Malicious",
+              "rules": 2,
+              "riskSummary": "2 risk rules observed",
+              "evidenceDetails": []
+            }
+          }
+        },
+        "query": {
+          "fields": "entity,risk"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "entity_id": "ip:8.8.8.8",
+    "indicator": "8.8.8.8",
+    "risk_score": 65,
+    "criticality": "Malicious",
+    "triggered_rules": 2,
+    "risk_evidence": []
+  },
+  "source": "https://docs.recordedfuture.com/reference/ip-lookup",
+  "request_evidence": "independent_http_mock"
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/lookup_ip.json",
+      "url": "https://docs.recordedfuture.com/reference/ip-lookup",
+      "document_url": "https://docs.recordedfuture.com/reference/ip-lookup.md",
+      "document_sha256": "4d954727d38302fd51f38c66222f493a4761164eead155a49781d293c2bb44ff",
+      "request": {
+        "method": "GET",
+        "url": "https://api.recordedfuture.com/v2/ip/ip:8.8.8.8",
+        "query": {
+          "fields": "entity,risk"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.recordedfuture.com",
+        "path": "/v2/ip/ip:8.8.8.8",
+        "status": 200,
+        "body": {
+          "data": {
+            "entity": {
+              "id": "ip:8.8.8.8",
+              "name": "8.8.8.8",
+              "type": "IpAddress"
+            },
+            "risk": {
+              "score": 65,
+              "criticalityLabel": "Malicious",
+              "rules": 2,
+              "riskSummary": "2 risk rules observed",
+              "evidenceDetails": []
+            }
+          }
+        },
+        "query": {
+          "fields": "entity,risk"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/lookup_domain.json",
+      "url": "https://docs.recordedfuture.com/reference/domain-lookup",
+      "document_url": "https://docs.recordedfuture.com/reference/domain-lookup.md",
+      "document_sha256": "836cf242eb495f47c7692b5db6e9bd73fcd5a97f4b3e5ed36413a25ae156671b",
+      "request": {
+        "method": "GET",
+        "url": "https://api.recordedfuture.com/v2/domain/idn:example.com",
+        "query": {
+          "fields": "entity,risk"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.recordedfuture.com",
+        "path": "/v2/domain/idn:example.com",
+        "status": 200,
+        "body": {
+          "data": {
+            "entity": {
+              "id": "idn:example.com",
+              "name": "example.com",
+              "type": "InternetDomainName"
+            },
+            "risk": {
+              "score": 65,
+              "criticalityLabel": "Malicious",
+              "rules": 2,
+              "riskSummary": "2 risk rules observed",
+              "evidenceDetails": []
+            }
+          }
+        },
+        "query": {
+          "fields": "entity,risk"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/lookup_hash.json",
+      "url": "https://docs.recordedfuture.com/reference/hash-lookup",
+      "document_url": "https://docs.recordedfuture.com/reference/hash-lookup.md",
+      "document_sha256": "1f9607dd23e593368c7f3d1b1f1454a056b799b4aea703f14533e9eff1ae01bc",
+      "request": {
+        "method": "GET",
+        "url": "https://api.recordedfuture.com/v2/hash/hash:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "query": {
+          "fields": "entity,risk"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.recordedfuture.com",
+        "path": "/v2/hash/hash:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "status": 200,
+        "body": {
+          "data": {
+            "entity": {
+              "id": "hash:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              "type": "Hash"
+            },
+            "risk": {
+              "score": 65,
+              "criticalityLabel": "Malicious",
+              "rules": 2,
+              "riskSummary": "2 risk rules observed",
+              "evidenceDetails": []
+            }
+          }
+        },
+        "query": {
+          "fields": "entity,risk"
+        }
+      }
+    }
+  ]
+}

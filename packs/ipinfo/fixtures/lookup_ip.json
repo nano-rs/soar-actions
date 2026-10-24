@@ -1,0 +1,46 @@
+{
+  "action": "lookup_ip",
+  "config": {},
+  "inputs": {
+    "ip": "8.8.8.8"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.ipinfo.io/lite/8.8.8.8",
+        "auth_query_keys": [
+          "token"
+        ]
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.ipinfo.io",
+        "path": "/lite/8.8.8.8",
+        "status": 200,
+        "body": {
+          "ip": "8.8.8.8",
+          "asn": "AS15169",
+          "as_name": "Google LLC",
+          "as_domain": "google.com",
+          "country_code": "US",
+          "country": "United States",
+          "continent_code": "NA",
+          "continent": "North America"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "ip": "8.8.8.8",
+    "asn": "AS15169",
+    "as_name": "Google LLC",
+    "as_domain": "google.com",
+    "country_code": "US",
+    "country": "United States",
+    "continent_code": "NA",
+    "continent": "North America"
+  },
+  "source": "https://ipinfo.io/developers/lite-api",
+  "request_evidence": "independent_http_mock"
+}

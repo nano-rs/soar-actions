@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/lookup_hash.json",
+      "url": "https://www.hybrid-analysis.com/docs/api/v2",
+      "document_url": "https://hybrid-analysis.com/bff/api-docs/v2",
+      "document_sha256": "3919daac7f2100666834dfa7777322c959b4d55b2db45d0871e43fc3e5bce864",
+      "request": {
+        "method": "GET",
+        "url": "https://hybrid-analysis.com/api/v2/search/hash",
+        "query": {
+          "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "hybrid-analysis.com",
+        "path": "/api/v2/search/hash",
+        "status": 200,
+        "body": {
+          "sha256s": [
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          ],
+          "reports": [
+            {
+              "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:120",
+              "environment_id": 120,
+              "environment_description": "Windows 7 64 bit",
+              "state": "SUCCESS",
+              "verdict": "malicious",
+              "error_type": null,
+              "error_origin": null
+            }
+          ]
+        },
+        "query": {
+          "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      }
+    }
+  ]
+}

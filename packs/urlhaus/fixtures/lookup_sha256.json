@@ -1,0 +1,52 @@
+{
+  "action": "lookup_sha256",
+  "config": {},
+  "inputs": {
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://urlhaus-api.abuse.ch/v1/payload/",
+        "form": {
+          "sha256_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "urlhaus-api.abuse.ch",
+        "path": "/v1/payload/",
+        "status": 200,
+        "body": {
+          "query_status": "ok",
+          "sha256_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "md5_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "file_type": "exe",
+          "file_size": "241664",
+          "signature": "ExampleFamily",
+          "urls": [
+            {
+              "url": "https://example.com/sample.exe",
+              "url_status": "offline"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "file_type": "exe",
+    "file_size_bytes": "241664",
+    "malware_family": "ExampleFamily",
+    "rows": [
+      {
+        "url": "https://example.com/sample.exe",
+        "url_status": "offline"
+      }
+    ]
+  },
+  "source": "https://urlhaus-api.abuse.ch/#payload",
+  "request_evidence": "independent_http_mock"
+}

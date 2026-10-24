@@ -1,0 +1,58 @@
+{
+  "action": "lookup_domain",
+  "config": {},
+  "inputs": {
+    "domain": "example.com"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://urlhaus-api.abuse.ch/v1/host/",
+        "form": {
+          "host": "example.com"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "urlhaus-api.abuse.ch",
+        "path": "/v1/host/",
+        "status": 200,
+        "body": {
+          "query_status": "ok",
+          "host": "example.com",
+          "urlhaus_reference": "https://urlhaus.abuse.ch/host/example.com/",
+          "firstseen": "2026-01-01 00:00:00 UTC",
+          "url_count": "1",
+          "urls": [
+            {
+              "id": "1001",
+              "url": "https://example.com/sample.exe",
+              "url_status": "offline",
+              "threat": "malware_download"
+            }
+          ],
+          "blacklists": {
+            "spamhaus_dbl": "not listed",
+            "surbl": "not listed"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "host": "example.com",
+    "url_count": "1",
+    "rows": [
+      {
+        "id": "1001",
+        "url": "https://example.com/sample.exe",
+        "url_status": "offline",
+        "threat": "malware_download"
+      }
+    ],
+    "first_seen": "2026-01-01 00:00:00 UTC"
+  },
+  "source": "https://urlhaus-api.abuse.ch/#host",
+  "request_evidence": "independent_http_mock"
+}

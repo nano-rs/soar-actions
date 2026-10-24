@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/lookup_ip.json",
+      "url": "https://ipinfo.io/developers/lite-api",
+      "document_url": "https://ipinfo.io/developers/lite-api",
+      "document_sha256": "9d8892438acb9e85bb9be43b7b58cc4709981ba8d68984dd0fbf80ed156a0b71",
+      "request": {
+        "method": "GET",
+        "url": "https://api.ipinfo.io/lite/8.8.8.8",
+        "auth_query_keys": [
+          "token"
+        ]
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.ipinfo.io",
+        "path": "/lite/8.8.8.8",
+        "status": 200,
+        "body": {
+          "ip": "8.8.8.8",
+          "asn": "AS15169",
+          "as_name": "Google LLC",
+          "as_domain": "google.com",
+          "country_code": "US",
+          "country": "United States",
+          "continent_code": "NA",
+          "continent": "North America"
+        }
+      }
+    }
+  ]
+}

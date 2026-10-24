@@ -1,0 +1,63 @@
+{
+  "action": "lookup_hash",
+  "config": {},
+  "inputs": {
+    "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://hybrid-analysis.com/api/v2/search/hash",
+        "query": {
+          "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "hybrid-analysis.com",
+        "path": "/api/v2/search/hash",
+        "status": 200,
+        "body": {
+          "sha256s": [
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          ],
+          "reports": [
+            {
+              "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:120",
+              "environment_id": 120,
+              "environment_description": "Windows 7 64 bit",
+              "state": "SUCCESS",
+              "verdict": "malicious",
+              "error_type": null,
+              "error_origin": null
+            }
+          ]
+        },
+        "query": {
+          "hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "sha256s": [
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "reports": [
+      {
+        "id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:120",
+        "environment_id": 120,
+        "environment_description": "Windows 7 64 bit",
+        "state": "SUCCESS",
+        "verdict": "malicious",
+        "error_type": null,
+        "error_origin": null
+      }
+    ],
+    "first_report_state": "SUCCESS",
+    "first_verdict": "malicious"
+  },
+  "source": "https://www.hybrid-analysis.com/docs/api/v2",
+  "request_evidence": "independent_http_mock"
+}

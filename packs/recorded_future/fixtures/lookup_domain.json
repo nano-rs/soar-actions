@@ -1,0 +1,53 @@
+{
+  "action": "lookup_domain",
+  "config": {},
+  "inputs": {
+    "domain": "example.com"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.recordedfuture.com/v2/domain/idn:example.com",
+        "query": {
+          "fields": "entity,risk"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.recordedfuture.com",
+        "path": "/v2/domain/idn:example.com",
+        "status": 200,
+        "body": {
+          "data": {
+            "entity": {
+              "id": "idn:example.com",
+              "name": "example.com",
+              "type": "InternetDomainName"
+            },
+            "risk": {
+              "score": 65,
+              "criticalityLabel": "Malicious",
+              "rules": 2,
+              "riskSummary": "2 risk rules observed",
+              "evidenceDetails": []
+            }
+          }
+        },
+        "query": {
+          "fields": "entity,risk"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "entity_id": "idn:example.com",
+    "indicator": "example.com",
+    "risk_score": 65,
+    "criticality": "Malicious",
+    "triggered_rules": 2,
+    "risk_evidence": []
+  },
+  "source": "https://docs.recordedfuture.com/reference/domain-lookup",
+  "request_evidence": "independent_http_mock"
+}

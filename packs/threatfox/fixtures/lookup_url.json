@@ -1,0 +1,62 @@
+{
+  "action": "lookup_url",
+  "config": {},
+  "inputs": {
+    "url": "https://example.com/c2"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://threatfox-api.abuse.ch/api/v1/",
+        "json": {
+          "query": "search_ioc",
+          "search_term": "https://example.com/c2",
+          "exact_match": true
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "threatfox-api.abuse.ch",
+        "path": "/api/v1/",
+        "status": 200,
+        "body": {
+          "query_status": "ok",
+          "data": [
+            {
+              "id": "1001",
+              "ioc": "https://example.com/c2",
+              "ioc_type": "url",
+              "threat_type": "botnet_cc",
+              "malware": "win.example",
+              "confidence_level": 75,
+              "first_seen": "2026-01-01 00:00:00 UTC",
+              "last_seen": null,
+              "tags": null
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "query_status": "ok",
+    "rows": [
+      {
+        "id": "1001",
+        "ioc": "https://example.com/c2",
+        "ioc_type": "url",
+        "threat_type": "botnet_cc",
+        "malware": "win.example",
+        "confidence_level": 75,
+        "first_seen": "2026-01-01 00:00:00 UTC",
+        "last_seen": null,
+        "tags": null
+      }
+    ],
+    "first_ioc": "https://example.com/c2",
+    "first_confidence": 75
+  },
+  "source": "https://threatfox.abuse.ch/api/#search-ioc",
+  "request_evidence": "independent_http_mock"
+}
