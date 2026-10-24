@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_staged_denylist.json",
+      "url": "https://help.zscaler.com/legacy-apis/security-policy-settings",
+      "document_sha256": "7078e6e1b9022a5d25be337bd6e0812fcef65d2b506fe9ec4cdbde1dc67c3f13",
+      "document_url": "https://help.zscaler.com/sites/default/files/api-docs/Security%20Policy%20Settings_0.json?VersionId=tzpqwvW_ivzHXEwko9eJP8B82XcfHhTb",
+      "request": {
+        "method": "GET",
+        "url": "https://zsapi.zscaler.net/api/v1/security/advanced"
+      },
+      "response": {
+        "method": "GET",
+        "host": "zsapi.zscaler.net",
+        "path": "/api/v1/security/advanced",
+        "status": 200,
+        "body": {
+          "blacklistUrls": [
+            "example.net"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/stage_block_url.json",
+      "url": "https://help.zscaler.com/legacy-apis/security-policy-settings",
+      "document_sha256": "7078e6e1b9022a5d25be337bd6e0812fcef65d2b506fe9ec4cdbde1dc67c3f13",
+      "document_url": "https://help.zscaler.com/sites/default/files/api-docs/Security%20Policy%20Settings_0.json?VersionId=tzpqwvW_ivzHXEwko9eJP8B82XcfHhTb",
+      "request": {
+        "method": "POST",
+        "url": "https://zsapi.zscaler.net/api/v1/security/advanced/blacklistUrls",
+        "query": {
+          "action": "ADD_TO_LIST"
+        },
+        "json": {
+          "blacklistUrls": [
+            "example.net"
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "zsapi.zscaler.net",
+        "path": "/api/v1/security/advanced/blacklistUrls",
+        "status": 200,
+        "body": {
+          "blacklistUrls": [
+            "example.net"
+          ]
+        },
+        "query": {
+          "action": "ADD_TO_LIST"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/stage_unblock_url.json",
+      "url": "https://help.zscaler.com/legacy-apis/security-policy-settings",
+      "document_sha256": "7078e6e1b9022a5d25be337bd6e0812fcef65d2b506fe9ec4cdbde1dc67c3f13",
+      "document_url": "https://help.zscaler.com/sites/default/files/api-docs/Security%20Policy%20Settings_0.json?VersionId=tzpqwvW_ivzHXEwko9eJP8B82XcfHhTb",
+      "request": {
+        "method": "POST",
+        "url": "https://zsapi.zscaler.net/api/v1/security/advanced/blacklistUrls",
+        "query": {
+          "action": "REMOVE_FROM_LIST"
+        },
+        "json": {
+          "blacklistUrls": [
+            "example.net"
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "zsapi.zscaler.net",
+        "path": "/api/v1/security/advanced/blacklistUrls",
+        "status": 200,
+        "body": {
+          "blacklistUrls": []
+        },
+        "query": {
+          "action": "REMOVE_FROM_LIST"
+        }
+      }
+    }
+  ],
+  "supplemental_documents": [
+    {
+      "url": "https://help.zscaler.com/sites/default/files/zia_cloud_service.postman_collection_10_09_2026.json?VersionId=l8zBKfgs9ljJzpf6DFkaGM4gOlZ44nZS",
+      "document_url": "https://help.zscaler.com/sites/default/files/zia_cloud_service.postman_collection_10_09_2026.json?VersionId=l8zBKfgs9ljJzpf6DFkaGM4gOlZ44nZS",
+      "document_sha256": "9476b1d62aec10e6bbd88e4d04686aeb2da9b4a7250a76b76eed103d29ce63a5",
+      "bytes": 765568
+    }
+  ]
+}

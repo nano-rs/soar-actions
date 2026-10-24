@@ -1,0 +1,206 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "zscaler_zia",
+  "display_name": "Zscaler ZIA denylist response",
+  "description": "Zscaler ZIA denylist response response actions. Containment and inverse actions require approval.",
+  "vendor": "Zscaler",
+  "categories": [
+    "network"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "ZIA cloud API origin",
+      "required": true,
+      "default": "https://zsapi.zscalerbeta.net",
+      "one_of": [
+        "https://zsapi.zscalerbeta.net",
+        "https://zsapi.zscalerone.net",
+        "https://zsapi.zscalertwo.net",
+        "https://zsapi.zscalerthree.net",
+        "https://zsapi.zscaler.net",
+        "https://zsapi.zscloud.net"
+      ]
+    },
+    {
+      "name": "auth_base_url",
+      "label": "Registered Okta authorization server origin",
+      "required": true
+    },
+    {
+      "name": "authorization_server",
+      "label": "Okta custom authorization server ID",
+      "required": true
+    },
+    {
+      "name": "api_scope",
+      "label": "ZIA cloud::organization::API-role scope",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/api/v1/security/advanced"
+      ]
+    },
+    {
+      "host": "{{config.auth_base_url}}",
+      "host_suffixes": [
+        ".okta.com"
+      ],
+      "path_prefixes": [
+        "/oauth2"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "oauth2_client_credentials",
+    "token_url": "{{config.auth_base_url}}/oauth2/{{config.authorization_server}}/v1/token",
+    "client_id": "CLIENT_ID",
+    "client_secret": "CLIENT_SECRET",
+    "client_auth": "basic",
+    "scope": "{{config.api_scope}}"
+  },
+  "credentials": [
+    {
+      "name": "CLIENT_ID",
+      "label": "Client Id"
+    },
+    {
+      "name": "CLIENT_SECRET",
+      "label": "Client Secret"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_staged_denylist": {
+      "display_name": "Get configured denylist",
+      "description": "Read the configured denylist; this view does not prove activation or downstream enforcement. API documentation: https://help.zscaler.com/legacy-apis/security-policy-settings",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v1/security/advanced"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "blacklistUrls",
+            "json_type": "array"
+          }
+        }
+      ],
+      "outputs": {
+        "urls": "steps.request.blacklistUrls"
+      },
+      "fixtures": [
+        "fixtures/get_staged_denylist.json"
+      ]
+    },
+    "stage_block_url": {
+      "display_name": "Stage Block Url",
+      "description": "Stage one incremental denylist membership change without activating shared pending policy edits. A second approval is required for the inverse. API documentation: https://help.zscaler.com/legacy-apis/security-policy-settings",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "url_value",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9.-]{0,252}(?:/[A-Za-z0-9._~%/?=&:+-]{0,768})?$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/v1/security/advanced/blacklistUrls",
+            "query": {
+              "action": "ADD_TO_LIST"
+            },
+            "json": {
+              "blacklistUrls": [
+                "{{input.url_value}}"
+              ]
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "blacklistUrls",
+            "json_type": "array"
+          }
+        }
+      ],
+      "outputs": {
+        "urls": "steps.request.blacklistUrls"
+      },
+      "fixtures": [
+        "fixtures/stage_block_url.json"
+      ],
+      "rollback": "stage_unblock_url"
+    },
+    "stage_unblock_url": {
+      "display_name": "Stage Unblock Url",
+      "description": "Stage one incremental denylist membership change without activating shared pending policy edits. A second approval is required for the inverse. API documentation: https://help.zscaler.com/legacy-apis/security-policy-settings",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "url_value",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9.-]{0,252}(?:/[A-Za-z0-9._~%/?=&:+-]{0,768})?$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/v1/security/advanced/blacklistUrls",
+            "query": {
+              "action": "REMOVE_FROM_LIST"
+            },
+            "json": {
+              "blacklistUrls": [
+                "{{input.url_value}}"
+              ]
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "blacklistUrls",
+            "json_type": "array"
+          }
+        }
+      ],
+      "outputs": {
+        "urls": "steps.request.blacklistUrls"
+      },
+      "fixtures": [
+        "fixtures/stage_unblock_url.json"
+      ],
+      "rollback": "stage_block_url"
+    }
+  }
+}

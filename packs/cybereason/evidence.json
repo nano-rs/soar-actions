@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "fixtures": [],
+  "unavailable_references": [
+    {
+      "url": "https://nest.cybereason.com/documentation/api-documentation",
+      "observed_status": 401,
+      "observed_on": "2026-10-24"
+    },
+    {
+      "url": "https://nest.cybereason.com/documentation/api-documentation/all-versions/isolate-malop-machine",
+      "observed_status": 401,
+      "observed_on": "2026-10-24"
+    },
+    {
+      "url": "https://nest.cybereason.com/documentation/api-documentation/all-versions/remove-machine-isolation",
+      "observed_status": 401,
+      "observed_on": "2026-10-24"
+    }
+  ]
+}

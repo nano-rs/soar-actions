@@ -1,0 +1,219 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "abnormal_security",
+  "display_name": "Abnormal Security threat response",
+  "description": "Abnormal Security threat response response actions. Containment and inverse actions require approval.",
+  "vendor": "Abnormal",
+  "categories": [
+    "email"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Abnormal production region",
+      "required": true,
+      "default": "https://api.abnormalplatform.com",
+      "one_of": [
+        "https://api.abnormalplatform.com",
+        "https://eu.rest.abnormalsecurity.com"
+      ]
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/v1/threats"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "API_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "API_TOKEN",
+      "label": "Api Token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_threat": {
+      "display_name": "Get threat campaign",
+      "description": "Read campaign metadata and the returned message view; documented pagination limitations prevent a completeness claim. API documentation: https://app.swaggerhub.com/apis-docs/abnormal-security/abx/1.4.3",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "threat_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/v1/threats/{{input.threat_id}}",
+            "query": {
+              "pageSize": "50",
+              "pageNumber": "1"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "threatId",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "threat_id": "steps.request.threatId",
+        "recipient_count": "steps.request.recipientCount",
+        "messages": "steps.request.messages",
+        "next_page": "steps.request.nextPageNumber"
+      },
+      "fixtures": [
+        "fixtures/get_threat.json"
+      ]
+    },
+    "get_action_status": {
+      "display_name": "Get threat action status",
+      "description": "Return the documented acknowledged/in_progress/done/error state as data; error is not interpreted as completed remediation. API documentation: https://app.swaggerhub.com/apis-docs/abnormal-security/abx/1.4.3",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "threat_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "action_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/v1/threats/{{input.threat_id}}/actions/{{input.action_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "status",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "status": "steps.request.status",
+        "description": "steps.request.description"
+      },
+      "fixtures": [
+        "fixtures/get_action_status.json"
+      ]
+    },
+    "remediate_threat": {
+      "display_name": "Remediate Threat",
+      "description": "Queue a campaign remediation state change. Approval must cover all affected recipients and the captured original state; acceptance is not completion. API documentation: https://app.swaggerhub.com/apis-docs/abnormal-security/abx/1.4.3",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "threat_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/v1/threats/{{input.threat_id}}",
+            "json": {
+              "action": "remediate"
+            }
+          },
+          "expect": {
+            "status": [
+              202
+            ],
+            "path": "action_id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.action_id",
+        "status_url": "steps.request.status_url"
+      },
+      "fixtures": [
+        "fixtures/remediate_threat.json"
+      ],
+      "rollback": "unremediate_threat"
+    },
+    "unremediate_threat": {
+      "display_name": "Unremediate Threat",
+      "description": "Queue a campaign remediation state change. Approval must cover all affected recipients and the captured original state; acceptance is not completion. API documentation: https://app.swaggerhub.com/apis-docs/abnormal-security/abx/1.4.3",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "threat_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/v1/threats/{{input.threat_id}}",
+            "json": {
+              "action": "unremediate"
+            }
+          },
+          "expect": {
+            "status": [
+              202
+            ],
+            "path": "action_id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "action_id": "steps.request.action_id",
+        "status_url": "steps.request.status_url"
+      },
+      "fixtures": [
+        "fixtures/unremediate_threat.json"
+      ],
+      "rollback": "remediate_threat"
+    }
+  }
+}
