@@ -16,7 +16,7 @@ Private or on-prem origins are supported only by self-hosted/sovereign deploymen
 
 Read one bounded page of finding identifiers and the returned pagination token. API documentation: https://docs.aws.amazon.com/guardduty/latest/APIReference/API_ListFindings.html
 
-Inputs: `detector_id` (string). Outputs: `finding_ids`, `next_token`.
+Inputs: `detector_id` (string). Outputs: `page`.
 
 Read-only; no automatic pagination or asynchronous completion claim.
 
@@ -26,7 +26,7 @@ Read-only; no automatic pagination or asynchronous completion claim.
 
 Read one bounded page of finding identifiers and the returned pagination token. API documentation: https://docs.aws.amazon.com/guardduty/latest/APIReference/API_ListFindings.html
 
-Inputs: `detector_id` (string), `next_token` (string). Outputs: `finding_ids`, `next_token`.
+Inputs: `detector_id` (string), `next_token` (string). Outputs: `page`.
 
 Read-only; no automatic pagination or asynchronous completion claim.
 
@@ -39,3 +39,5 @@ Read one explicit finding and return its documented structured metadata. API doc
 Inputs: `detector_id` (string), `finding_id` (string). Outputs: `findings`.
 
 Read-only; no automatic pagination or asynchronous completion claim.
+
+Output contract: each action declares output_types for every extracted field. Native execution checks JSON types without coercion; missing/wrong-type data fails a Read and leaves an accepted mutation ambiguous. Private/on-prem origins are outside these SaaS packs. Any future support requires typed self-hosted/sovereign policy; hosted egress remains public-only.

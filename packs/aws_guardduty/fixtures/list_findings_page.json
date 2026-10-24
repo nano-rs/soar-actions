@@ -33,10 +33,12 @@
     }
   ],
   "outputs": {
-    "finding_ids": [
-      "1123456789abcdef0123456789abcdef"
-    ],
-    "next_token": "documented-next-page-token"
+    "page": {
+      "findingIds": [
+        "1123456789abcdef0123456789abcdef"
+      ],
+      "nextToken": "documented-next-page-token"
+    }
   },
   "source": "https://docs.aws.amazon.com/guardduty/latest/APIReference/API_ListFindings.html",
   "request_evidence": "independent_http_mock"

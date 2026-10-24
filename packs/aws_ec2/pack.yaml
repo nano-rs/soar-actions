@@ -110,7 +110,10 @@
       },
       "fixtures": [
         "fixtures/get_network_interface.json"
-      ]
+      ],
+      "output_types": {
+        "response_xml": "string"
+      }
     },
     "get_security_group": {
       "display_name": "Get security group permissions",
@@ -151,7 +154,10 @@
       },
       "fixtures": [
         "fixtures/get_security_group.json"
-      ]
+      ],
+      "output_types": {
+        "response_xml": "string"
+      }
     },
     "isolate_network_interface": {
       "display_name": "Isolate network interface",
@@ -200,7 +206,10 @@
       "fixtures": [
         "fixtures/isolate_network_interface.json"
       ],
-      "rollback": "restore_network_interface_groups"
+      "rollback": "restore_network_interface_groups",
+      "output_types": {
+        "receipt_xml": "string"
+      }
     },
     "restore_network_interface_groups": {
       "display_name": "Restore complete network interface groups",
@@ -354,7 +363,10 @@
       "fixtures": [
         "fixtures/restore_network_interface_groups.json"
       ],
-      "rollback": "isolate_network_interface"
+      "rollback": "isolate_network_interface",
+      "output_types": {
+        "receipt_xml": "string"
+      }
     }
   }
 }

@@ -49,3 +49,5 @@ Replace the ENI group set with all explicitly supplied prior group IDs. Supply t
 Inputs: `network_interface_id` (string), `original_group_1` (string), `original_group_2` (string), `original_group_3` (string), `original_group_4` (string), `original_group_5` (string), `original_group_6` (string), `original_group_7` (string), `original_group_8` (string), `original_group_9` (string), `original_group_10` (string), `original_group_11` (string), `original_group_12` (string), `original_group_13` (string), `original_group_14` (string), `original_group_15` (string), `original_group_16` (string). Outputs: `receipt_xml`.
 
 Inverse: `isolate_network_interface`.
+
+Output contract: each action declares output_types for every extracted field. Native execution checks JSON types without coercion; missing/wrong-type data fails a Read and leaves an accepted mutation ambiguous. Private/on-prem origins are outside these SaaS packs. Any future support requires typed self-hosted/sovereign policy; hosted egress remains public-only.

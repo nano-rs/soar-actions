@@ -110,7 +110,11 @@
       },
       "fixtures": [
         "fixtures/get_rule.json"
-      ]
+      ],
+      "output_types": {
+        "rule_id": "string",
+        "properties": "object"
+      }
     },
     "add_outbound_deny_rule": {
       "display_name": "Add outbound deny rule",
@@ -191,7 +195,11 @@
       "fixtures": [
         "fixtures/add_outbound_deny_rule.json"
       ],
-      "rollback": "remove_response_rule"
+      "rollback": "remove_response_rule",
+      "output_types": {
+        "rule_id": "string",
+        "properties": "object"
+      }
     },
     "remove_response_rule": {
       "display_name": "Remove response rule",
@@ -244,7 +252,8 @@
       "fixtures": [
         "fixtures/remove_response_rule.json"
       ],
-      "rollback": "add_outbound_deny_rule"
+      "rollback": "add_outbound_deny_rule",
+      "output_types": {}
     }
   }
 }

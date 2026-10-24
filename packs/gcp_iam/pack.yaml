@@ -91,12 +91,17 @@
       ],
       "outputs": {
         "key_name": "steps.request.name",
-        "disabled": "steps.request.disabled",
+        "disabled": "coalesce steps.request.disabled false",
         "key_type": "steps.request.keyType"
       },
       "fixtures": [
         "fixtures/get_key.json"
-      ]
+      ],
+      "output_types": {
+        "key_name": "string",
+        "disabled": "boolean",
+        "key_type": "string"
+      }
     },
     "disable_key": {
       "display_name": "Disable Key",
@@ -136,7 +141,8 @@
       "fixtures": [
         "fixtures/disable_key.json"
       ],
-      "rollback": "enable_key"
+      "rollback": "enable_key",
+      "output_types": {}
     },
     "enable_key": {
       "display_name": "Enable Key",
@@ -176,7 +182,8 @@
       "fixtures": [
         "fixtures/enable_key.json"
       ],
-      "rollback": "disable_key"
+      "rollback": "disable_key",
+      "output_types": {}
     }
   }
 }

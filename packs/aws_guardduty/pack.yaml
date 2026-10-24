@@ -104,12 +104,14 @@
         }
       ],
       "outputs": {
-        "finding_ids": "steps.request.findingIds",
-        "next_token": "steps.request.nextToken"
+        "page": "steps.request"
       },
       "fixtures": [
         "fixtures/list_findings.json"
-      ]
+      ],
+      "output_types": {
+        "page": "object"
+      }
     },
     "list_findings_page": {
       "display_name": "List Findings Page",
@@ -151,12 +153,14 @@
         }
       ],
       "outputs": {
-        "finding_ids": "steps.request.findingIds",
-        "next_token": "steps.request.nextToken"
+        "page": "steps.request"
       },
       "fixtures": [
         "fixtures/list_findings_page.json"
-      ]
+      ],
+      "output_types": {
+        "page": "object"
+      }
     },
     "get_finding": {
       "display_name": "Get finding details",
@@ -203,7 +207,10 @@
       },
       "fixtures": [
         "fixtures/get_finding.json"
-      ]
+      ],
+      "output_types": {
+        "findings": "array"
+      }
     }
   }
 }

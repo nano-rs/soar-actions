@@ -95,7 +95,10 @@
       },
       "fixtures": [
         "fixtures/list_access_keys.json"
-      ]
+      ],
+      "output_types": {
+        "response_xml": "string"
+      }
     },
     "disable_access_key": {
       "display_name": "Disable Access Key",
@@ -145,7 +148,10 @@
       "fixtures": [
         "fixtures/disable_access_key.json"
       ],
-      "rollback": "enable_access_key"
+      "rollback": "enable_access_key",
+      "output_types": {
+        "receipt_xml": "string"
+      }
     },
     "enable_access_key": {
       "display_name": "Enable Access Key",
@@ -195,7 +201,10 @@
       "fixtures": [
         "fixtures/enable_access_key.json"
       ],
-      "rollback": "disable_access_key"
+      "rollback": "disable_access_key",
+      "output_types": {
+        "receipt_xml": "string"
+      }
     }
   }
 }

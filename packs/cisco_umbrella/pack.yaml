@@ -90,7 +90,11 @@
       },
       "fixtures": [
         "fixtures/list_destinations.json"
-      ]
+      ],
+      "output_types": {
+        "meta": "object",
+        "destinations": "array"
+      }
     },
     "add_domain": {
       "display_name": "Add Domain",
@@ -140,7 +144,10 @@
       "fixtures": [
         "fixtures/add_domain.json"
       ],
-      "rollback": "remove_destination"
+      "rollback": "remove_destination",
+      "output_types": {
+        "list": "object"
+      }
     },
     "remove_destination": {
       "display_name": "Remove Destination",
@@ -188,7 +195,10 @@
       "fixtures": [
         "fixtures/remove_destination.json"
       ],
-      "rollback": "add_domain"
+      "rollback": "add_domain",
+      "output_types": {
+        "list": "object"
+      }
     }
   }
 }

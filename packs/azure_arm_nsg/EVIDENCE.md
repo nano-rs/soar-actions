@@ -39,3 +39,5 @@ Request deletion of one response-owned rule. Accepted deletion does not prove as
 Inputs: `resource_group` (string), `nsg_name` (string), `rule_name` (string). Outputs: .
 
 Inverse: `add_outbound_deny_rule`.
+
+Output contract: each action declares output_types for every extracted field. Native execution checks JSON types without coercion; missing/wrong-type data fails a Read and leaves an accepted mutation ambiguous. Private/on-prem origins are outside these SaaS packs. Any future support requires typed self-hosted/sovereign policy; hosted egress remains public-only.
