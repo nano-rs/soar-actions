@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_user.json",
+      "url": "https://duo.com/docs/adminapi",
+      "document_sha256": "664cbd1f990e49cbdd1ce7b22db44cc1052012e4c5ed244e64b3dad95c1c88b5",
+      "document_url": "https://duo.com/docs/adminapi",
+      "request": {
+        "method": "GET",
+        "url": "https://api-example.duosecurity.com/admin/v1/users/DUABCDEFGHIJKLMNOPQR"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api-example.duosecurity.com",
+        "path": "/admin/v1/users/DUABCDEFGHIJKLMNOPQR",
+        "status": 200,
+        "body": {
+          "stat": "OK",
+          "response": {
+            "user_id": "DUABCDEFGHIJKLMNOPQR",
+            "username": "example-user",
+            "status": "active",
+            "email": "example-user@example.net"
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/disable_user.json",
+      "url": "https://duo.com/docs/adminapi",
+      "document_sha256": "664cbd1f990e49cbdd1ce7b22db44cc1052012e4c5ed244e64b3dad95c1c88b5",
+      "document_url": "https://duo.com/docs/adminapi",
+      "request": {
+        "method": "POST",
+        "url": "https://api-example.duosecurity.com/admin/v1/users/DUABCDEFGHIJKLMNOPQR",
+        "json": {
+          "status": "disabled"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api-example.duosecurity.com",
+        "path": "/admin/v1/users/DUABCDEFGHIJKLMNOPQR",
+        "status": 200,
+        "body": {
+          "stat": "OK",
+          "response": {
+            "user_id": "DUABCDEFGHIJKLMNOPQR",
+            "username": "example-user",
+            "status": "disabled",
+            "email": "example-user@example.net"
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/enable_user.json",
+      "url": "https://duo.com/docs/adminapi",
+      "document_sha256": "664cbd1f990e49cbdd1ce7b22db44cc1052012e4c5ed244e64b3dad95c1c88b5",
+      "document_url": "https://duo.com/docs/adminapi",
+      "request": {
+        "method": "POST",
+        "url": "https://api-example.duosecurity.com/admin/v1/users/DUABCDEFGHIJKLMNOPQR",
+        "json": {
+          "status": "active"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api-example.duosecurity.com",
+        "path": "/admin/v1/users/DUABCDEFGHIJKLMNOPQR",
+        "status": 200,
+        "body": {
+          "stat": "OK",
+          "response": {
+            "user_id": "DUABCDEFGHIJKLMNOPQR",
+            "username": "example-user",
+            "status": "active",
+            "email": "example-user@example.net"
+          }
+        }
+      }
+    }
+  ]
+}

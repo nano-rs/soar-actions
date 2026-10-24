@@ -1,0 +1,198 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "cisco_duo",
+  "display_name": "Cisco Duo user response",
+  "description": "Cisco Duo user response response actions. Containment and inverse actions require approval.",
+  "vendor": "Cisco",
+  "categories": [
+    "identity"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Duo API origin",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "host_suffixes": [
+        ".duosecurity.com"
+      ],
+      "path_prefixes": [
+        "/admin/v1/users"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "duo_hmac",
+    "integration_key_credential": "INTEGRATION_KEY",
+    "secret_key_credential": "SECRET_KEY"
+  },
+  "credentials": [
+    {
+      "name": "INTEGRATION_KEY",
+      "label": "Integration Key"
+    },
+    {
+      "name": "SECRET_KEY",
+      "label": "Secret Key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_user": {
+      "display_name": "Get Duo user",
+      "description": "Read one user by immutable Duo user ID and preserve the original status. API documentation: https://duo.com/docs/adminapi",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Z0-9]{20}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/admin/v1/users/{{input.user_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "response.user_id",
+            "non_empty": true,
+            "fields": {
+              "stat": "OK"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "user_id": "steps.request.response.user_id",
+        "username": "steps.request.response.username",
+        "status": "steps.request.response.status"
+      },
+      "fixtures": [
+        "fixtures/get_user.json"
+      ],
+      "output_types": {
+        "user_id": "string",
+        "username": "string",
+        "status": "string"
+      }
+    },
+    "disable_user": {
+      "display_name": "Disable User",
+      "description": "Set one explicit Duo user status. Only an originally active user has an exact active/disabled inverse; inspect prior status and obtain approval for either direction. API documentation: https://duo.com/docs/adminapi",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Z0-9]{20}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/admin/v1/users/{{input.user_id}}",
+            "json": {
+              "status": "disabled"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "response.user_id",
+            "non_empty": true,
+            "fields": {
+              "stat": "OK",
+              "response.status": "disabled"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "user_id": "steps.request.response.user_id",
+        "status": "steps.request.response.status"
+      },
+      "fixtures": [
+        "fixtures/disable_user.json"
+      ],
+      "rollback": "enable_user",
+      "output_types": {
+        "user_id": "string",
+        "status": "string"
+      }
+    },
+    "enable_user": {
+      "display_name": "Enable User",
+      "description": "Set one explicit Duo user status. Only an originally active user has an exact active/disabled inverse; inspect prior status and obtain approval for either direction. API documentation: https://duo.com/docs/adminapi",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Z0-9]{20}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/admin/v1/users/{{input.user_id}}",
+            "json": {
+              "status": "active"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "response.user_id",
+            "non_empty": true,
+            "fields": {
+              "stat": "OK",
+              "response.status": "active"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "user_id": "steps.request.response.user_id",
+        "status": "steps.request.response.status"
+      },
+      "fixtures": [
+        "fixtures/enable_user.json"
+      ],
+      "rollback": "disable_user",
+      "output_types": {
+        "user_id": "string",
+        "status": "string"
+      }
+    }
+  }
+}

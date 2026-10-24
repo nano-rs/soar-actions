@@ -1,0 +1,47 @@
+{
+  "action": "get_threat",
+  "config": {
+    "base_url": "https://api.abnormalplatform.com"
+  },
+  "inputs": {
+    "threat_id": "11111111-1111-4111-8111-111111111111"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.abnormalplatform.com/v1/threats/11111111-1111-4111-8111-111111111111",
+        "query": {
+          "pageSize": "50",
+          "pageNumber": "1"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.abnormalplatform.com",
+        "path": "/v1/threats/11111111-1111-4111-8111-111111111111",
+        "status": 200,
+        "body": {
+          "tenantId": null,
+          "tenantName": null,
+          "threatId": "11111111-1111-4111-8111-111111111111",
+          "recipientCount": 0,
+          "messages": [],
+          "pageNumber": 1
+        },
+        "query": {
+          "pageSize": "50",
+          "pageNumber": "1"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "threat_id": "11111111-1111-4111-8111-111111111111",
+    "recipient_count": 0,
+    "messages": [],
+    "next_page": 0
+  },
+  "source": "https://app.swaggerhub.com/apis-docs/abnormal-security/abx/1.4.3",
+  "request_evidence": "independent_http_mock"
+}

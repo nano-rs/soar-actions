@@ -1,0 +1,20 @@
+{
+  "get_endpoint": {
+    "reason": "Official Cybereason Nest API definitions require customer/partner login (unauthenticated reference fetch returned HTTP 401 on 2026-10-24). No public official request/response schema was available. No executable action or fixture is inferred from demisto/content. Private/on-prem origins additionally require typed self-hosted/sovereign deployment policy and cannot be enabled for hosted tenants.",
+    "documentation": [
+      "https://nest.cybereason.com/documentation/api-documentation"
+    ]
+  },
+  "isolate_endpoint": {
+    "reason": "Official Cybereason Nest API definitions require customer/partner login (unauthenticated reference fetch returned HTTP 401 on 2026-10-24). No public official request/response schema was available. No executable action or fixture is inferred from demisto/content. Private/on-prem origins additionally require typed self-hosted/sovereign deployment policy and cannot be enabled for hosted tenants.",
+    "documentation": [
+      "https://nest.cybereason.com/documentation/api-documentation/all-versions/isolate-malop-machine"
+    ]
+  },
+  "release_endpoint": {
+    "reason": "Official Cybereason Nest API definitions require customer/partner login (unauthenticated reference fetch returned HTTP 401 on 2026-10-24). No public official request/response schema was available. No executable action or fixture is inferred from demisto/content. Private/on-prem origins additionally require typed self-hosted/sovereign deployment policy and cannot be enabled for hosted tenants.",
+    "documentation": [
+      "https://nest.cybereason.com/documentation/api-documentation/all-versions/remove-machine-isolation"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "action": "get_staged_denylist",
+  "config": {
+    "base_url": "https://zsapi.zscaler.net",
+    "auth_base_url": "https://example.okta.com",
+    "authorization_server": "default",
+    "api_scope": "zscaler.net::123456::ResponseRole"
+  },
+  "inputs": {},
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://zsapi.zscaler.net/api/v1/security/advanced"
+      },
+      "response": {
+        "method": "GET",
+        "host": "zsapi.zscaler.net",
+        "path": "/api/v1/security/advanced",
+        "status": 200,
+        "body": {
+          "blacklistUrls": [
+            "example.net"
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "urls": [
+      "example.net"
+    ]
+  },
+  "source": "https://help.zscaler.com/legacy-apis/security-policy-settings",
+  "request_evidence": "independent_http_mock"
+}

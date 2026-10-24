@@ -1,0 +1,36 @@
+{
+  "action": "get_action_status",
+  "config": {
+    "base_url": "https://api.abnormalplatform.com"
+  },
+  "inputs": {
+    "threat_id": "11111111-1111-4111-8111-111111111111",
+    "action_id": "22222222-2222-4222-8222-222222222222"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.abnormalplatform.com/v1/threats/11111111-1111-4111-8111-111111111111/actions/22222222-2222-4222-8222-222222222222"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.abnormalplatform.com",
+        "path": "/v1/threats/11111111-1111-4111-8111-111111111111/actions/22222222-2222-4222-8222-222222222222",
+        "status": 200,
+        "body": {
+          "tenantId": null,
+          "tenantName": null,
+          "status": "acknowledged",
+          "description": "The request was acknowledged"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "status": "acknowledged",
+    "description": "The request was acknowledged"
+  },
+  "source": "https://app.swaggerhub.com/apis-docs/abnormal-security/abx/1.4.3",
+  "request_evidence": "independent_http_mock"
+}

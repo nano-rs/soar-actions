@@ -1,0 +1,45 @@
+{
+  "action": "stage_unblock_url",
+  "config": {
+    "base_url": "https://zsapi.zscaler.net",
+    "auth_base_url": "https://example.okta.com",
+    "authorization_server": "default",
+    "api_scope": "zscaler.net::123456::ResponseRole"
+  },
+  "inputs": {
+    "url_value": "example.net"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://zsapi.zscaler.net/api/v1/security/advanced/blacklistUrls",
+        "query": {
+          "action": "REMOVE_FROM_LIST"
+        },
+        "json": {
+          "blacklistUrls": [
+            "example.net"
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "zsapi.zscaler.net",
+        "path": "/api/v1/security/advanced/blacklistUrls",
+        "status": 200,
+        "body": {
+          "blacklistUrls": []
+        },
+        "query": {
+          "action": "REMOVE_FROM_LIST"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "urls": []
+  },
+  "source": "https://help.zscaler.com/legacy-apis/security-policy-settings",
+  "request_evidence": "independent_http_mock"
+}

@@ -1,0 +1,41 @@
+{
+  "action": "enable_user",
+  "config": {
+    "base_url": "https://api-example.duosecurity.com"
+  },
+  "inputs": {
+    "user_id": "DUABCDEFGHIJKLMNOPQR"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api-example.duosecurity.com/admin/v1/users/DUABCDEFGHIJKLMNOPQR",
+        "json": {
+          "status": "active"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api-example.duosecurity.com",
+        "path": "/admin/v1/users/DUABCDEFGHIJKLMNOPQR",
+        "status": 200,
+        "body": {
+          "stat": "OK",
+          "response": {
+            "user_id": "DUABCDEFGHIJKLMNOPQR",
+            "username": "example-user",
+            "status": "active",
+            "email": "example-user@example.net"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "user_id": "DUABCDEFGHIJKLMNOPQR",
+    "status": "active"
+  },
+  "source": "https://duo.com/docs/adminapi",
+  "request_evidence": "independent_http_mock"
+}

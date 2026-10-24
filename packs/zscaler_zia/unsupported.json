@@ -1,0 +1,8 @@
+{
+  "activate_shared_policy": {
+    "reason": "Activation applies shared pending configuration, has no per-action inverse, and could commit unrelated administrator changes. The authored pair stages only its exact membership delta; an operator reviews and activates separately.",
+    "documentation": [
+      "https://help.zscaler.com/legacy-apis/getting-started-zia-api"
+    ]
+  }
+}

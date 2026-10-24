@@ -1,0 +1,3 @@
+# Cybereason API evidence (batch=B)
+
+Endpoint-state read and isolate/release selection were researched, but the official Nest API references require customer/partner login. Unauthenticated requests to the isolation and release references returned HTTP 401 on 2026-10-24. No pack or fabricated response fixture is shipped. See unsupported.json for each operation and its official reference. The existing reusable session-login/cookie plugin is available; this refusal is missing official schema evidence, not an auth-plugin gap. Private/on-prem API hosts may only be admitted by typed self-hosted/sovereign deployment policy, never hosted tenant egress.
