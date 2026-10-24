@@ -4,7 +4,6 @@ on:
     paths:
       - 'packs/**'
       - 'scripts/check-notification-contract.mjs'
-      - 'backend-conformance-ref.txt'
       - '.github/workflows/notification-conformance.yml'
   workflow_dispatch:
 permissions:
@@ -18,49 +17,3 @@ jobs:
         with:
           node-version: '22'
       - run: node scripts/check-notification-contract.mjs
-      - name: Require the native gate for fork candidates
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
-        run: |
-          echo '::error::Native conformance requires a maintainer branch; private backend access is unavailable to fork code.'
-          exit 1
-  native-conformance:
-    # Never expose private backend source or a farm runner to fork code.
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: [self-hosted, Linux, X64]
-    timeout-minutes: 90
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          path: catalog
-          persist-credentials: false
-      - id: backend
-        shell: bash
-        run: |
-          ref=$(cat catalog/backend-conformance-ref.txt)
-          [[ "$ref" =~ ^[a-f0-9]{40}$ ]]
-          echo "ref=$ref" >> "$GITHUB_OUTPUT"
-      - name: Checkout pinned native conformance runner
-        uses: actions/checkout@v4
-        with:
-          repository: nano-rs/nanosiem
-          ref: ${{ steps.backend.outputs.ref }}
-          token: ${{ secrets.NANOSIEM_CONFORMANCE_READ_TOKEN }}
-          persist-credentials: false
-          path: backend
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - name: Compare actual candidate through core and production connector engine
-        working-directory: backend
-        shell: bash
-        run: |
-          # Compiler diagnostics may contain private source. Never publish them
-          # in this public repository's logs or artifacts.
-          umask 077
-          log=$(mktemp)
-          trap 'rm -f "$log"' EXIT
-          if ! node scripts/validate-soar-notification-packs.mjs ../catalog --conformance >"$log" 2>&1; then
-            echo '::error::Native byte conformance failed; reproduce in the private backend checkout.'
-            exit 1
-          fi
-          rg '^test result: ok\.' "$log"

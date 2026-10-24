@@ -25,21 +25,18 @@ core/native SOAR byte conformance and all their authored fixture replays through
 cargo-slot, including the farm. Catalog content is test input only; no pack is
 bundled in a binary. Update fixture evidence when intentionally changing a shape.
 
-CI runs both checks. The native job uses the reviewed backend commit pinned in
-`backend-conformance-ref.txt` and needs the read-only
-`NANOSIEM_CONFORMANCE_READ_TOKEN` repository secret to check out that private
-repository. This change does not provision that secret or enable publishing.
-Fork pull requests run the public contract check; a maintainer must put the
-candidate on a repository branch for the private native check before merging.
+CI in this public repository runs only
+`node scripts/check-notification-contract.mjs`, including for fork pull requests.
+It checks canonical helper bindings and fixture/evidence agreement. It never
+checks out private source or requires a private-repository credential.
+
+Cross-repository byte conformance runs entirely in the private nanosiem
+repository. That repository pins a reviewed public soar-actions commit in
+`scripts/notification-catalog-ref.txt` and tests it against the production core
+formatters and connector engine on a cargo-slot/farm-capable runner. Before
+catalog approval or publication, update the private pin to the candidate commit
+and run that private gate. No backend revision is pinned by this public catalog.
+
 New structured actions require the NAN-4478 backend before catalog approval or
-publication. A merge alone never installs a pack on a tenant.
-
-Native compiler diagnostics stay out of this public repository's job logs and
-artifacts, because they may include private backend source. Maintainers reproduce
-failures in the backend checkout to inspect details.
-
-Native jobs also need a runner with cargo-slot and GCP farm access. The first
-backend CI attempt stopped at the cargo-slot preflight; the complete 65-check
-suite passed separately on the GCP farm. Runner provisioning is outside this
-no-live-change draft, as is checkout-secret provisioning. The harness never falls
-back to an unrestricted local cargo build.
+publication. A merge alone never installs a pack on a tenant. No runner,
+credential, catalog publication or live-tenant change is provisioned here.
