@@ -160,7 +160,7 @@
             "status": [
               200
             ],
-            "path": "",
+            "path": "text",
             "equals": ""
           }
         }
@@ -208,7 +208,7 @@
             "status": [
               200
             ],
-            "path": "",
+            "path": "text",
             "equals": ""
           }
         }
