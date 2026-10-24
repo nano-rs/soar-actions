@@ -119,7 +119,7 @@
     },
     "dismiss_alert": {
       "display_name": "Dismiss Alert",
-      "description": "Change one explicit alert ID only. The required filter supplies an epoch-to-now range, and no policy IDs or broad user-controlled filters are accepted. Dismissal has no snooze interval. A 200 response acknowledges the requested status update; re-read the alert to verify state. Official endpoint reference: https://pan.dev/prisma-cloud/api/cspm/dismiss-alerts/",
+      "description": "Change one explicit alert ID only. The required filter supplies an epoch-to-now range, and no policy IDs or broad user-controlled filters are accepted. Dismissal has no snooze interval. A 200 response acknowledges the requested status update; re-read the alert to verify state. Official endpoint reference: https://pan.dev/prisma-cloud/api/cspm/dismiss-alerts/ Only the expected empty 200 acknowledgment body is accepted; an unexpected nonempty body leaves the mutation unverified.",
       "effect": "destructive",
       "idempotent": false,
       "inputs": [
@@ -159,7 +159,9 @@
           "expect": {
             "status": [
               200
-            ]
+            ],
+            "path": "",
+            "equals": ""
           }
         }
       ],
@@ -172,7 +174,7 @@
     },
     "reopen_alert": {
       "display_name": "Reopen Alert",
-      "description": "Change one explicit alert ID only. The required filter supplies an epoch-to-now range, and no policy IDs or broad user-controlled filters are accepted. Dismissal has no snooze interval. A 200 response acknowledges the requested status update; re-read the alert to verify state. Official endpoint reference: https://pan.dev/prisma-cloud/api/cspm/reopen-alerts/",
+      "description": "Change one explicit alert ID only. The required filter supplies an epoch-to-now range, and no policy IDs or broad user-controlled filters are accepted. Dismissal has no snooze interval. A 200 response acknowledges the requested status update; re-read the alert to verify state. Official endpoint reference: https://pan.dev/prisma-cloud/api/cspm/reopen-alerts/ Only the expected empty 200 acknowledgment body is accepted; an unexpected nonempty body leaves the mutation unverified.",
       "effect": "destructive",
       "idempotent": false,
       "inputs": [
@@ -205,7 +207,9 @@
           "expect": {
             "status": [
               200
-            ]
+            ],
+            "path": "",
+            "equals": ""
           }
         }
       ],
