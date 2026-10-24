@@ -16,7 +16,7 @@ Private or on-prem origins are supported only by self-hosted/sovereign deploymen
 
 Read the current named response rule and provisioning state. API documentation: https://learn.microsoft.com/en-us/rest/api/virtualnetwork/security-rules/get?view=rest-virtualnetwork-2026-01-01
 
-Inputs: `resource_group` (string), `nsg_name` (string), `rule_name` (string). Outputs: `rule`.
+Inputs: `resource_group` (string), `nsg_name` (string), `rule_name` (string). Outputs: `rule_id`, `properties`.
 
 Read-only; no automatic pagination or asynchronous completion claim.
 
@@ -26,7 +26,7 @@ Read-only; no automatic pagination or asynchronous completion claim.
 
 Create or update one response-owned outbound deny rule. The reported provisioning state must be checked before claiming enforcement. API documentation: https://learn.microsoft.com/en-us/rest/api/virtualnetwork/security-rules/create-or-update?view=rest-virtualnetwork-2026-01-01
 
-Inputs: `resource_group` (string), `nsg_name` (string), `rule_name` (string), `source_prefix` (string), `priority` (int). Outputs: `rule`.
+Inputs: `resource_group` (string), `nsg_name` (string), `rule_name` (string), `source_prefix` (string), `priority` (int). Outputs: `rule_id`, `properties`.
 
 Inverse: `remove_response_rule`.
 

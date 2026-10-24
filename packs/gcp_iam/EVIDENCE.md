@@ -16,7 +16,7 @@ Private or on-prem origins are supported only by self-hosted/sovereign deploymen
 
 Read key metadata without returning private key material. A missing disabled flag follows the API protobuf default of false. API documentation: https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys/get
 
-Inputs: `service_account_email` (email), `key_id` (string). Outputs: `metadata`.
+Inputs: `service_account_email` (email), `key_id` (string). Outputs: `key_name`, `disabled`, `key_type`.
 
 Read-only; no automatic pagination or asynchronous completion claim.
 

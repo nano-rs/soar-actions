@@ -85,7 +85,8 @@
         }
       ],
       "outputs": {
-        "page": "steps.request"
+        "meta": "steps.request.meta",
+        "destinations": "steps.request.data"
       },
       "fixtures": [
         "fixtures/list_destinations.json"

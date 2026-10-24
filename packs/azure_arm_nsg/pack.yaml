@@ -105,7 +105,8 @@
         }
       ],
       "outputs": {
-        "rule": "steps.request"
+        "rule_id": "steps.request.id",
+        "properties": "steps.request.properties"
       },
       "fixtures": [
         "fixtures/get_rule.json"
@@ -184,7 +185,8 @@
         }
       ],
       "outputs": {
-        "rule": "steps.request"
+        "rule_id": "steps.request.id",
+        "properties": "steps.request.properties"
       },
       "fixtures": [
         "fixtures/add_outbound_deny_rule.json"

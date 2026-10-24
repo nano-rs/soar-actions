@@ -3,7 +3,7 @@
   "config": {},
   "inputs": {
     "user_name": "example-user",
-    "access_key_id": "AKIAIOSFODNN7EXAMPLE"
+    "target_access_key_id": "AKIAIOSFODNN7EXAMPLE"
   },
   "exchanges": [
     {

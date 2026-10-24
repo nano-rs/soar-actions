@@ -110,7 +110,7 @@
           "pattern": "^[A-Za-z0-9_+=,.@-]{1,128}$"
         },
         {
-          "name": "access_key_id",
+          "name": "target_access_key_id",
           "type": "string",
           "required": true,
           "pattern": "^[A-Za-z0-9_]{16,128}$"
@@ -126,7 +126,7 @@
               "Action": "UpdateAccessKey",
               "Version": "2010-05-08",
               "UserName": "{{input.user_name}}",
-              "AccessKeyId": "{{input.access_key_id}}",
+              "AccessKeyId": "{{input.target_access_key_id}}",
               "Status": "Inactive"
             },
             "response_format": "text"
@@ -160,7 +160,7 @@
           "pattern": "^[A-Za-z0-9_+=,.@-]{1,128}$"
         },
         {
-          "name": "access_key_id",
+          "name": "target_access_key_id",
           "type": "string",
           "required": true,
           "pattern": "^[A-Za-z0-9_]{16,128}$"
@@ -176,7 +176,7 @@
               "Action": "UpdateAccessKey",
               "Version": "2010-05-08",
               "UserName": "{{input.user_name}}",
-              "AccessKeyId": "{{input.access_key_id}}",
+              "AccessKeyId": "{{input.target_access_key_id}}",
               "Status": "Active"
             },
             "response_format": "text"

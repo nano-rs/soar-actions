@@ -26,7 +26,7 @@ Read-only; no automatic pagination or asynchronous completion claim.
 
 Set one explicit IAM user key status. Preserve its original status and use a separate response principal. API documentation: https://docs.aws.amazon.com/IAM/latest/APIReference/API_UpdateAccessKey.html
 
-Inputs: `user_name` (string), `access_key_id` (string). Outputs: `receipt_xml`.
+Inputs: `user_name` (string), `target_access_key_id` (string). Outputs: `receipt_xml`.
 
 Inverse: `enable_access_key`.
 
@@ -36,6 +36,6 @@ Inverse: `enable_access_key`.
 
 Set one explicit IAM user key status. Preserve its original status and use a separate response principal. API documentation: https://docs.aws.amazon.com/IAM/latest/APIReference/API_UpdateAccessKey.html
 
-Inputs: `user_name` (string), `access_key_id` (string). Outputs: `receipt_xml`.
+Inputs: `user_name` (string), `target_access_key_id` (string). Outputs: `receipt_xml`.
 
 Inverse: `disable_access_key`.

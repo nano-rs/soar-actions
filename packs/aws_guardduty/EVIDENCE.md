@@ -16,7 +16,7 @@ Private or on-prem origins are supported only by self-hosted/sovereign deploymen
 
 Read one bounded page of finding identifiers and the returned pagination token. API documentation: https://docs.aws.amazon.com/guardduty/latest/APIReference/API_ListFindings.html
 
-Inputs: `detector_id` (string). Outputs: `page`.
+Inputs: `detector_id` (string). Outputs: `finding_ids`, `next_token`.
 
 Read-only; no automatic pagination or asynchronous completion claim.
 
@@ -26,7 +26,7 @@ Read-only; no automatic pagination or asynchronous completion claim.
 
 Read one bounded page of finding identifiers and the returned pagination token. API documentation: https://docs.aws.amazon.com/guardduty/latest/APIReference/API_ListFindings.html
 
-Inputs: `detector_id` (string), `next_token` (string). Outputs: `page`.
+Inputs: `detector_id` (string), `next_token` (string). Outputs: `finding_ids`, `next_token`.
 
 Read-only; no automatic pagination or asynchronous completion claim.
 

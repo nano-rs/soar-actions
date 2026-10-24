@@ -16,7 +16,7 @@ Private or on-prem origins are supported only by self-hosted/sovereign deploymen
 
 Read one destination page, preserving destination IDs for an exact inverse. API documentation: https://developer.cisco.com/docs/cloud-security/umbrella-api-api-reference-policies-destination-lists-api-destinations-get-destinations-in-destination-list/
 
-Inputs: `list_id` (int), `page` (int). Outputs: `page`.
+Inputs: `list_id` (int), `page` (int). Outputs: `meta`, `destinations`.
 
 Read-only; no automatic pagination or asynchronous completion claim.
 

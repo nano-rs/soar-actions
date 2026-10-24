@@ -31,15 +31,9 @@
     }
   ],
   "outputs": {
-    "metadata": {
-      "name": "projects/example-project/serviceAccounts/incident-target@example-project.iam.gserviceaccount.com/keys/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-      "disabled": false,
-      "keyOrigin": "GOOGLE_PROVIDED",
-      "keyType": "USER_MANAGED",
-      "keyAlgorithm": "KEY_ALG_RSA_2048",
-      "validAfterTime": "2026-01-01T00:00:00Z",
-      "validBeforeTime": "9999-12-31T23:59:59Z"
-    }
+    "key_name": "projects/example-project/serviceAccounts/incident-target@example-project.iam.gserviceaccount.com/keys/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "disabled": false,
+    "key_type": "USER_MANAGED"
   },
   "source": "https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys/get",
   "request_evidence": "independent_http_mock"

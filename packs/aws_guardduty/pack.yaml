@@ -104,7 +104,8 @@
         }
       ],
       "outputs": {
-        "page": "steps.request"
+        "finding_ids": "steps.request.findingIds",
+        "next_token": "steps.request.nextToken"
       },
       "fixtures": [
         "fixtures/list_findings.json"
@@ -150,7 +151,8 @@
         }
       ],
       "outputs": {
-        "page": "steps.request"
+        "finding_ids": "steps.request.findingIds",
+        "next_token": "steps.request.nextToken"
       },
       "fixtures": [
         "fixtures/list_findings_page.json"

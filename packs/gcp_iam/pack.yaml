@@ -90,7 +90,9 @@
         }
       ],
       "outputs": {
-        "metadata": "steps.request"
+        "key_name": "steps.request.name",
+        "disabled": "steps.request.disabled",
+        "key_type": "steps.request.keyType"
       },
       "fixtures": [
         "fixtures/get_key.json"

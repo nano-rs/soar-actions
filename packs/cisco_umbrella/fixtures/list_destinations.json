@@ -48,26 +48,20 @@
     }
   ],
   "outputs": {
-    "page": {
-      "status": {
-        "code": 200,
-        "text": "OK"
-      },
-      "meta": {
-        "page": 1,
-        "limit": 100,
-        "total": 1
-      },
-      "data": [
-        {
-          "id": "1234590",
-          "destination": "example.net",
-          "type": "domain",
-          "comment": "Example response fixture",
-          "createdAt": "2026-01-01 00:00:00"
-        }
-      ]
-    }
+    "meta": {
+      "page": 1,
+      "limit": 100,
+      "total": 1
+    },
+    "destinations": [
+      {
+        "id": "1234590",
+        "destination": "example.net",
+        "type": "domain",
+        "comment": "Example response fixture",
+        "createdAt": "2026-01-01 00:00:00"
+      }
+    ]
   },
   "source": "https://developer.cisco.com/docs/cloud-security/umbrella-api-api-reference-policies-destination-lists-api-destinations-get-destinations-in-destination-list/",
   "request_evidence": "independent_http_mock"
