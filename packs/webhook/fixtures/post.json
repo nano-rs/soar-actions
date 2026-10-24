@@ -1,0 +1,32 @@
+{
+  "action": "post",
+  "config": {
+    "endpoint": "https://hooks.customer.example.com/inbox/case"
+  },
+  "inputs": {
+    "case_id": "00000000-0000-4000-8000-000000000001",
+    "message": "Case 00000000-0000-4000-8000-000000000001 needs investigation."
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://hooks.customer.example.com/inbox/case",
+        "json": {
+          "case_id": "00000000-0000-4000-8000-000000000001",
+          "message": "Case 00000000-0000-4000-8000-000000000001 needs investigation."
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "hooks.customer.example.com",
+        "path": "/inbox/case",
+        "status": 204,
+        "body": ""
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://www.rfc-editor.org/rfc/rfc9110.txt",
+  "request_evidence": "independent_http_mock"
+}

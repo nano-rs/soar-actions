@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/post_message.json",
+      "url": "https://docs.slack.dev/reference/methods/chat.postMessage/",
+      "document_url": "https://docs.slack.dev/reference/methods/chat.postMessage/",
+      "document_sha256": "b5efcc05cfc569d51710e88a15795eb86b57c695b9dcbb4b3e4a6e17f067475e",
+      "request": {
+        "method": "POST",
+        "url": "https://slack.com/api/chat.postMessage",
+        "json": {
+          "channel": "C0123456789",
+          "text": "Case 00000000-0000-4000-8000-000000000001 needs investigation.",
+          "mrkdwn": false,
+          "parse": "none",
+          "unfurl_links": false,
+          "unfurl_media": false
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "slack.com",
+        "path": "/api/chat.postMessage",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "channel": "C0123456789",
+          "ts": "1710000000.000001"
+        }
+      }
+    }
+  ]
+}

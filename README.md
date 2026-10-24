@@ -1,6 +1,6 @@
 # SOAR actions
 
-Declarative response actions for endpoint security, identity, email, network security and ticketing APIs. Packs define typed inputs, authentication, allowed HTTPS hosts, bounded requests, response checks and outputs. Containment actions include their inverse; irreversible operations explain their limits. Mutations require approval.
+Declarative response actions for endpoint security, identity, email, network security and ticketing APIs. Packs define typed inputs, authentication, allowed HTTPS hosts, bounded requests, response checks and outputs. Containment actions include their inverse; irreversible operations explain their limits. Mutations follow their effect and flow approval policy. Notification writes can run automatically in human-managed flows; AI-originated and API/agent-key-triggered runs still require human approval.
 
 Every pack is reviewed, approved and signed by nano before any tenant can run it. Downloading content does not authorize execution. Tenants receive signed releases through the distribution index API.
 

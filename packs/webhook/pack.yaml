@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "webhook",
+  "display_name": "Signed HTTPS case notifications",
+  "description": "Signed HTTPS case notifications. Notification writes follow the flow approval policy; AI and API/agent-key runs require approval. Uncertain mutations are never automatically resent.",
+  "vendor": "nano",
+  "categories": [
+    "notifications"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "endpoint",
+      "label": "Public HTTPS destination URL (443; no query, fragment or credentials)",
+      "required": true,
+      "format": "https_endpoint"
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.endpoint}}",
+      "path_prefixes": [
+        "/"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "hmac",
+    "credential": "HMAC_KEY",
+    "header": "X-Nano-Signature",
+    "message": "{timestamp}\n{method}\n{host}\n{path}\n{body}",
+    "algorithm": "sha256",
+    "encoding": "hex",
+    "prefix": "sha256=",
+    "timestamp_header": "X-Nano-Timestamp",
+    "timestamp_format": "unix_seconds"
+  },
+  "credentials": [
+    {
+      "name": "HMAC_KEY",
+      "label": "Shared HMAC-SHA256 signing key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "post": {
+      "display_name": "POST a signed case notification",
+      "description": "POST bounded JSON to the exact connection endpoint with native HMAC-SHA256. No script or secret template. Success means an HTTP receipt only. POST semantics: https://www.rfc-editor.org/rfc/rfc9110.txt",
+      "effect": "write",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "case_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89aAbB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "required": true,
+          "pattern": "^[\\s\\S]{1,8192}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.endpoint}}",
+            "json": {
+              "case_id": "{{input.case_id}}",
+              "message": "{{input.message}}"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200,
+              201,
+              202,
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/post.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "A delivered notification, page or external workflow cannot be recalled. No automatic inverse is supplied."
+    }
+  }
+}
