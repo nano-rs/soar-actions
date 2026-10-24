@@ -232,7 +232,7 @@
         },
         {
           "name": "prior_is_frozen",
-          "type": "boolean",
+          "type": "bool",
           "required": true
         }
       ],
