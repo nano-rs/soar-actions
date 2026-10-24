@@ -1,0 +1,89 @@
+{
+  "action": "get_asset",
+  "config": {
+    "base_url": "https://us.api.insight.rapid7.com"
+  },
+  "inputs": {
+    "asset_id": "12344375-34a7-40d3-9821-90db0b5cc90e-default-asset-7912"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://us.api.insight.rapid7.com/vm/v4/integration/assets/12344375-34a7-40d3-9821-90db0b5cc90e-default-asset-7912",
+        "query": {
+          "includeSame": "true"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "us.api.insight.rapid7.com",
+        "path": "/vm/v4/integration/assets/12344375-34a7-40d3-9821-90db0b5cc90e-default-asset-7912",
+        "status": 200,
+        "body": {
+          "id": "12344375-34a7-40d3-9821-90db0b5cc90e-default-asset-7912",
+          "host_name": "host.domain.com",
+          "ip": "10.1.0.128",
+          "assessed_for_vulnerabilities": true,
+          "last_assessed_for_vulnerabilities": "2019-02-14T21:19:41.090Z",
+          "risk_score": 74621.5625,
+          "total_vulnerabilities": 1,
+          "same": [
+            {
+              "check_id": "check_id",
+              "first_found": "2020-03-18T10:46:15Z",
+              "key": "key",
+              "last_found": "2020-03-20T19:18:13.611Z",
+              "nic": "eth0",
+              "port": 2,
+              "proof": "<p>proof</p>",
+              "protocol": "TCP",
+              "reintroduced": null,
+              "solution_fix": "Take a look at all possible solutions for vulnerability",
+              "solution_id": "unknown-acrobat-cve-2018-16015",
+              "solution_summary": "The solution is unknown for vuln acrobat-cve-2018-16015",
+              "solution_type": "workaround",
+              "status": "VULNERABLE_POTENTIAL",
+              "vulnerability_id": "acrobat-cve-2018-16015"
+            }
+          ]
+        },
+        "query": {
+          "includeSame": "true"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "asset": {
+      "id": "12344375-34a7-40d3-9821-90db0b5cc90e-default-asset-7912",
+      "host_name": "host.domain.com",
+      "ip": "10.1.0.128",
+      "assessed_for_vulnerabilities": true,
+      "last_assessed_for_vulnerabilities": "2019-02-14T21:19:41.090Z",
+      "risk_score": 74621.5625,
+      "total_vulnerabilities": 1,
+      "same": [
+        {
+          "check_id": "check_id",
+          "first_found": "2020-03-18T10:46:15Z",
+          "key": "key",
+          "last_found": "2020-03-20T19:18:13.611Z",
+          "nic": "eth0",
+          "port": 2,
+          "proof": "<p>proof</p>",
+          "protocol": "TCP",
+          "reintroduced": null,
+          "solution_fix": "Take a look at all possible solutions for vulnerability",
+          "solution_id": "unknown-acrobat-cve-2018-16015",
+          "solution_summary": "The solution is unknown for vuln acrobat-cve-2018-16015",
+          "solution_type": "workaround",
+          "status": "VULNERABLE_POTENTIAL",
+          "vulnerability_id": "acrobat-cve-2018-16015"
+        }
+      ]
+    }
+  },
+  "source": "https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+  "request_evidence": "independent_http_mock"
+}

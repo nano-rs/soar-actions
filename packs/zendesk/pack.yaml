@@ -1,0 +1,311 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "zendesk",
+  "display_name": "Zendesk",
+  "description": "Zendesk investigation and service actions.",
+  "vendor": "Zendesk",
+  "categories": [
+    "ticketing"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Zendesk subdomain origin",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "host_suffixes": [
+        ".zendesk.com"
+      ],
+      "path_prefixes": [
+        "/api/v2/tickets",
+        "/api/v2/tickets.json",
+        "/api/v2/users"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "username": "API_USERNAME",
+    "password": "API_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "API_USERNAME",
+      "label": "Api Username"
+    },
+    {
+      "name": "API_TOKEN",
+      "label": "Api Token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 5,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_ticket": {
+      "display_name": "Get ticket",
+      "description": "Read one explicit ticket and retain its update timestamp for an optimistic guarded update. API documentation: https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "ticket_id",
+          "type": "int",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v2/tickets/{{input.ticket_id}}.json"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "ticket.id",
+            "json_type": "number"
+          }
+        }
+      ],
+      "outputs": {
+        "ticket": "steps.request.ticket"
+      },
+      "output_types": {
+        "ticket": "object"
+      },
+      "fixtures": [
+        "fixtures/get_ticket.json"
+      ]
+    },
+    "get_user": {
+      "display_name": "Get requester",
+      "description": "Read a requester by ID without listing the whole account. API documentation: https://developer.zendesk.com/api-reference/ticketing/users/users/",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "int",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v2/users/{{input.user_id}}.json"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "user.id",
+            "json_type": "number"
+          }
+        }
+      ],
+      "outputs": {
+        "user": "steps.request.user"
+      },
+      "output_types": {
+        "user": "object"
+      },
+      "fixtures": [
+        "fixtures/get_user.json"
+      ]
+    },
+    "list_ticket_comments": {
+      "display_name": "List ticket comment page",
+      "description": "Read one cursor page of ticket comments and preserve has_more/cursor/link metadata as data. API documentation: https://developer.zendesk.com/api-reference/ticketing/tickets/ticket_comments/",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "ticket_id",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "pattern": "^[!-~]{1,2048}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v2/tickets/{{input.ticket_id}}/comments.json",
+            "query": {
+              "page[size]": "100",
+              "page[after]": "{{input.cursor}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "comments",
+            "json_type": "array"
+          }
+        }
+      ],
+      "outputs": {
+        "page": "steps.request"
+      },
+      "output_types": {
+        "page": "object"
+      },
+      "fixtures": [
+        "fixtures/list_ticket_comments.json",
+        "fixtures/list_ticket_comments_empty.json"
+      ]
+    },
+    "create_ticket": {
+      "display_name": "Create incident ticket",
+      "description": "Create one incident ticket for the explicit requester with an internal comment; business rules may trigger notifications. API documentation: https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/",
+      "effect": "write",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "requester_id",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "subject",
+          "type": "string",
+          "required": true,
+          "pattern": "^[^\\r\\n]{1,255}$"
+        },
+        {
+          "name": "comment",
+          "type": "text",
+          "required": true,
+          "max_bytes": 10000
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/v2/tickets.json",
+            "json": {
+              "ticket": {
+                "requester_id": "{{input.requester_id}}",
+                "subject": "{{input.subject}}",
+                "comment": {
+                  "body": "{{input.comment}}",
+                  "public": false
+                },
+                "type": "incident",
+                "priority": "normal",
+                "status": "open"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "ticket.id",
+            "json_type": "number"
+          }
+        }
+      ],
+      "outputs": {
+        "ticket": "steps.request.ticket"
+      },
+      "output_types": {
+        "ticket": "object"
+      },
+      "fixtures": [
+        "fixtures/create_ticket.json"
+      ]
+    },
+    "update_ticket": {
+      "display_name": "Update ticket with collision protection",
+      "description": "Replace the selected status and append one internal comment only if the supplied update stamp is current; a collision stops the action. API documentation: https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/",
+      "effect": "write",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "ticket_id",
+          "type": "int",
+          "required": true
+        },
+        {
+          "name": "comment",
+          "type": "text",
+          "required": true,
+          "max_bytes": 10000
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true,
+          "pattern": "^(open|pending|hold|solved)$"
+        },
+        {
+          "name": "updated_at",
+          "type": "string",
+          "required": true,
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T[0-9:.+Z-]{8,40}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PUT",
+            "url": "{{config.base_url}}/api/v2/tickets/{{input.ticket_id}}.json",
+            "json": {
+              "ticket": {
+                "status": "{{input.status}}",
+                "comment": {
+                  "body": "{{input.comment}}",
+                  "public": false
+                },
+                "safe_update": true,
+                "updated_stamp": "{{input.updated_at}}"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "ticket.id",
+            "json_type": "number"
+          }
+        }
+      ],
+      "outputs": {
+        "ticket": "steps.request.ticket"
+      },
+      "output_types": {
+        "ticket": "object"
+      },
+      "fixtures": [
+        "fixtures/update_ticket.json"
+      ]
+    }
+  }
+}

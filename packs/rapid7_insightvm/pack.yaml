@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "rapid7_insightvm",
+  "display_name": "Rapid7 InsightVM Cloud",
+  "description": "Rapid7 InsightVM Cloud investigation and service actions.",
+  "vendor": "Rapid7",
+  "categories": [
+    "vulnerability"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "InsightVM Cloud API region",
+      "required": true,
+      "default": "https://us.api.insight.rapid7.com",
+      "one_of": [
+        "https://us.api.insight.rapid7.com",
+        "https://us2.api.insight.rapid7.com",
+        "https://us3.api.insight.rapid7.com",
+        "https://eu.api.insight.rapid7.com",
+        "https://ca.api.insight.rapid7.com",
+        "https://au.api.insight.rapid7.com",
+        "https://ap.api.insight.rapid7.com"
+      ]
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/vm/v4/integration/assets",
+        "/vm/v4/integration/vulnerabilities"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "X-Api-Key",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "Api Key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 5,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_asset": {
+      "display_name": "Get cloud asset assessment",
+      "description": "Read one compound cloud asset ID with the current assessment/vulnerability view; response IPs are data, not egress destinations. API documentation: https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "asset_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_-]{1,160}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/vm/v4/integration/assets/{{input.asset_id}}",
+            "query": {
+              "includeSame": "true"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "json_type": "string",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "asset": "steps.request"
+      },
+      "output_types": {
+        "asset": "object"
+      },
+      "fixtures": [
+        "fixtures/get_asset.json"
+      ]
+    },
+    "search_assets": {
+      "display_name": "Search Assets",
+      "description": "Read one 50-record cloud search page using explicit vendor criteria. Inspect metadata before a separate caller-requested next page. API documentation: https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "asset_filter",
+          "type": "text",
+          "required": true,
+          "max_bytes": 512
+        },
+        {
+          "name": "vulnerability_filter",
+          "type": "text",
+          "required": true,
+          "max_bytes": 512
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "pattern": "^[!-~]{1,2048}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/vm/v4/integration/assets",
+            "query": {
+              "size": "50",
+              "cursor": "{{input.cursor}}"
+            },
+            "json": {
+              "asset": "{{input.asset_filter}}",
+              "vulnerability": "{{input.vulnerability_filter}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data",
+            "json_type": "array"
+          }
+        }
+      ],
+      "outputs": {
+        "page": "steps.request"
+      },
+      "output_types": {
+        "page": "object"
+      },
+      "fixtures": [
+        "fixtures/search_assets.json",
+        "fixtures/search_assets_empty.json"
+      ]
+    },
+    "search_vulnerabilities": {
+      "display_name": "Search Vulnerabilities",
+      "description": "Read one 50-record cloud search page using explicit vendor criteria. Inspect metadata before a separate caller-requested next page. API documentation: https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "vulnerability_filter",
+          "type": "text",
+          "required": true,
+          "max_bytes": 512
+        },
+        {
+          "name": "cursor",
+          "type": "string",
+          "required": false,
+          "pattern": "^[!-~]{1,2048}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/vm/v4/integration/vulnerabilities",
+            "query": {
+              "size": "50",
+              "cursor": "{{input.cursor}}"
+            },
+            "json": {
+              "vulnerability": "{{input.vulnerability_filter}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data",
+            "json_type": "array"
+          }
+        }
+      ],
+      "outputs": {
+        "page": "steps.request"
+      },
+      "output_types": {
+        "page": "object"
+      },
+      "fixtures": [
+        "fixtures/search_vulnerabilities.json",
+        "fixtures/search_vulnerabilities_empty.json"
+      ]
+    }
+  }
+}

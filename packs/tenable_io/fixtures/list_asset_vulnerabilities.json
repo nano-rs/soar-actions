@@ -1,0 +1,63 @@
+{
+  "action": "list_asset_vulnerabilities",
+  "config": {},
+  "inputs": {
+    "asset_id": "236224b4-e3e7-4761-ad47-e32daaebec6b"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://cloud.tenable.com/workbenches/assets/236224b4-e3e7-4761-ad47-e32daaebec6b/vulnerabilities",
+        "query": {
+          "date_range": "30"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "cloud.tenable.com",
+        "path": "/workbenches/assets/236224b4-e3e7-4761-ad47-e32daaebec6b/vulnerabilities",
+        "status": 200,
+        "body": {
+          "vulnerabilities": [
+            {
+              "count": 1,
+              "plugin_family": "General",
+              "plugin_id": 19506,
+              "plugin_name": "Nessus Scan Information",
+              "severity": 0,
+              "vulnerability_state": "Active",
+              "accepted_count": 0,
+              "recasted_count": 0
+            }
+          ],
+          "total_vulnerability_count": 1,
+          "total_asset_count": 1
+        },
+        "query": {
+          "date_range": "30"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "page": {
+      "vulnerabilities": [
+        {
+          "count": 1,
+          "plugin_family": "General",
+          "plugin_id": 19506,
+          "plugin_name": "Nessus Scan Information",
+          "severity": 0,
+          "vulnerability_state": "Active",
+          "accepted_count": 0,
+          "recasted_count": 0
+        }
+      ],
+      "total_vulnerability_count": 1,
+      "total_asset_count": 1
+    }
+  },
+  "source": "https://developer.tenable.com/reference/workbenches-asset-vulnerabilities",
+  "request_evidence": "independent_http_mock"
+}

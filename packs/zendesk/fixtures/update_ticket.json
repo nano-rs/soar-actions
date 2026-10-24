@@ -1,0 +1,61 @@
+{
+  "action": "update_ticket",
+  "config": {
+    "base_url": "https://example.zendesk.com"
+  },
+  "inputs": {
+    "ticket_id": 123456,
+    "comment": "Example internal follow-up",
+    "status": "pending",
+    "updated_at": "2026-01-01T00:00:00Z"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "PUT",
+        "url": "https://example.zendesk.com/api/v2/tickets/123456.json",
+        "json": {
+          "ticket": {
+            "status": "pending",
+            "comment": {
+              "body": "Example internal follow-up",
+              "public": false
+            },
+            "safe_update": true,
+            "updated_stamp": "2026-01-01T00:00:00Z"
+          }
+        }
+      },
+      "response": {
+        "method": "PUT",
+        "host": "example.zendesk.com",
+        "path": "/api/v2/tickets/123456.json",
+        "status": 200,
+        "body": {
+          "ticket": {
+            "id": 123456,
+            "subject": "Example security incident",
+            "description": "Example incident evidence\nObserved by the response team.",
+            "status": "pending",
+            "priority": "normal",
+            "requester_id": 987654,
+            "updated_at": "2026-01-01T00:01:00Z"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "ticket": {
+      "id": 123456,
+      "subject": "Example security incident",
+      "description": "Example incident evidence\nObserved by the response team.",
+      "status": "pending",
+      "priority": "normal",
+      "requester_id": 987654,
+      "updated_at": "2026-01-01T00:01:00Z"
+    }
+  },
+  "source": "https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/",
+  "request_evidence": "independent_http_mock"
+}

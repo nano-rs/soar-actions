@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_asset.json",
+      "url": "https://developer.tenable.com/reference/assets-asset-info",
+      "document_url": "https://developer.tenable.com/reference/assets-asset-info",
+      "document_sha256": "16d08f0dd5d2e67c56cb42dafec8f4fa2274d9b7f51abddc8e0c8f8659da31be",
+      "request": {
+        "method": "GET",
+        "url": "https://cloud.tenable.com/assets/236224b4-e3e7-4761-ad47-e32daaebec6b"
+      },
+      "response": {
+        "method": "GET",
+        "host": "cloud.tenable.com",
+        "path": "/assets/236224b4-e3e7-4761-ad47-e32daaebec6b",
+        "status": 200,
+        "body": {
+          "name": "example-asset",
+          "id": "236224b4-e3e7-4761-ad47-e32daaebec6b",
+          "has_agent": true,
+          "created_at": "2025-04-18T10:31:22.214Z",
+          "updated_at": "2025-07-02T00:53:32.864Z",
+          "ipv4": [
+            "192.0.2.79"
+          ]
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/list_asset_vulnerabilities.json",
+      "url": "https://developer.tenable.com/reference/workbenches-asset-vulnerabilities",
+      "document_url": "https://developer.tenable.com/reference/workbenches-asset-vulnerabilities",
+      "document_sha256": "470bfbf095bdf8ae822bedc2f9618d6475e41d9a82ac99bcc35827df927e00b6",
+      "request": {
+        "method": "GET",
+        "url": "https://cloud.tenable.com/workbenches/assets/236224b4-e3e7-4761-ad47-e32daaebec6b/vulnerabilities",
+        "query": {
+          "date_range": "30"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "cloud.tenable.com",
+        "path": "/workbenches/assets/236224b4-e3e7-4761-ad47-e32daaebec6b/vulnerabilities",
+        "status": 200,
+        "body": {
+          "vulnerabilities": [
+            {
+              "count": 1,
+              "plugin_family": "General",
+              "plugin_id": 19506,
+              "plugin_name": "Nessus Scan Information",
+              "severity": 0,
+              "vulnerability_state": "Active",
+              "accepted_count": 0,
+              "recasted_count": 0
+            }
+          ],
+          "total_vulnerability_count": 1,
+          "total_asset_count": 1
+        },
+        "query": {
+          "date_range": "30"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/list_asset_vulnerabilities_empty.json",
+      "url": "https://developer.tenable.com/reference/workbenches-asset-vulnerabilities",
+      "document_url": "https://developer.tenable.com/reference/workbenches-asset-vulnerabilities",
+      "document_sha256": "470bfbf095bdf8ae822bedc2f9618d6475e41d9a82ac99bcc35827df927e00b6",
+      "request": {
+        "method": "GET",
+        "url": "https://cloud.tenable.com/workbenches/assets/236224b4-e3e7-4761-ad47-e32daaebec6b/vulnerabilities",
+        "query": {
+          "date_range": "30"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "cloud.tenable.com",
+        "path": "/workbenches/assets/236224b4-e3e7-4761-ad47-e32daaebec6b/vulnerabilities",
+        "status": 200,
+        "body": {
+          "vulnerabilities": [],
+          "total_vulnerability_count": 0,
+          "total_asset_count": 0
+        },
+        "query": {
+          "date_range": "30"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/get_vulnerability_info.json",
+      "url": "https://developer.tenable.com/reference/workbenches-vulnerability-info",
+      "document_url": "https://developer.tenable.com/reference/workbenches-vulnerability-info",
+      "document_sha256": "3e7f76c54fbd7f7d893ab2977353dcfa7f62ac21821d9f1e64858428b01fda59",
+      "request": {
+        "method": "GET",
+        "url": "https://cloud.tenable.com/workbenches/vulnerabilities/19506/info",
+        "query": {
+          "date_range": "30"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "cloud.tenable.com",
+        "path": "/workbenches/vulnerabilities/19506/info",
+        "status": 200,
+        "body": {
+          "info": {
+            "count": 1,
+            "vuln_count": 1,
+            "description": "Example documented plugin finding",
+            "synopsis": "Example plugin metadata",
+            "solution": "Review the vendor remediation guidance.",
+            "severity": 2,
+            "plugin_details": {
+              "family": "General",
+              "name": "Example plugin",
+              "type": "remote",
+              "severity": 2
+            }
+          }
+        },
+        "query": {
+          "date_range": "30"
+        }
+      }
+    }
+  ]
+}

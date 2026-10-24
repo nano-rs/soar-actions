@@ -1,0 +1,41 @@
+{
+  "action": "get_user",
+  "config": {
+    "base_url": "https://example.zendesk.com"
+  },
+  "inputs": {
+    "user_id": 987654
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://example.zendesk.com/api/v2/users/987654.json"
+      },
+      "response": {
+        "method": "GET",
+        "host": "example.zendesk.com",
+        "path": "/api/v2/users/987654.json",
+        "status": 200,
+        "body": {
+          "user": {
+            "id": 987654,
+            "name": "Example requester",
+            "email": "requester@example.net",
+            "role": "end-user"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "user": {
+      "id": 987654,
+      "name": "Example requester",
+      "email": "requester@example.net",
+      "role": "end-user"
+    }
+  },
+  "source": "https://developer.zendesk.com/api-reference/ticketing/users/users/",
+  "request_evidence": "independent_http_mock"
+}

@@ -1,0 +1,62 @@
+{
+  "action": "create_ticket",
+  "config": {
+    "base_url": "https://example.zendesk.com"
+  },
+  "inputs": {
+    "requester_id": 987654,
+    "subject": "Example security incident",
+    "comment": "Example incident evidence\nObserved by the response team."
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://example.zendesk.com/api/v2/tickets.json",
+        "json": {
+          "ticket": {
+            "requester_id": 987654,
+            "subject": "Example security incident",
+            "comment": {
+              "body": "Example incident evidence\nObserved by the response team.",
+              "public": false
+            },
+            "type": "incident",
+            "priority": "normal",
+            "status": "open"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "example.zendesk.com",
+        "path": "/api/v2/tickets.json",
+        "status": 201,
+        "body": {
+          "ticket": {
+            "id": 123456,
+            "subject": "Example security incident",
+            "description": "Example incident evidence\nObserved by the response team.",
+            "status": "open",
+            "priority": "normal",
+            "requester_id": 987654,
+            "updated_at": "2026-01-01T00:00:00Z"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "ticket": {
+      "id": 123456,
+      "subject": "Example security incident",
+      "description": "Example incident evidence\nObserved by the response team.",
+      "status": "open",
+      "priority": "normal",
+      "requester_id": 987654,
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  "source": "https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/",
+  "request_evidence": "independent_http_mock"
+}

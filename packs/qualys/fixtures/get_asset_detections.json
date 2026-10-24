@@ -1,0 +1,45 @@
+{
+  "action": "get_asset_detections",
+  "config": {
+    "base_url": "https://qualysapi.qualys.com"
+  },
+  "inputs": {
+    "host_id": 12345,
+    "qid": 105015
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://qualysapi.qualys.com/api/2.0/fo/asset/host/vm/detection/",
+        "headers": {
+          "X-Requested-With": "nano Security Lake SOAR"
+        },
+        "query": {
+          "action": "list",
+          "ids": "12345",
+          "qids": "105015",
+          "truncation_limit": "1"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "qualysapi.qualys.com",
+        "path": "/api/2.0/fo/asset/host/vm/detection/",
+        "status": 200,
+        "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><HOST_LIST_VM_DETECTION_OUTPUT><RESPONSE><DATETIME>2026-01-01T00:00:00Z</DATETIME><HOST_LIST><HOST><ID>12345</ID><IP>192.0.2.10</IP><DETECTION_LIST><DETECTION><QID>105015</QID><TYPE>Confirmed</TYPE><SEVERITY>3</SEVERITY><STATUS>Active</STATUS><RESULTS>Example documented detection evidence</RESULTS></DETECTION></DETECTION_LIST></HOST></HOST_LIST></RESPONSE></HOST_LIST_VM_DETECTION_OUTPUT>",
+        "query": {
+          "action": "list",
+          "ids": "12345",
+          "qids": "105015",
+          "truncation_limit": "1"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "response_xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><HOST_LIST_VM_DETECTION_OUTPUT><RESPONSE><DATETIME>2026-01-01T00:00:00Z</DATETIME><HOST_LIST><HOST><ID>12345</ID><IP>192.0.2.10</IP><DETECTION_LIST><DETECTION><QID>105015</QID><TYPE>Confirmed</TYPE><SEVERITY>3</SEVERITY><STATUS>Active</STATUS><RESULTS>Example documented detection evidence</RESULTS></DETECTION></DETECTION_LIST></HOST></HOST_LIST></RESPONSE></HOST_LIST_VM_DETECTION_OUTPUT>"
+  },
+  "source": "https://cdn2.qualys.com/docs/qualys-api-vmpc-user-guide.pdf",
+  "request_evidence": "independent_http_mock"
+}

@@ -1,0 +1,45 @@
+{
+  "action": "get_asset",
+  "config": {},
+  "inputs": {
+    "asset_id": "236224b4-e3e7-4761-ad47-e32daaebec6b"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://cloud.tenable.com/assets/236224b4-e3e7-4761-ad47-e32daaebec6b"
+      },
+      "response": {
+        "method": "GET",
+        "host": "cloud.tenable.com",
+        "path": "/assets/236224b4-e3e7-4761-ad47-e32daaebec6b",
+        "status": 200,
+        "body": {
+          "name": "example-asset",
+          "id": "236224b4-e3e7-4761-ad47-e32daaebec6b",
+          "has_agent": true,
+          "created_at": "2025-04-18T10:31:22.214Z",
+          "updated_at": "2025-07-02T00:53:32.864Z",
+          "ipv4": [
+            "192.0.2.79"
+          ]
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "asset": {
+      "name": "example-asset",
+      "id": "236224b4-e3e7-4761-ad47-e32daaebec6b",
+      "has_agent": true,
+      "created_at": "2025-04-18T10:31:22.214Z",
+      "updated_at": "2025-07-02T00:53:32.864Z",
+      "ipv4": [
+        "192.0.2.79"
+      ]
+    }
+  },
+  "source": "https://developer.tenable.com/reference/assets-asset-info",
+  "request_evidence": "independent_http_mock"
+}

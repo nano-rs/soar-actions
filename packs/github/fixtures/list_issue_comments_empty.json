@@ -1,0 +1,42 @@
+{
+  "action": "list_issue_comments",
+  "config": {},
+  "inputs": {
+    "owner": "example-org",
+    "repository": "incident-response",
+    "issue_number": 42,
+    "page": 1
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.github.com/repos/example-org/incident-response/issues/42/comments",
+        "headers": {
+          "Accept": "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28"
+        },
+        "query": {
+          "per_page": "100",
+          "page": "1"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.github.com",
+        "path": "/repos/example-org/incident-response/issues/42/comments",
+        "status": 200,
+        "body": [],
+        "query": {
+          "per_page": "100",
+          "page": "1"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "comments": []
+  },
+  "source": "https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28",
+  "request_evidence": "independent_http_mock"
+}
