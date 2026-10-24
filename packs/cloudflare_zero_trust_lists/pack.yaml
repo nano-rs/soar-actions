@@ -80,7 +80,10 @@
       },
       "fixtures": [
         "fixtures/get_list.json"
-      ]
+      ],
+      "output_types": {
+        "list": "object"
+      }
     },
     "add_domain": {
       "display_name": "Add Domain",
@@ -133,7 +136,10 @@
       "fixtures": [
         "fixtures/add_domain.json"
       ],
-      "rollback": "remove_domain"
+      "rollback": "remove_domain",
+      "output_types": {
+        "list": "object"
+      }
     },
     "remove_domain": {
       "display_name": "Remove Domain",
@@ -184,7 +190,10 @@
       "fixtures": [
         "fixtures/remove_domain.json"
       ],
-      "rollback": "add_domain"
+      "rollback": "add_domain",
+      "output_types": {
+        "list": "object"
+      }
     }
   }
 }

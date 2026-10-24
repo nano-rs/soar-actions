@@ -85,7 +85,11 @@
       },
       "fixtures": [
         "fixtures/list_destination_profiles.json"
-      ]
+      ],
+      "output_types": {
+        "profiles": "array",
+        "total_count": "integer"
+      }
     },
     "add_profile_value": {
       "display_name": "Add Profile Value",
@@ -138,7 +142,12 @@
       "fixtures": [
         "fixtures/add_profile_value.json"
       ],
-      "rollback": "remove_profile_value"
+      "rollback": "remove_profile_value",
+      "output_types": {
+        "profile_id": "string",
+        "status": "string",
+        "values_count": "integer"
+      }
     },
     "remove_profile_value": {
       "display_name": "Remove Profile Value",
@@ -191,7 +200,12 @@
       "fixtures": [
         "fixtures/remove_profile_value.json"
       ],
-      "rollback": "add_profile_value"
+      "rollback": "add_profile_value",
+      "output_types": {
+        "profile_id": "string",
+        "status": "string",
+        "values_count": "integer"
+      }
     }
   }
 }

@@ -109,7 +109,10 @@
       },
       "fixtures": [
         "fixtures/get_isolation.json"
-      ]
+      ],
+      "output_types": {
+        "enabled": "boolean"
+      }
     },
     "isolate_endpoint": {
       "display_name": "Isolate Endpoint",
@@ -152,7 +155,10 @@
       "fixtures": [
         "fixtures/isolate_endpoint.json"
       ],
-      "rollback": "release_endpoint"
+      "rollback": "release_endpoint",
+      "output_types": {
+        "enabled": "boolean"
+      }
     },
     "release_endpoint": {
       "display_name": "Release Endpoint",
@@ -195,7 +201,10 @@
       "fixtures": [
         "fixtures/release_endpoint.json"
       ],
-      "rollback": "isolate_endpoint"
+      "rollback": "isolate_endpoint",
+      "output_types": {
+        "enabled": "boolean"
+      }
     }
   }
 }

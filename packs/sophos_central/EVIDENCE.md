@@ -39,3 +39,5 @@ Request the isolation setting for one explicit endpoint; acknowledgment does not
 Inputs: `endpoint_id` (string). Outputs: `enabled`.
 
 Inverse: `isolate_endpoint`.
+
+Output contract: each action declares output_types for every extracted field. Native execution checks JSON types without coercion; missing/wrong-type data fails a Read and leaves an accepted mutation ambiguous. Private/on-prem origins are outside these SaaS packs. Any future support requires typed self-hosted/sovereign policy; hosted egress remains public-only.

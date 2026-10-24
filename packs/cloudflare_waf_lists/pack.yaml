@@ -89,7 +89,11 @@
       },
       "fixtures": [
         "fixtures/list_items.json"
-      ]
+      ],
+      "output_types": {
+        "items": "array",
+        "cursors": "object"
+      }
     },
     "get_bulk_operation": {
       "display_name": "Get list operation status",
@@ -130,7 +134,11 @@
       },
       "fixtures": [
         "fixtures/get_bulk_operation.json"
-      ]
+      ],
+      "output_types": {
+        "operation_id": "string",
+        "status": "string"
+      }
     },
     "add_ip": {
       "display_name": "Add Ip",
@@ -181,7 +189,10 @@
       "fixtures": [
         "fixtures/add_ip.json"
       ],
-      "rollback": "remove_ip"
+      "rollback": "remove_ip",
+      "output_types": {
+        "operation_id": "string"
+      }
     },
     "remove_ip": {
       "display_name": "Remove Ip",
@@ -235,7 +246,10 @@
       "fixtures": [
         "fixtures/remove_ip.json"
       ],
-      "rollback": "add_ip"
+      "rollback": "add_ip",
+      "output_types": {
+        "operation_id": "string"
+      }
     }
   }
 }

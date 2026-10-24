@@ -90,7 +90,11 @@
       },
       "fixtures": [
         "fixtures/get_response_task.json"
-      ]
+      ],
+      "output_types": {
+        "task_id": "string",
+        "status": "string"
+      }
     },
     "isolate_endpoint": {
       "display_name": "Isolate Endpoint",
@@ -136,7 +140,10 @@
       "fixtures": [
         "fixtures/isolate_endpoint.json"
       ],
-      "rollback": "restore_endpoint"
+      "rollback": "restore_endpoint",
+      "output_types": {
+        "operation_location": "string"
+      }
     },
     "restore_endpoint": {
       "display_name": "Restore Endpoint",
@@ -182,7 +189,10 @@
       "fixtures": [
         "fixtures/restore_endpoint.json"
       ],
-      "rollback": "isolate_endpoint"
+      "rollback": "isolate_endpoint",
+      "output_types": {
+        "operation_location": "string"
+      }
     }
   }
 }

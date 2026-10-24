@@ -104,7 +104,10 @@
       },
       "fixtures": [
         "fixtures/get_endpoint.json"
-      ]
+      ],
+      "output_types": {
+        "endpoints": "array"
+      }
     },
     "get_action_status": {
       "display_name": "Get action status",
@@ -147,7 +150,10 @@
       },
       "fixtures": [
         "fixtures/get_action_status.json"
-      ]
+      ],
+      "output_types": {
+        "status_by_agent": "object"
+      }
     },
     "isolate_endpoint": {
       "display_name": "Isolate Endpoint",
@@ -196,7 +202,11 @@
       "fixtures": [
         "fixtures/isolate_endpoint.json"
       ],
-      "rollback": "unisolate_endpoint"
+      "rollback": "unisolate_endpoint",
+      "output_types": {
+        "action_id": "string",
+        "endpoints_count": "string"
+      }
     },
     "unisolate_endpoint": {
       "display_name": "Unisolate Endpoint",
@@ -245,7 +255,11 @@
       "fixtures": [
         "fixtures/unisolate_endpoint.json"
       ],
-      "rollback": "isolate_endpoint"
+      "rollback": "isolate_endpoint",
+      "output_types": {
+        "action_id": "string",
+        "endpoints_count": "string"
+      }
     }
   }
 }
