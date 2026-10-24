@@ -1,0 +1,55 @@
+{
+  "action": "notify_event",
+  "config": {},
+  "inputs": {
+    "team_id": "fbe2bf47-16c8-47cf-b4a5-4b9b187c508b",
+    "channel_id": "19:4a95f7d8db4c4e7fae857bcebe0623e6@thread.tacv2",
+    "notification": {
+      "event_type": "case.created",
+      "kind": "case",
+      "rule_name": "Investigate sign-in",
+      "severity": "open",
+      "created_at": "2024-03-09T16:00:00Z",
+      "idempotency_key": "case.created:00000000-0000-4000-8000-000000000001"
+    }
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/teams/fbe2bf47-16c8-47cf-b4a5-4b9b187c508b/channels/19%3A4a95f7d8db4c4e7fae857bcebe0623e6%40thread.tacv2/messages",
+        "json": {
+          "body": {
+            "contentType": "html",
+            "content": "<attachment id=\"nano-notification\"></attachment>"
+          },
+          "attachments": [
+            {
+              "id": "nano-notification",
+              "contentType": "application/vnd.microsoft.card.adaptive",
+              "content": "{\"$schema\":\"http://adaptivecards.io/schemas/adaptive-card.json\",\"actions\":[],\"body\":[{\"color\":\"Good\",\"size\":\"Large\",\"text\":\"Investigate sign-in\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true},{\"facts\":[{\"title\":\"Severity\",\"value\":\"OPEN\"},{\"title\":\"Type\",\"value\":\"case\"},{\"title\":\"Time\",\"value\":\"2024-03-09T16:00:00+00:00\"}],\"type\":\"FactSet\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.4\"}"
+            }
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/teams/fbe2bf47-16c8-47cf-b4a5-4b9b187c508b/channels/19%3A4a95f7d8db4c4e7fae857bcebe0623e6%40thread.tacv2/messages",
+        "status": 201,
+        "body": {
+          "id": "1710000000001",
+          "body": {
+            "contentType": "text",
+            "content": "Case 00000000-0000-4000-8000-000000000001 needs investigation."
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "message_id": "1710000000001"
+  },
+  "source": "https://learn.microsoft.com/en-us/graph/api/channel-post-messages?view=graph-rest-1.0",
+  "request_evidence": "independent_http_mock"
+}

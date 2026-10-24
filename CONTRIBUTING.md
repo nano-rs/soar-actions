@@ -12,3 +12,28 @@ Propose changes in a pull request. Keep each change focused on one vendor or a s
 nano validates the pack and its request replay, reviews the exact content and approval policy, approves it, signs a release, and publishes it to the distribution index. A pull request, merge or download does not grant tenant execution. Tenants receive only signed releases through the distribution index API.
 
 Use the schema and authentication documentation linked in [README.md](README.md). Contributions use the repository's Apache-2.0 license.
+
+Structured notifications use `notify_event` with a typed canonical `notification`
+object (the alert/case `WebhookPayload`), rather than repeating a vendor body in a
+pack. `notification_body` calls the backend's canonical channel formatter. The
+legacy freeform actions keep their existing bodies and authentication.
+
+Run `node scripts/check-notification-contract.mjs` here, then run
+`node scripts/validate-soar-notification-packs.mjs /path/to/soar-actions --conformance`
+from the backend checkout. The latter snapshots the actual four packs and runs
+core/native SOAR byte conformance and all their authored fixture replays through
+cargo-slot, including the farm. Catalog content is test input only; no pack is
+bundled in a binary. Update fixture evidence when intentionally changing a shape.
+
+CI runs both checks. The native job uses the reviewed backend commit pinned in
+`backend-conformance-ref.txt` and needs the read-only
+`NANOSIEM_CONFORMANCE_READ_TOKEN` repository secret to check out that private
+repository. This change does not provision that secret or enable publishing.
+Fork pull requests run the public contract check; a maintainer must put the
+candidate on a repository branch for the private native check before merging.
+New structured actions require the NAN-4478 backend before catalog approval or
+publication. A merge alone never installs a pack on a tenant.
+
+Native compiler diagnostics stay out of this public repository's job logs and
+artifacts, because they may include private backend source. Maintainers reproduce
+failures in the backend checkout to inspect details.

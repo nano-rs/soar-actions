@@ -91,6 +91,54 @@
       ],
       "rollback_unavailable": true,
       "rollback_unavailable_reason": "A delivered notification, page or external workflow cannot be recalled. No automatic inverse is supplied."
+    },
+    "notify_event": {
+      "display_name": "Notify with a canonical alert or case",
+      "description": "Render the canonical nano alert/case event with the shared core vendor formatter. Existing freeform actions are unchanged. Requires backend support for notification_body (NAN-4478).",
+      "effect": "write",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "channel_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[CG][A-Z0-9]{8,20}$"
+        },
+        {
+          "name": "notification",
+          "type": "notification",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://slack.com/api/chat.postMessage",
+            "json_text": "{{notification_body \"slack\" input.notification input.channel_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "ts",
+            "non_empty": true,
+            "fields": {
+              "ok": true
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "channel": "steps.request.channel",
+        "message_ts": "steps.request.ts"
+      },
+      "fixtures": [
+        "fixtures/notify_event.json"
+      ],
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "A delivered notification, page or external workflow cannot be recalled. No automatic inverse is supplied."
     }
   }
 }
