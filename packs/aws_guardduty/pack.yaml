@@ -98,8 +98,8 @@
             "status": [
               200
             ],
-            "path": "",
-            "non_empty": true
+            "path": "findingIds",
+            "json_type": "array"
           }
         }
       ],
@@ -145,8 +145,8 @@
             "status": [
               200
             ],
-            "path": "",
-            "non_empty": true
+            "path": "findingIds",
+            "json_type": "array"
           }
         }
       ],
