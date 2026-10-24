@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "fixtures": [],
+  "documentation_review": {
+    "key": "otx",
+    "url": "https://otx.alienvault.com/api",
+    "document_url": "https://otx.alienvault.com/api",
+    "sha256": "e12ba8a1e084b5d8aa53510ae4d2f2c3fd48d93c4200282070f891fc8efa6cdb",
+    "bytes": 8492,
+    "status": 200
+  }
+}

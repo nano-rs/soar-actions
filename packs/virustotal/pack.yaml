@@ -1,0 +1,255 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "virustotal",
+  "display_name": "VirusTotal",
+  "description": "VirusTotal read-only threat intelligence lookups with checked JSON output types.",
+  "vendor": "VirusTotal",
+  "categories": [
+    "threat_intelligence",
+    "enrichment"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "www.virustotal.com",
+      "path_prefixes": [
+        "/api/v3/ip_addresses",
+        "/api/v3/domains",
+        "/api/v3/files",
+        "/api/v3/urls"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "x-apikey",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "VirusTotal API key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 4,
+    "per_day": 400,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "lookup_ip": {
+      "display_name": "Look up ip report",
+      "description": "Look up ip report. Returns typed JSON evidence from the documented lookup endpoint. VirusTotal may scan/index queried indicators; use indicators approved for vendor sharing. Official API reference: https://docs.virustotal.com/reference/ip-info",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "ip",
+          "type": "ip",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://www.virustotal.com/api/v3/ip_addresses/{{input.ip}}",
+            "headers": {
+              "Accept": "application/json"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.id",
+            "non_empty": true,
+            "fields": {
+              "data.type": "ip_address"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "indicator_id": "steps.lookup.data.id",
+        "malicious_count": "steps.lookup.data.attributes.last_analysis_stats.malicious",
+        "suspicious_count": "steps.lookup.data.attributes.last_analysis_stats.suspicious",
+        "reputation": "steps.lookup.data.attributes.reputation",
+        "analysis_stats": "steps.lookup.data.attributes.last_analysis_stats"
+      },
+      "output_types": {
+        "indicator_id": "string",
+        "malicious_count": "integer",
+        "suspicious_count": "integer",
+        "reputation": "integer",
+        "analysis_stats": "object"
+      },
+      "fixtures": [
+        "fixtures/lookup_ip.json"
+      ]
+    },
+    "lookup_domain": {
+      "display_name": "Look up domain report",
+      "description": "Look up domain report. Returns typed JSON evidence from the documented lookup endpoint. VirusTotal may scan/index queried indicators; use indicators approved for vendor sharing. Official API reference: https://docs.virustotal.com/reference/domain-info",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "domain",
+          "type": "domain",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://www.virustotal.com/api/v3/domains/{{input.domain}}",
+            "headers": {
+              "Accept": "application/json"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.id",
+            "non_empty": true,
+            "fields": {
+              "data.type": "domain"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "indicator_id": "steps.lookup.data.id",
+        "malicious_count": "steps.lookup.data.attributes.last_analysis_stats.malicious",
+        "suspicious_count": "steps.lookup.data.attributes.last_analysis_stats.suspicious",
+        "reputation": "steps.lookup.data.attributes.reputation",
+        "analysis_stats": "steps.lookup.data.attributes.last_analysis_stats"
+      },
+      "output_types": {
+        "indicator_id": "string",
+        "malicious_count": "integer",
+        "suspicious_count": "integer",
+        "reputation": "integer",
+        "analysis_stats": "object"
+      },
+      "fixtures": [
+        "fixtures/lookup_domain.json"
+      ]
+    },
+    "lookup_hash": {
+      "display_name": "Look up hash report",
+      "description": "Look up hash report. Returns typed JSON evidence from the documented lookup endpoint. VirusTotal may scan/index queried indicators; use indicators approved for vendor sharing. Official API reference: https://docs.virustotal.com/reference/file-info",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "hash",
+          "type": "hash",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://www.virustotal.com/api/v3/files/{{input.hash}}",
+            "headers": {
+              "Accept": "application/json"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.id",
+            "non_empty": true,
+            "fields": {
+              "data.type": "file"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "indicator_id": "steps.lookup.data.id",
+        "malicious_count": "steps.lookup.data.attributes.last_analysis_stats.malicious",
+        "suspicious_count": "steps.lookup.data.attributes.last_analysis_stats.suspicious",
+        "reputation": "steps.lookup.data.attributes.reputation",
+        "analysis_stats": "steps.lookup.data.attributes.last_analysis_stats"
+      },
+      "output_types": {
+        "indicator_id": "string",
+        "malicious_count": "integer",
+        "suspicious_count": "integer",
+        "reputation": "integer",
+        "analysis_stats": "object"
+      },
+      "fixtures": [
+        "fixtures/lookup_hash.json"
+      ]
+    },
+    "lookup_url": {
+      "display_name": "Look up url report",
+      "description": "Look up url report. Returns typed JSON evidence from the documented lookup endpoint. VirusTotal may scan/index queried indicators; use indicators approved for vendor sharing. Official API reference: https://docs.virustotal.com/reference/url-info",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "url",
+          "type": "url",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://www.virustotal.com/api/v3/urls/{{base64url input.url}}",
+            "headers": {
+              "Accept": "application/json"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.id",
+            "non_empty": true,
+            "fields": {
+              "data.type": "url"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "indicator_id": "steps.lookup.data.id",
+        "malicious_count": "steps.lookup.data.attributes.last_analysis_stats.malicious",
+        "suspicious_count": "steps.lookup.data.attributes.last_analysis_stats.suspicious",
+        "reputation": "steps.lookup.data.attributes.reputation",
+        "analysis_stats": "steps.lookup.data.attributes.last_analysis_stats",
+        "url": "steps.lookup.data.attributes.url"
+      },
+      "output_types": {
+        "indicator_id": "string",
+        "malicious_count": "integer",
+        "suspicious_count": "integer",
+        "reputation": "integer",
+        "analysis_stats": "object",
+        "url": "string"
+      },
+      "fixtures": [
+        "fixtures/lookup_url.json"
+      ]
+    }
+  }
+}

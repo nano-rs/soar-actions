@@ -1,0 +1,32 @@
+{
+  "lookup_ipv4": {
+    "reason": "The official public API entry point currently exposes an overview and SDK links, but a public endpoint response definition for this lookup could not be verified. No XSOAR implementation or SDK source is substituted for official endpoint evidence.",
+    "documentation": [
+      "https://otx.alienvault.com/api"
+    ]
+  },
+  "lookup_ipv6": {
+    "reason": "The official public API entry point currently exposes an overview and SDK links, but a public endpoint response definition for this lookup could not be verified. No XSOAR implementation or SDK source is substituted for official endpoint evidence.",
+    "documentation": [
+      "https://otx.alienvault.com/api"
+    ]
+  },
+  "lookup_domain": {
+    "reason": "The official public API entry point currently exposes an overview and SDK links, but a public endpoint response definition for this lookup could not be verified. No XSOAR implementation or SDK source is substituted for official endpoint evidence.",
+    "documentation": [
+      "https://otx.alienvault.com/api"
+    ]
+  },
+  "lookup_url": {
+    "reason": "The official public API entry point currently exposes an overview and SDK links, but a public endpoint response definition for this lookup could not be verified. No XSOAR implementation or SDK source is substituted for official endpoint evidence.",
+    "documentation": [
+      "https://otx.alienvault.com/api"
+    ]
+  },
+  "lookup_hash": {
+    "reason": "The official public API entry point currently exposes an overview and SDK links, but a public endpoint response definition for this lookup could not be verified. No XSOAR implementation or SDK source is substituted for official endpoint evidence.",
+    "documentation": [
+      "https://otx.alienvault.com/api"
+    ]
+  }
+}

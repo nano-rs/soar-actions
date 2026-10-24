@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/lookup_ip.json",
+      "url": "https://developer.shodan.io/api#shodan-host-ip",
+      "document_url": "https://developer.shodan.io/api",
+      "document_sha256": "dc1940b0eb4b964cf5130e796cf88cd296455ceb553052781c41cbf2aef51e7f",
+      "request": {
+        "method": "GET",
+        "url": "https://api.shodan.io/shodan/host/8.8.8.8",
+        "query": {
+          "minify": "true",
+          "history": "false"
+        },
+        "auth_query_keys": [
+          "key"
+        ]
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.shodan.io",
+        "path": "/shodan/host/8.8.8.8",
+        "status": 200,
+        "body": {
+          "ip_str": "8.8.8.8",
+          "ports": [
+            53
+          ],
+          "hostnames": [
+            "dns.google"
+          ],
+          "domains": [
+            "dns.google"
+          ],
+          "org": "Google",
+          "asn": "AS15169",
+          "country_code": "US"
+        },
+        "query": {
+          "minify": "true",
+          "history": "false"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/lookup_domain.json",
+      "url": "https://developer.shodan.io/api#dns-domain",
+      "document_url": "https://developer.shodan.io/api",
+      "document_sha256": "dc1940b0eb4b964cf5130e796cf88cd296455ceb553052781c41cbf2aef51e7f",
+      "request": {
+        "method": "GET",
+        "url": "https://api.shodan.io/dns/domain/example.com",
+        "query": {
+          "page": "1",
+          "history": "false"
+        },
+        "auth_query_keys": [
+          "key"
+        ]
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.shodan.io",
+        "path": "/dns/domain/example.com",
+        "status": 200,
+        "body": {
+          "domain": "example.com",
+          "tags": [],
+          "data": [
+            {
+              "subdomain": "www",
+              "type": "A",
+              "value": "93.184.215.14",
+              "last_seen": "2026-01-01T00:00:00+00:00"
+            }
+          ],
+          "subdomains": [
+            "www"
+          ],
+          "more": false
+        },
+        "query": {
+          "page": "1",
+          "history": "false"
+        }
+      }
+    }
+  ]
+}

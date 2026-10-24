@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "abuseipdb",
+  "display_name": "AbuseIPDB",
+  "description": "AbuseIPDB read-only threat intelligence lookups with checked JSON output types.",
+  "vendor": "AbuseIPDB",
+  "categories": [
+    "threat_intelligence",
+    "enrichment"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "api.abuseipdb.com",
+      "path_prefixes": [
+        "/api/v2/check"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "Key",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "AbuseIPDB API key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "lookup_ip": {
+      "display_name": "Look up IP abuse reputation",
+      "description": "Look up IP abuse reputation. Returns typed JSON evidence from the documented lookup endpoint. Official API reference: https://docs.abuseipdb.com/#check-endpoint",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "ip",
+          "type": "ip",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "lookup",
+          "request": {
+            "method": "GET",
+            "url": "https://api.abuseipdb.com/api/v2/check",
+            "headers": {
+              "Accept": "application/json"
+            },
+            "query": {
+              "ipAddress": "{{input.ip}}",
+              "maxAgeInDays": "30"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data.ipAddress",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "ip": "steps.lookup.data.ipAddress",
+        "abuse_confidence_score": "steps.lookup.data.abuseConfidenceScore",
+        "total_reports": "steps.lookup.data.totalReports",
+        "is_public": "steps.lookup.data.isPublic",
+        "country_code": "steps.lookup.data.countryCode",
+        "hostnames": "steps.lookup.data.hostnames"
+      },
+      "output_types": {
+        "ip": "string",
+        "abuse_confidence_score": "integer",
+        "total_reports": "integer",
+        "is_public": "boolean",
+        "country_code": "string",
+        "hostnames": "array"
+      },
+      "fixtures": [
+        "fixtures/lookup_ip.json"
+      ]
+    }
+  }
+}

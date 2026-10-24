@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/lookup_ip.json",
+      "url": "https://docs.abuseipdb.com/#check-endpoint",
+      "document_url": "https://docs.abuseipdb.com/",
+      "document_sha256": "44a023cd823f760c132753d2c4614013d2ca14abef829ef8cc12ab84f6b7ac64",
+      "request": {
+        "method": "GET",
+        "url": "https://api.abuseipdb.com/api/v2/check",
+        "query": {
+          "ipAddress": "118.25.6.39",
+          "maxAgeInDays": "30"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.abuseipdb.com",
+        "path": "/api/v2/check",
+        "status": 200,
+        "body": {
+          "data": {
+            "ipAddress": "118.25.6.39",
+            "isPublic": true,
+            "ipVersion": 4,
+            "abuseConfidenceScore": 100,
+            "countryCode": "CN",
+            "isp": "Example network",
+            "domain": "example.com",
+            "totalReports": 1,
+            "numDistinctUsers": 1,
+            "hostnames": [],
+            "isTor": false
+          }
+        },
+        "query": {
+          "ipAddress": "118.25.6.39",
+          "maxAgeInDays": "30"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "action": "get_result",
+  "config": {},
+  "inputs": {
+    "scan_id": "00000000-0000-4000-8000-000000000001"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://urlscan.io/api/v1/result/00000000-0000-4000-8000-000000000001/"
+      },
+      "response": {
+        "method": "GET",
+        "host": "urlscan.io",
+        "path": "/api/v1/result/00000000-0000-4000-8000-000000000001/",
+        "status": 200,
+        "body": {
+          "task": {
+            "uuid": "00000000-0000-4000-8000-000000000001",
+            "url": "https://example.com/"
+          },
+          "page": {
+            "url": "https://example.com/",
+            "domain": "example.com",
+            "ip": "93.184.215.14"
+          },
+          "stats": {
+            "malicious": 0
+          },
+          "verdicts": {
+            "overall": {
+              "score": 0,
+              "malicious": false
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "scan_id": "00000000-0000-4000-8000-000000000001",
+    "url": "https://example.com/",
+    "domain": "example.com",
+    "ip": "93.184.215.14",
+    "malicious_count": 0,
+    "verdicts": {
+      "overall": {
+        "score": 0,
+        "malicious": false
+      }
+    }
+  },
+  "source": "https://docs.urlscan.io/apis/urlscan-openapi/scanning/getresult",
+  "request_evidence": "independent_http_mock"
+}

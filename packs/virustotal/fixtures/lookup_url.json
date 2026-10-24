@@ -1,0 +1,54 @@
+{
+  "action": "lookup_url",
+  "config": {},
+  "inputs": {
+    "url": "https://example.com/"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://www.virustotal.com/api/v3/urls/aHR0cHM6Ly9leGFtcGxlLmNvbS8"
+      },
+      "response": {
+        "method": "GET",
+        "host": "www.virustotal.com",
+        "path": "/api/v3/urls/aHR0cHM6Ly9leGFtcGxlLmNvbS8",
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "0f115db062b7c0dd030b16878c99dea5c354b49dc37b38eb8846179c7783e9d7",
+            "type": "url",
+            "attributes": {
+              "last_analysis_stats": {
+                "malicious": 0,
+                "suspicious": 0,
+                "harmless": 5,
+                "undetected": 3,
+                "timeout": 0
+              },
+              "reputation": 0,
+              "url": "https://example.com/"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "indicator_id": "0f115db062b7c0dd030b16878c99dea5c354b49dc37b38eb8846179c7783e9d7",
+    "malicious_count": 0,
+    "suspicious_count": 0,
+    "reputation": 0,
+    "analysis_stats": {
+      "malicious": 0,
+      "suspicious": 0,
+      "harmless": 5,
+      "undetected": 3,
+      "timeout": 0
+    },
+    "url": "https://example.com/"
+  },
+  "source": "https://docs.virustotal.com/reference/url-info",
+  "request_evidence": "independent_http_mock"
+}

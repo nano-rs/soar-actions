@@ -1,0 +1,52 @@
+{
+  "action": "lookup_domain",
+  "config": {},
+  "inputs": {
+    "domain": "example.com"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://www.virustotal.com/api/v3/domains/example.com"
+      },
+      "response": {
+        "method": "GET",
+        "host": "www.virustotal.com",
+        "path": "/api/v3/domains/example.com",
+        "status": 200,
+        "body": {
+          "data": {
+            "id": "example.com",
+            "type": "domain",
+            "attributes": {
+              "last_analysis_stats": {
+                "malicious": 0,
+                "suspicious": 0,
+                "harmless": 5,
+                "undetected": 3,
+                "timeout": 0
+              },
+              "reputation": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "indicator_id": "example.com",
+    "malicious_count": 0,
+    "suspicious_count": 0,
+    "reputation": 0,
+    "analysis_stats": {
+      "malicious": 0,
+      "suspicious": 0,
+      "harmless": 5,
+      "undetected": 3,
+      "timeout": 0
+    }
+  },
+  "source": "https://docs.virustotal.com/reference/domain-info",
+  "request_evidence": "independent_http_mock"
+}

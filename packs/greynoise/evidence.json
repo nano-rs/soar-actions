@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/lookup_ip.json",
+      "url": "https://docs.greynoise.io/reference/getcommunityip",
+      "document_url": "https://docs.greynoise.io/reference/getcommunityip.md",
+      "document_sha256": "2a01bc339e328ac1d89bb93cd4b8e6cb0fca775f1ead9e21e5ac7a3f2e0fdcbd",
+      "request": {
+        "method": "GET",
+        "url": "https://api.greynoise.io/v3/community/51.91.185.74"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.greynoise.io",
+        "path": "/v3/community/51.91.185.74",
+        "status": 200,
+        "body": {
+          "ip": "51.91.185.74",
+          "noise": true,
+          "riot": false,
+          "classification": "malicious",
+          "name": "unknown",
+          "last_seen": "2021-03-18",
+          "message": "Success"
+        }
+      },
+      "supporting_documents": [
+        {
+          "url": "https://docs.greynoise.io/docs/using-the-greynoise-community-api",
+          "sha256": "0acac81da9a06519caee4bc16437890abc870518def445394dc192c682cd6e57"
+        }
+      ]
+    },
+    {
+      "fixture": "fixtures/lookup_ip_not_found.json",
+      "url": "https://docs.greynoise.io/reference/getcommunityip",
+      "document_url": "https://docs.greynoise.io/reference/getcommunityip.md",
+      "document_sha256": "2a01bc339e328ac1d89bb93cd4b8e6cb0fca775f1ead9e21e5ac7a3f2e0fdcbd",
+      "request": {
+        "method": "GET",
+        "url": "https://api.greynoise.io/v3/community/196.188.245.219"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.greynoise.io",
+        "path": "/v3/community/196.188.245.219",
+        "status": 404,
+        "body": {
+          "ip": "196.188.245.219",
+          "noise": false,
+          "riot": false,
+          "message": "IP not observed scanning the internet or contained in RIOT data set."
+        }
+      },
+      "supporting_documents": [
+        {
+          "url": "https://docs.greynoise.io/docs/using-the-greynoise-community-api",
+          "sha256": "0acac81da9a06519caee4bc16437890abc870518def445394dc192c682cd6e57"
+        }
+      ]
+    }
+  ]
+}

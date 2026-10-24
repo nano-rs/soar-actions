@@ -1,0 +1,54 @@
+{
+  "action": "lookup_ip",
+  "config": {},
+  "inputs": {
+    "ip": "118.25.6.39"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.abuseipdb.com/api/v2/check",
+        "query": {
+          "ipAddress": "118.25.6.39",
+          "maxAgeInDays": "30"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.abuseipdb.com",
+        "path": "/api/v2/check",
+        "status": 200,
+        "body": {
+          "data": {
+            "ipAddress": "118.25.6.39",
+            "isPublic": true,
+            "ipVersion": 4,
+            "abuseConfidenceScore": 100,
+            "countryCode": "CN",
+            "isp": "Example network",
+            "domain": "example.com",
+            "totalReports": 1,
+            "numDistinctUsers": 1,
+            "hostnames": [],
+            "isTor": false
+          }
+        },
+        "query": {
+          "ipAddress": "118.25.6.39",
+          "maxAgeInDays": "30"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "ip": "118.25.6.39",
+    "abuse_confidence_score": 100,
+    "total_reports": 1,
+    "is_public": true,
+    "country_code": "CN",
+    "hostnames": []
+  },
+  "source": "https://docs.abuseipdb.com/#check-endpoint",
+  "request_evidence": "independent_http_mock"
+}
