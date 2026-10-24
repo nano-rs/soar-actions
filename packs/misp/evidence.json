@@ -11,7 +11,7 @@
         "url": "https://misp.example.com/attributes/restSearch",
         "json": {
           "returnFormat": "json",
-          "value": "192.0.2.10",
+          "value": "8.8.8.8",
           "type": "ip-src",
           "limit": 25,
           "page": 1,
@@ -32,7 +32,7 @@
                 "uuid": "00000000-0000-4000-8000-000000000001",
                 "type": "ip-src",
                 "category": "Network activity",
-                "value": "192.0.2.10",
+                "value": "8.8.8.8",
                 "to_ids": true,
                 "timestamp": "1767225600",
                 "deleted": false
@@ -52,7 +52,7 @@
         "url": "https://misp.example.com/attributes/restSearch",
         "json": {
           "returnFormat": "json",
-          "value": "192.0.2.10",
+          "value": "8.8.8.8",
           "type": "ip-dst",
           "limit": 25,
           "page": 1,
@@ -73,7 +73,7 @@
                 "uuid": "00000000-0000-4000-8000-000000000001",
                 "type": "ip-dst",
                 "category": "Network activity",
-                "value": "192.0.2.10",
+                "value": "8.8.8.8",
                 "to_ids": true,
                 "timestamp": "1767225600",
                 "deleted": false

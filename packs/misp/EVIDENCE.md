@@ -2,6 +2,8 @@
 
 **Deployment scope: self-hosted/sovereign only.** The connection owner supplies the full HTTPS /attributes/restSearch endpoint; immutable typed config pins one exact hostname and the signed pack restricts the path. The current native broker still requires a publicly routable hostname on port 443 and normal verified TLS. It refuses private/reserved DNS answers even for this pack; no private-network bypass is introduced. Private-only MISP instances are explicitly unsupported below pending a separately reviewed self-hosted egress capability.
 
+Native IP/domain/URL artifact validation also refuses private/internal indicators before transport, including in sovereign deployments. This pack does not bypass that existing privacy guard.
+
 Requires an automation API key in Authorization with read access to the relevant organisation/sharing groups. Every POST is a read search. Requests JSON, page 1 / limit 25, no attachments. IP source and destination are separate typed lookups. Results obey MISP value-filter semantics and the caller's permissions; there is no full-database or complete-pagination claim. Empty Attribute arrays are valid no-match evidence; first_attribute_id then becomes unknown, not a risk verdict. Attachments, event publication, sightings and other mutations are excluded.
 
 ## Actions and typed outputs
