@@ -108,10 +108,16 @@
     },
     "lock_computer": {
       "display_name": "Lock Computer",
-      "description": "Queue one fixed MDM command for one explicit management UUID. Requires View MDM command information plus permission to send the selected command. A nonempty first command ID and typed receipt array are required; all returned receipts are preserved. HTTP 201 means queued, not completed. A device lock has no generic remote device-unlock inverse. The authorized operator must retain the transient unlock PIN and use the supported physical unlock procedure; the PIN is held in native credential storage and injected only into DEVICE_LOCK requests. Official endpoint reference: https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
+      "description": "First read the selected identity in this same approved connection/run and require exact nonempty string identity matches; missing or unrelated evidence refuses before command dispatch. Queue one fixed MDM command for the management UUID returned for the selected inventory record. Requires Read Computers for identity lookup plus View MDM command information plus permission to send the selected command. A nonempty first command ID and typed receipt array are required; all returned receipts are preserved. HTTP 201 means queued, not completed. A device lock has no generic remote device-unlock inverse. The authorized operator must retain the transient unlock PIN and use the supported physical unlock procedure; the PIN is held in native credential storage and injected only into DEVICE_LOCK requests. Official endpoint reference: https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
       "effect": "destructive",
       "idempotent": false,
       "inputs": [
+        {
+          "name": "computer_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[1-9][0-9]{0,9}$"
+        },
         {
           "name": "management_id",
           "type": "string",
@@ -121,6 +127,24 @@
       ],
       "steps": [
         {
+          "id": "identity",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v4/computers-inventory/{{input.computer_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true,
+            "input_equals": {
+              "id": "computer_id",
+              "general.managementId": "management_id"
+            }
+          }
+        },
+        {
           "id": "request",
           "request": {
             "method": "POST",
@@ -128,7 +152,7 @@
             "json": {
               "clientData": [
                 {
-                  "managementId": "{{input.management_id}}"
+                  "managementId": "{{steps.identity.general.managementId}}"
                 }
               ],
               "commandData": {
@@ -163,10 +187,16 @@
     },
     "unlock_user_account": {
       "display_name": "Unlock User Account",
-      "description": "Queue one fixed MDM command for one explicit management UUID. Requires View MDM command information plus permission to send the selected command. A nonempty first command ID and typed receipt array are required; all returned receipts are preserved. HTTP 201 means queued, not completed. Unlocking a local user account is not an inverse for DEVICE_LOCK. There is no paired MDM lock-user-account operation in this pack. Official endpoint reference: https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
+      "description": "First read the selected identity in this same approved connection/run and require exact nonempty string identity matches; missing or unrelated evidence refuses before command dispatch. Queue one fixed MDM command for the management UUID returned for the selected inventory record. Requires Read Computers for identity lookup plus View MDM command information plus permission to send the selected command. A nonempty first command ID and typed receipt array are required; all returned receipts are preserved. HTTP 201 means queued, not completed. Unlocking a local user account is not an inverse for DEVICE_LOCK. There is no paired MDM lock-user-account operation in this pack. Official endpoint reference: https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
       "effect": "destructive",
       "idempotent": false,
       "inputs": [
+        {
+          "name": "computer_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[1-9][0-9]{0,9}$"
+        },
         {
           "name": "management_id",
           "type": "string",
@@ -182,6 +212,24 @@
       ],
       "steps": [
         {
+          "id": "identity",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v4/computers-inventory/{{input.computer_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true,
+            "input_equals": {
+              "id": "computer_id",
+              "general.managementId": "management_id"
+            }
+          }
+        },
+        {
           "id": "request",
           "request": {
             "method": "POST",
@@ -189,7 +237,7 @@
             "json": {
               "clientData": [
                 {
-                  "managementId": "{{input.management_id}}"
+                  "managementId": "{{steps.identity.general.managementId}}"
                 }
               ],
               "commandData": {
@@ -225,10 +273,16 @@
     },
     "restart_computer": {
       "display_name": "Restart Computer",
-      "description": "Queue one fixed MDM command for one explicit management UUID. Requires View MDM command information plus permission to send the selected command. A nonempty first command ID and typed receipt array are required; all returned receipts are preserved. HTTP 201 means queued, not completed. A queued restart cannot be recalled or undone; this pack exposes no arbitrary command string. Official endpoint reference: https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
+      "description": "First read the selected identity in this same approved connection/run and require exact nonempty string identity matches; missing or unrelated evidence refuses before command dispatch. Queue one fixed MDM command for the management UUID returned for the selected inventory record. Requires Read Computers for identity lookup plus View MDM command information plus permission to send the selected command. A nonempty first command ID and typed receipt array are required; all returned receipts are preserved. HTTP 201 means queued, not completed. A queued restart cannot be recalled or undone; this pack exposes no arbitrary command string. Official endpoint reference: https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
       "effect": "destructive",
       "idempotent": false,
       "inputs": [
+        {
+          "name": "computer_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[1-9][0-9]{0,9}$"
+        },
         {
           "name": "management_id",
           "type": "string",
@@ -238,6 +292,24 @@
       ],
       "steps": [
         {
+          "id": "identity",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v4/computers-inventory/{{input.computer_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true,
+            "input_equals": {
+              "id": "computer_id",
+              "general.managementId": "management_id"
+            }
+          }
+        },
+        {
           "id": "request",
           "request": {
             "method": "POST",
@@ -245,7 +317,7 @@
             "json": {
               "clientData": [
                 {
-                  "managementId": "{{input.management_id}}"
+                  "managementId": "{{steps.identity.general.managementId}}"
                 }
               ],
               "commandData": {

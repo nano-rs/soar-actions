@@ -55,7 +55,32 @@
             "href": "https://nano-example.jamfcloud.com/api/v2/mdm/commands/00000000-0000-4000-8000-000000000001"
           }
         ]
-      }
+      },
+      "prerequisites": [
+        {
+          "fixture": "fixtures/get_computer.json",
+          "url": "https://developer.jamf.com/jamf-pro/reference/get_v4-computers-inventory-id",
+          "document_url": "https://developer.jamf.com/jamf-pro/reference/get_v4-computers-inventory-id.md",
+          "document_sha256": "558faf858062a38c3560b3ec8ddfad8056136f12a49f1cd7b4855d00ed514762",
+          "request": {
+            "method": "GET",
+            "url": "https://nano-example.jamfcloud.com/api/v4/computers-inventory/1"
+          },
+          "response": {
+            "method": "GET",
+            "host": "nano-example.jamfcloud.com",
+            "path": "/api/v4/computers-inventory/1",
+            "status": 200,
+            "body": {
+              "id": "1",
+              "general": {
+                "name": "nano-example-mac",
+                "managementId": "00000000-0000-4000-8000-000000000001"
+              }
+            }
+          }
+        }
+      ]
     },
     {
       "fixture": "fixtures/unlock_user_account.json",
@@ -88,7 +113,32 @@
             "href": "https://nano-example.jamfcloud.com/api/v2/mdm/commands/00000000-0000-4000-8000-000000000001"
           }
         ]
-      }
+      },
+      "prerequisites": [
+        {
+          "fixture": "fixtures/get_computer.json",
+          "url": "https://developer.jamf.com/jamf-pro/reference/get_v4-computers-inventory-id",
+          "document_url": "https://developer.jamf.com/jamf-pro/reference/get_v4-computers-inventory-id.md",
+          "document_sha256": "558faf858062a38c3560b3ec8ddfad8056136f12a49f1cd7b4855d00ed514762",
+          "request": {
+            "method": "GET",
+            "url": "https://nano-example.jamfcloud.com/api/v4/computers-inventory/1"
+          },
+          "response": {
+            "method": "GET",
+            "host": "nano-example.jamfcloud.com",
+            "path": "/api/v4/computers-inventory/1",
+            "status": 200,
+            "body": {
+              "id": "1",
+              "general": {
+                "name": "nano-example-mac",
+                "managementId": "00000000-0000-4000-8000-000000000001"
+              }
+            }
+          }
+        }
+      ]
     },
     {
       "fixture": "fixtures/restart_computer.json",
@@ -121,7 +171,32 @@
             "href": "https://nano-example.jamfcloud.com/api/v2/mdm/commands/00000000-0000-4000-8000-000000000001"
           }
         ]
-      }
+      },
+      "prerequisites": [
+        {
+          "fixture": "fixtures/get_computer.json",
+          "url": "https://developer.jamf.com/jamf-pro/reference/get_v4-computers-inventory-id",
+          "document_url": "https://developer.jamf.com/jamf-pro/reference/get_v4-computers-inventory-id.md",
+          "document_sha256": "558faf858062a38c3560b3ec8ddfad8056136f12a49f1cd7b4855d00ed514762",
+          "request": {
+            "method": "GET",
+            "url": "https://nano-example.jamfcloud.com/api/v4/computers-inventory/1"
+          },
+          "response": {
+            "method": "GET",
+            "host": "nano-example.jamfcloud.com",
+            "path": "/api/v4/computers-inventory/1",
+            "status": 200,
+            "body": {
+              "id": "1",
+              "general": {
+                "name": "nano-example-mac",
+                "managementId": "00000000-0000-4000-8000-000000000001"
+              }
+            }
+          }
+        }
+      ]
     }
   ]
 }

@@ -5,9 +5,29 @@
   },
   "inputs": {
     "management_id": "00000000-0000-4000-8000-000000000001",
-    "user_name": "nano_example"
+    "user_name": "nano_example",
+    "computer_id": "1"
   },
   "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://nano-example.jamfcloud.com/api/v4/computers-inventory/1"
+      },
+      "response": {
+        "method": "GET",
+        "host": "nano-example.jamfcloud.com",
+        "path": "/api/v4/computers-inventory/1",
+        "status": 200,
+        "body": {
+          "id": "1",
+          "general": {
+            "name": "nano-example-mac",
+            "managementId": "00000000-0000-4000-8000-000000000001"
+          }
+        }
+      }
+    },
     {
       "request": {
         "method": "POST",

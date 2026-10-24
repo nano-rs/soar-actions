@@ -98,7 +98,7 @@
     },
     "remote_lock": {
       "display_name": "Remote Lock",
-      "description": "Queue a remote lock. Unlock is performed on the device with its supported local credential; this pack cannot undo it. Requires DeviceManagementManagedDevices.PrivilegedOperations.All and an active Intune license. HTTP 204 is acceptance, not proof the device completed the command. Official endpoint reference: https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-remotelock?view=graph-rest-1.0",
+      "description": "First read the selected identity in this same approved connection/run and require exact nonempty string identity matches; missing or unrelated evidence refuses before command dispatch. Queue a remote lock. Unlock is performed on the device with its supported local credential; this pack cannot undo it. Requires DeviceManagementManagedDevices.Read.All (or ReadWrite.All) for identity lookup plus DeviceManagementManagedDevices.PrivilegedOperations.All and an active Intune license. HTTP 204 is acceptance, not proof the device completed the command. Official endpoint reference: https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-remotelock?view=graph-rest-1.0",
       "effect": "destructive",
       "idempotent": false,
       "inputs": [
@@ -111,10 +111,27 @@
       ],
       "steps": [
         {
+          "id": "identity",
+          "request": {
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/{{input.device_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true,
+            "input_equals": {
+              "id": "device_id"
+            }
+          }
+        },
+        {
           "id": "request",
           "request": {
             "method": "POST",
-            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/{{input.device_id}}/remoteLock",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/{{steps.identity.id}}/remoteLock",
             "response_format": "text"
           },
           "expect": {
@@ -134,7 +151,7 @@
     },
     "wipe": {
       "display_name": "Wipe",
-      "description": "Queue a factory wipe without retaining enrollment or user data. Erased data cannot be restored by an API inverse. Requires DeviceManagementManagedDevices.PrivilegedOperations.All and an active Intune license. HTTP 204 is acceptance, not proof the device completed the command. Official endpoint reference: https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-wipe?view=graph-rest-1.0",
+      "description": "First read the selected identity in this same approved connection/run and require exact nonempty string identity matches; missing or unrelated evidence refuses before command dispatch. Queue a factory wipe without retaining enrollment or user data. Erased data cannot be restored by an API inverse. Requires DeviceManagementManagedDevices.Read.All (or ReadWrite.All) for identity lookup plus DeviceManagementManagedDevices.PrivilegedOperations.All and an active Intune license. HTTP 204 is acceptance, not proof the device completed the command. Official endpoint reference: https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-wipe?view=graph-rest-1.0",
       "effect": "destructive",
       "idempotent": false,
       "inputs": [
@@ -147,10 +164,27 @@
       ],
       "steps": [
         {
+          "id": "identity",
+          "request": {
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/{{input.device_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true,
+            "input_equals": {
+              "id": "device_id"
+            }
+          }
+        },
+        {
           "id": "request",
           "request": {
             "method": "POST",
-            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/{{input.device_id}}/wipe",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/{{steps.identity.id}}/wipe",
             "response_format": "text",
             "json": {
               "keepEnrollmentData": false,
@@ -174,7 +208,7 @@
     },
     "retire": {
       "display_name": "Retire",
-      "description": "Queue retirement of the managed device. Reenrollment and restoration of removed corporate configuration require an administrator/user workflow. Requires DeviceManagementManagedDevices.PrivilegedOperations.All and an active Intune license. HTTP 204 is acceptance, not proof the device completed the command. Official endpoint reference: https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-retire?view=graph-rest-1.0",
+      "description": "First read the selected identity in this same approved connection/run and require exact nonempty string identity matches; missing or unrelated evidence refuses before command dispatch. Queue retirement of the managed device. Reenrollment and restoration of removed corporate configuration require an administrator/user workflow. Requires DeviceManagementManagedDevices.Read.All (or ReadWrite.All) for identity lookup plus DeviceManagementManagedDevices.PrivilegedOperations.All and an active Intune license. HTTP 204 is acceptance, not proof the device completed the command. Official endpoint reference: https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-retire?view=graph-rest-1.0",
       "effect": "destructive",
       "idempotent": false,
       "inputs": [
@@ -187,10 +221,27 @@
       ],
       "steps": [
         {
+          "id": "identity",
+          "request": {
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/{{input.device_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true,
+            "input_equals": {
+              "id": "device_id"
+            }
+          }
+        },
+        {
           "id": "request",
           "request": {
             "method": "POST",
-            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/{{input.device_id}}/retire",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/{{steps.identity.id}}/retire",
             "response_format": "text"
           },
           "expect": {

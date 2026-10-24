@@ -9,6 +9,25 @@
   "exchanges": [
     {
       "request": {
+        "method": "GET",
+        "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001"
+      },
+      "response": {
+        "method": "GET",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001",
+        "status": 200,
+        "body": {
+          "id": "00000000-0000-4000-8000-000000000001",
+          "deviceName": "nano-example-device",
+          "operatingSystem": "Windows",
+          "managementState": "managed",
+          "complianceState": "compliant"
+        }
+      }
+    },
+    {
+      "request": {
         "method": "POST",
         "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001/wipe",
         "json": {

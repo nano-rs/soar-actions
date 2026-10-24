@@ -39,7 +39,32 @@
         "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001/remoteLock",
         "status": 204,
         "body": ""
-      }
+      },
+      "prerequisites": [
+        {
+          "fixture": "fixtures/get_device.json",
+          "url": "https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-get?view=graph-rest-1.0",
+          "document_url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/main/api-reference/v1.0/api/intune-devices-manageddevice-get.md",
+          "document_sha256": "5798c385fb090ff7f9821be1c601f7afa4af2e42d2273ebdca846a2b745b2a81",
+          "request": {
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001"
+          },
+          "response": {
+            "method": "GET",
+            "host": "graph.microsoft.com",
+            "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001",
+            "status": 200,
+            "body": {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "deviceName": "nano-example-device",
+              "operatingSystem": "Windows",
+              "managementState": "managed",
+              "complianceState": "compliant"
+            }
+          }
+        }
+      ]
     },
     {
       "fixture": "fixtures/wipe.json",
@@ -60,7 +85,32 @@
         "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001/wipe",
         "status": 204,
         "body": ""
-      }
+      },
+      "prerequisites": [
+        {
+          "fixture": "fixtures/get_device.json",
+          "url": "https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-get?view=graph-rest-1.0",
+          "document_url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/main/api-reference/v1.0/api/intune-devices-manageddevice-get.md",
+          "document_sha256": "5798c385fb090ff7f9821be1c601f7afa4af2e42d2273ebdca846a2b745b2a81",
+          "request": {
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001"
+          },
+          "response": {
+            "method": "GET",
+            "host": "graph.microsoft.com",
+            "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001",
+            "status": 200,
+            "body": {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "deviceName": "nano-example-device",
+              "operatingSystem": "Windows",
+              "managementState": "managed",
+              "complianceState": "compliant"
+            }
+          }
+        }
+      ]
     },
     {
       "fixture": "fixtures/retire.json",
@@ -77,7 +127,32 @@
         "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001/retire",
         "status": 204,
         "body": ""
-      }
+      },
+      "prerequisites": [
+        {
+          "fixture": "fixtures/get_device.json",
+          "url": "https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-get?view=graph-rest-1.0",
+          "document_url": "https://raw.githubusercontent.com/microsoftgraph/microsoft-graph-docs-contrib/main/api-reference/v1.0/api/intune-devices-manageddevice-get.md",
+          "document_sha256": "5798c385fb090ff7f9821be1c601f7afa4af2e42d2273ebdca846a2b745b2a81",
+          "request": {
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001"
+          },
+          "response": {
+            "method": "GET",
+            "host": "graph.microsoft.com",
+            "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001",
+            "status": 200,
+            "body": {
+              "id": "00000000-0000-4000-8000-000000000001",
+              "deviceName": "nano-example-device",
+              "operatingSystem": "Windows",
+              "managementState": "managed",
+              "complianceState": "compliant"
+            }
+          }
+        }
+      ]
     }
   ]
 }
