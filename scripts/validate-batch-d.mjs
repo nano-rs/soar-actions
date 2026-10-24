@@ -7,6 +7,7 @@ const read = p => JSON.parse(fs.readFileSync(p, 'utf8'));
 assert.equal(process.argv.length, 3, 'usage: node scripts/validate-batch-d.mjs review/batch-d-partN.json');
 const policy = read(process.argv[2]);
 const types = new Set(['string','integer','number','boolean','array','object']);
+const inputTypes = new Set(['string','int','bool','ip','domain','hash','url','email','string_list']);
 let actions = 0, fixtures = 0, unsupported = 0;
 for (const [name, reviewed] of Object.entries(policy.vendors)) {
   const directory = path.join('packs', name);
@@ -33,6 +34,7 @@ for (const [name, reviewed] of Object.entries(policy.vendors)) {
   for (const [operation, action] of Object.entries(pack.actions)) {
     actions++;
     assert.equal(action.effect, reviewed.actions[operation]);
+    action.inputs.forEach(input => assert.ok(inputTypes.has(input.type), `${name}/${operation}: unsupported input type ${input.type}`));
     assert.equal(action.idempotent, action.effect === 'read');
     assert.deepEqual(Object.keys(action.outputs).sort(), Object.keys(action.output_types).sort());
     Object.values(action.output_types).forEach(t => assert.ok(types.has(t)));
@@ -63,7 +65,7 @@ for (const [name, reviewed] of Object.entries(policy.vendors)) {
     }
     if (name === 'salesforce' && operation === 'restore_user_login_state') {
       assert.equal(action.steps[1].request.json.IsFrozen, '{{input.prior_is_frozen}}');
-      assert.ok(action.inputs.some(i => i.name === 'prior_is_frozen' && i.type === 'boolean' && i.required));
+      assert.ok(action.inputs.some(i => i.name === 'prior_is_frozen' && i.type === 'bool' && i.required));
     }
     assert.ok(action.fixtures.length);
     for (const fixture of action.fixtures) {
