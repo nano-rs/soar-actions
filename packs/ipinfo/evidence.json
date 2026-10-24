@@ -37,7 +37,7 @@
       "document_sha256": "9d8892438acb9e85bb9be43b7b58cc4709981ba8d68984dd0fbf80ed156a0b71",
       "request": {
         "method": "GET",
-        "url": "https://api.ipinfo.io/lite/192.0.2.10",
+        "url": "https://api.ipinfo.io/lite/8.8.4.4",
         "auth_query_keys": [
           "token"
         ]
@@ -45,10 +45,10 @@
       "response": {
         "method": "GET",
         "host": "api.ipinfo.io",
-        "path": "/lite/192.0.2.10",
+        "path": "/lite/8.8.4.4",
         "status": 200,
         "body": {
-          "ip": "192.0.2.10"
+          "ip": "8.8.4.4"
         }
       }
     }

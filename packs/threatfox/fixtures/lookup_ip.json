@@ -2,7 +2,7 @@
   "action": "lookup_ip",
   "config": {},
   "inputs": {
-    "ip": "192.0.2.10"
+    "ip": "139.180.203.104"
   },
   "exchanges": [
     {
@@ -11,7 +11,7 @@
         "url": "https://threatfox-api.abuse.ch/api/v1/",
         "json": {
           "query": "search_ioc",
-          "search_term": "192.0.2.10",
+          "search_term": "139.180.203.104",
           "exact_match": true
         }
       },
@@ -25,7 +25,7 @@
           "data": [
             {
               "id": "1001",
-              "ioc": "192.0.2.10:443",
+              "ioc": "139.180.203.104:443",
               "ioc_type": "ip:port",
               "threat_type": "botnet_cc",
               "malware": "win.example",
@@ -44,7 +44,7 @@
     "rows": [
       {
         "id": "1001",
-        "ioc": "192.0.2.10:443",
+        "ioc": "139.180.203.104:443",
         "ioc_type": "ip:port",
         "threat_type": "botnet_cc",
         "malware": "win.example",
@@ -54,7 +54,7 @@
         "tags": null
       }
     ],
-    "first_ioc": "192.0.2.10:443",
+    "first_ioc": "139.180.203.104:443",
     "first_confidence": 75
   },
   "source": "https://threatfox.abuse.ch/api/#search-ioc",

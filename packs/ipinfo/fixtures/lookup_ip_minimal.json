@@ -2,13 +2,13 @@
   "action": "lookup_ip",
   "config": {},
   "inputs": {
-    "ip": "192.0.2.10"
+    "ip": "8.8.4.4"
   },
   "exchanges": [
     {
       "request": {
         "method": "GET",
-        "url": "https://api.ipinfo.io/lite/192.0.2.10",
+        "url": "https://api.ipinfo.io/lite/8.8.4.4",
         "auth_query_keys": [
           "token"
         ]
@@ -16,16 +16,16 @@
       "response": {
         "method": "GET",
         "host": "api.ipinfo.io",
-        "path": "/lite/192.0.2.10",
+        "path": "/lite/8.8.4.4",
         "status": 200,
         "body": {
-          "ip": "192.0.2.10"
+          "ip": "8.8.4.4"
         }
       }
     }
   ],
   "outputs": {
-    "ip": "192.0.2.10",
+    "ip": "8.8.4.4",
     "asn": "unknown",
     "as_name": "unknown",
     "as_domain": "unknown",

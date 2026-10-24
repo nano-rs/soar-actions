@@ -2,7 +2,7 @@
   "action": "lookup_ip",
   "config": {},
   "inputs": {
-    "ip": "192.0.2.10"
+    "ip": "8.8.8.8"
   },
   "exchanges": [
     {
@@ -10,7 +10,7 @@
         "method": "POST",
         "url": "https://urlhaus-api.abuse.ch/v1/host/",
         "form": {
-          "host": "192.0.2.10"
+          "host": "8.8.8.8"
         }
       },
       "response": {
@@ -20,8 +20,8 @@
         "status": 200,
         "body": {
           "query_status": "ok",
-          "host": "192.0.2.10",
-          "urlhaus_reference": "https://urlhaus.abuse.ch/host/192.0.2.10/",
+          "host": "8.8.8.8",
+          "urlhaus_reference": "https://urlhaus.abuse.ch/host/8.8.8.8/",
           "firstseen": "2026-01-01 00:00:00 UTC",
           "url_count": "1",
           "urls": [
@@ -37,7 +37,7 @@
     }
   ],
   "outputs": {
-    "host": "192.0.2.10",
+    "host": "8.8.8.8",
     "url_count": "1",
     "rows": [
       {
