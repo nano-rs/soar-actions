@@ -62,8 +62,7 @@
           },
           "expect": {
             "status": [
-              200,
-              404
+              200
             ],
             "path": "ip",
             "non_empty": true
@@ -85,8 +84,7 @@
         "last_seen": "string"
       },
       "fixtures": [
-        "fixtures/lookup_ip.json",
-        "fixtures/lookup_ip_not_found.json"
+        "fixtures/lookup_ip.json"
       ]
     }
   }
