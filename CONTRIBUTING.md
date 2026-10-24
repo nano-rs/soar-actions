@@ -37,3 +37,9 @@ publication. A merge alone never installs a pack on a tenant.
 Native compiler diagnostics stay out of this public repository's job logs and
 artifacts, because they may include private backend source. Maintainers reproduce
 failures in the backend checkout to inspect details.
+
+Native jobs also need a runner with cargo-slot and GCP farm access. The first
+backend CI attempt stopped at the cargo-slot preflight; the complete 65-check
+suite passed separately on the GCP farm. Runner provisioning is outside this
+no-live-change draft, as is checkout-secret provisioning. The harness never falls
+back to an unrestricted local cargo build.
