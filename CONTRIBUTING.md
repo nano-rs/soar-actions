@@ -40,3 +40,5 @@ and run that private gate. No backend revision is pinned by this public catalog.
 New structured actions require the NAN-4478 backend before catalog approval or
 publication. A merge alone never installs a pack on a tenant. No runner,
 credential, catalog publication or live-tenant change is provisioned here.
+
+Device mutations must read and bind their exact target in the approved native sequence before dispatch; a UUID-shaped input alone is not identity evidence. State-restoration actions must consume captured pre-state. A separately approved opposite action must document its pre-state requirement and must not promise unconditional restoration. Native conformance runs in private nanosiem against pinned public commits; public CI requires no private credential.

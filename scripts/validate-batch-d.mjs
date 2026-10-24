@@ -41,8 +41,29 @@ for (const [name, reviewed] of Object.entries(policy.vendors)) {
       assert.ok(action.rollback || (action.rollback_unavailable && action.rollback_unavailable_reason.length > 30));
     }
     if (action.rollback) {
-      assert.equal(pack.actions[action.rollback].rollback, operation);
+      assert.ok(pack.actions[action.rollback], `${name}: missing restoration action`);
+      if (name !== 'salesforce') assert.equal(pack.actions[action.rollback].rollback, operation);
       assert.equal(pack.actions[action.rollback].effect, 'destructive');
+    }
+    if (name === 'microsoft_intune' && action.effect === 'destructive') {
+      assert.equal(action.steps[0].request.method, 'GET');
+      assert.deepEqual(action.steps[0].expect.input_equals, {id:'device_id'});
+      assert.match(action.steps[1].request.url, /\{\{steps\.identity\.id\}\}/);
+      assert.ok(!action.steps[1].request.url.includes('input.device_id'));
+    }
+    if (name === 'jamf_pro' && action.effect === 'destructive') {
+      assert.equal(action.steps[0].request.method, 'GET');
+      assert.deepEqual(action.steps[0].expect.input_equals, {id:'computer_id','general.managementId':'management_id'});
+      assert.equal(action.steps[1].request.json.clientData[0].managementId, '{{steps.identity.general.managementId}}');
+    }
+    if (name === 'salesforce' && ['freeze_user','unfreeze_user'].includes(operation)) {
+      assert.equal(action.rollback, 'restore_user_login_state');
+      assert.equal(action.outputs.prior_is_frozen, 'steps.current.IsFrozen');
+      assert.deepEqual(action.steps[0].expect.fields, {IsFrozen:operation === 'unfreeze_user'});
+    }
+    if (name === 'salesforce' && operation === 'restore_user_login_state') {
+      assert.equal(action.steps[1].request.json.IsFrozen, '{{input.prior_is_frozen}}');
+      assert.ok(action.inputs.some(i => i.name === 'prior_is_frozen' && i.type === 'boolean' && i.required));
     }
     assert.ok(action.fixtures.length);
     for (const fixture of action.fixtures) {
@@ -55,6 +76,16 @@ for (const [name, reviewed] of Object.entries(policy.vendors)) {
       assert.equal(record.action, operation);
       assert.equal(record.source, proof.url);
       assert.equal(record.request_evidence, 'independent_http_mock');
+      const prerequisites = proof.prerequisites ?? [];
+      assert.equal(record.exchanges.length, 1 + prerequisites.length + (evidence.authentication ? 1 : 0));
+      prerequisites.forEach((read, index) => {
+        official(read.url); official(read.document_url);
+        assert.match(read.document_sha256, /^[a-f0-9]{64}$/);
+        assert.equal(read.request.method, 'GET');
+        const exchange = record.exchanges[index + (evidence.authentication ? 1 : 0)];
+        assert.deepEqual(exchange.request, read.request);
+        assert.deepEqual(exchange.response, read.response);
+      });
       const call = record.exchanges.at(-1);
       assert.deepEqual(call.request, proof.request);
       assert.deepEqual(call.response, proof.response);
