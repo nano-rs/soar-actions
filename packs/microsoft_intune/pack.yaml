@@ -1,0 +1,212 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "microsoft_intune",
+  "display_name": "Microsoft Intune",
+  "description": "Microsoft Intune bounded native response actions. Mutations require explicit approval; receipts do not establish asynchronous completion.",
+  "vendor": "Microsoft Intune",
+  "categories": [
+    "device_management"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "directory_id",
+      "label": "Microsoft Entra directory (tenant) UUID",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "graph.microsoft.com",
+      "path_prefixes": [
+        "/v1.0/deviceManagement/managedDevices"
+      ]
+    },
+    {
+      "host": "login.microsoftonline.com",
+      "path_prefixes": [
+        "/"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "oauth2_client_credentials",
+    "token_url": "https://login.microsoftonline.com/{{config.directory_id}}/oauth2/v2.0/token",
+    "client_id": "CLIENT_ID",
+    "client_secret": "CLIENT_SECRET",
+    "scope": "https://graph.microsoft.com/.default"
+  },
+  "credentials": [
+    {
+      "name": "CLIENT_ID",
+      "label": "Entra application client ID"
+    },
+    {
+      "name": "CLIENT_SECRET",
+      "label": "Entra application client secret"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 30
+  },
+  "actions": {
+    "get_device": {
+      "display_name": "Get managed device",
+      "description": "Get one managed device by its immutable ID. Requires DeviceManagementManagedDevices.Read.All or ReadWrite.All. The response resource is an object; optional vendor properties remain inside the typed device object. Official endpoint reference: https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-get?view=graph-rest-1.0",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "device_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/{{input.device_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "device_id": "steps.request.id",
+        "device": "steps.request"
+      },
+      "output_types": {
+        "device_id": "string",
+        "device": "object"
+      },
+      "fixtures": [
+        "fixtures/get_device.json"
+      ]
+    },
+    "remote_lock": {
+      "display_name": "Remote Lock",
+      "description": "Queue a remote lock. Unlock is performed on the device with its supported local credential; this pack cannot undo it. Requires DeviceManagementManagedDevices.PrivilegedOperations.All and an active Intune license. HTTP 204 is acceptance, not proof the device completed the command. Official endpoint reference: https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-remotelock?view=graph-rest-1.0",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "device_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/{{input.device_id}}/remoteLock",
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "output_types": {},
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Queue a remote lock. Unlock is performed on the device with its supported local credential; this pack cannot undo it.",
+      "fixtures": [
+        "fixtures/remote_lock.json"
+      ]
+    },
+    "wipe": {
+      "display_name": "Wipe",
+      "description": "Queue a factory wipe without retaining enrollment or user data. Erased data cannot be restored by an API inverse. Requires DeviceManagementManagedDevices.PrivilegedOperations.All and an active Intune license. HTTP 204 is acceptance, not proof the device completed the command. Official endpoint reference: https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-wipe?view=graph-rest-1.0",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "device_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/{{input.device_id}}/wipe",
+            "response_format": "text",
+            "json": {
+              "keepEnrollmentData": false,
+              "keepUserData": false
+            }
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "output_types": {},
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Queue a factory wipe without retaining enrollment or user data. Erased data cannot be restored by an API inverse.",
+      "fixtures": [
+        "fixtures/wipe.json"
+      ]
+    },
+    "retire": {
+      "display_name": "Retire",
+      "description": "Queue retirement of the managed device. Reenrollment and restoration of removed corporate configuration require an administrator/user workflow. Requires DeviceManagementManagedDevices.PrivilegedOperations.All and an active Intune license. HTTP 204 is acceptance, not proof the device completed the command. Official endpoint reference: https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-retire?view=graph-rest-1.0",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "device_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/{{input.device_id}}/retire",
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "output_types": {},
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Queue retirement of the managed device. Reenrollment and restoration of removed corporate configuration require an administrator/user workflow.",
+      "fixtures": [
+        "fixtures/retire.json"
+      ]
+    }
+  }
+}

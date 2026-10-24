@@ -1,0 +1,42 @@
+{
+  "action": "get_computer",
+  "config": {
+    "base_url": "https://nano-example.jamfcloud.com"
+  },
+  "inputs": {
+    "computer_id": "1"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://nano-example.jamfcloud.com/api/v4/computers-inventory/1"
+      },
+      "response": {
+        "method": "GET",
+        "host": "nano-example.jamfcloud.com",
+        "path": "/api/v4/computers-inventory/1",
+        "status": 200,
+        "body": {
+          "id": "1",
+          "general": {
+            "name": "nano-example-mac",
+            "managementId": "00000000-0000-4000-8000-000000000001"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "computer_id": "1",
+    "computer": {
+      "id": "1",
+      "general": {
+        "name": "nano-example-mac",
+        "managementId": "00000000-0000-4000-8000-000000000001"
+      }
+    }
+  },
+  "source": "https://developer.jamf.com/jamf-pro/reference/get_v4-computers-inventory-id",
+  "request_evidence": "independent_http_mock"
+}

@@ -1,0 +1,42 @@
+{
+  "action": "get_device",
+  "config": {
+    "directory_id": "00000000-0000-4000-8000-000000000001"
+  },
+  "inputs": {
+    "device_id": "00000000-0000-4000-8000-000000000001"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001"
+      },
+      "response": {
+        "method": "GET",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001",
+        "status": 200,
+        "body": {
+          "id": "00000000-0000-4000-8000-000000000001",
+          "deviceName": "nano-example-device",
+          "operatingSystem": "Windows",
+          "managementState": "managed",
+          "complianceState": "compliant"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "device_id": "00000000-0000-4000-8000-000000000001",
+    "device": {
+      "id": "00000000-0000-4000-8000-000000000001",
+      "deviceName": "nano-example-device",
+      "operatingSystem": "Windows",
+      "managementState": "managed",
+      "complianceState": "compliant"
+    }
+  },
+  "source": "https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-get?view=graph-rest-1.0",
+  "request_evidence": "independent_http_mock"
+}

@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_computer.json",
+      "url": "https://developer.jamf.com/jamf-pro/reference/get_v4-computers-inventory-id",
+      "document_url": "https://developer.jamf.com/jamf-pro/reference/get_v4-computers-inventory-id.md",
+      "document_sha256": "558faf858062a38c3560b3ec8ddfad8056136f12a49f1cd7b4855d00ed514762",
+      "request": {
+        "method": "GET",
+        "url": "https://nano-example.jamfcloud.com/api/v4/computers-inventory/1"
+      },
+      "response": {
+        "method": "GET",
+        "host": "nano-example.jamfcloud.com",
+        "path": "/api/v4/computers-inventory/1",
+        "status": 200,
+        "body": {
+          "id": "1",
+          "general": {
+            "name": "nano-example-mac",
+            "managementId": "00000000-0000-4000-8000-000000000001"
+          }
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/lock_computer.json",
+      "url": "https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
+      "document_url": "https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
+      "document_sha256": "70a20a693f119253b72344d676fbcebc9201ae6b30829f0d3aeb8ae248ed15c9",
+      "request": {
+        "method": "POST",
+        "url": "https://nano-example.jamfcloud.com/api/v2/mdm/commands",
+        "json": {
+          "clientData": [
+            {
+              "managementId": "00000000-0000-4000-8000-000000000001"
+            }
+          ],
+          "commandData": {
+            "commandType": "DEVICE_LOCK",
+            "pin": "824671"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "nano-example.jamfcloud.com",
+        "path": "/api/v2/mdm/commands",
+        "status": 201,
+        "body": [
+          {
+            "id": "00000000-0000-4000-8000-000000000001",
+            "href": "https://nano-example.jamfcloud.com/api/v2/mdm/commands/00000000-0000-4000-8000-000000000001"
+          }
+        ]
+      }
+    },
+    {
+      "fixture": "fixtures/unlock_user_account.json",
+      "url": "https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
+      "document_url": "https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
+      "document_sha256": "70a20a693f119253b72344d676fbcebc9201ae6b30829f0d3aeb8ae248ed15c9",
+      "request": {
+        "method": "POST",
+        "url": "https://nano-example.jamfcloud.com/api/v2/mdm/commands",
+        "json": {
+          "clientData": [
+            {
+              "managementId": "00000000-0000-4000-8000-000000000001"
+            }
+          ],
+          "commandData": {
+            "commandType": "UNLOCK_USER_ACCOUNT",
+            "userName": "nano_example"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "nano-example.jamfcloud.com",
+        "path": "/api/v2/mdm/commands",
+        "status": 201,
+        "body": [
+          {
+            "id": "00000000-0000-4000-8000-000000000001",
+            "href": "https://nano-example.jamfcloud.com/api/v2/mdm/commands/00000000-0000-4000-8000-000000000001"
+          }
+        ]
+      }
+    },
+    {
+      "fixture": "fixtures/restart_computer.json",
+      "url": "https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
+      "document_url": "https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
+      "document_sha256": "70a20a693f119253b72344d676fbcebc9201ae6b30829f0d3aeb8ae248ed15c9",
+      "request": {
+        "method": "POST",
+        "url": "https://nano-example.jamfcloud.com/api/v2/mdm/commands",
+        "json": {
+          "clientData": [
+            {
+              "managementId": "00000000-0000-4000-8000-000000000001"
+            }
+          ],
+          "commandData": {
+            "commandType": "RESTART_DEVICE",
+            "notifyUser": true
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "nano-example.jamfcloud.com",
+        "path": "/api/v2/mdm/commands",
+        "status": 201,
+        "body": [
+          {
+            "id": "00000000-0000-4000-8000-000000000001",
+            "href": "https://nano-example.jamfcloud.com/api/v2/mdm/commands/00000000-0000-4000-8000-000000000001"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "action": "reopen_alert",
+  "config": {
+    "base_url": "https://api.prismacloud.io"
+  },
+  "inputs": {
+    "alert_id": "P-12345"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.prismacloud.io/login",
+        "json": {
+          "username": "fixture-only-ACCESS_KEY_ID-not-a-secret",
+          "password": "fixture-only-SECRET_KEY-not-a-secret"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.prismacloud.io",
+        "path": "/login",
+        "status": 200,
+        "body": {
+          "token": "fixture-only-prisma-session-token",
+          "message": "login successful"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.prismacloud.io/alert/reopen",
+        "json": {
+          "alerts": [
+            "P-12345"
+          ],
+          "filter": {
+            "timeRange": {
+              "type": "to_now",
+              "value": "EPOCH"
+            }
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.prismacloud.io",
+        "path": "/alert/reopen",
+        "status": 200,
+        "body": ""
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://pan.dev/prisma-cloud/api/cspm/reopen-alerts/",
+  "request_evidence": "independent_http_mock"
+}

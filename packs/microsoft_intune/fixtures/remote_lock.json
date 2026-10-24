@@ -1,0 +1,27 @@
+{
+  "action": "remote_lock",
+  "config": {
+    "directory_id": "00000000-0000-4000-8000-000000000001"
+  },
+  "inputs": {
+    "device_id": "00000000-0000-4000-8000-000000000001"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001/remoteLock"
+      },
+      "response": {
+        "method": "POST",
+        "host": "graph.microsoft.com",
+        "path": "/v1.0/deviceManagement/managedDevices/00000000-0000-4000-8000-000000000001/remoteLock",
+        "status": 204,
+        "body": ""
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://learn.microsoft.com/en-us/graph/api/intune-devices-manageddevice-remotelock?view=graph-rest-1.0",
+  "request_evidence": "independent_http_mock"
+}

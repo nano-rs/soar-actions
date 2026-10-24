@@ -1,0 +1,52 @@
+{
+  "action": "lock_computer",
+  "config": {
+    "base_url": "https://nano-example.jamfcloud.com"
+  },
+  "inputs": {
+    "management_id": "00000000-0000-4000-8000-000000000001"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://nano-example.jamfcloud.com/api/v2/mdm/commands",
+        "json": {
+          "clientData": [
+            {
+              "managementId": "00000000-0000-4000-8000-000000000001"
+            }
+          ],
+          "commandData": {
+            "commandType": "DEVICE_LOCK",
+            "pin": "824671"
+          }
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "nano-example.jamfcloud.com",
+        "path": "/api/v2/mdm/commands",
+        "status": 201,
+        "body": [
+          {
+            "id": "00000000-0000-4000-8000-000000000001",
+            "href": "https://nano-example.jamfcloud.com/api/v2/mdm/commands/00000000-0000-4000-8000-000000000001"
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {
+    "command_id": "00000000-0000-4000-8000-000000000001",
+    "receipt_url": "https://nano-example.jamfcloud.com/api/v2/mdm/commands/00000000-0000-4000-8000-000000000001",
+    "receipts": [
+      {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "href": "https://nano-example.jamfcloud.com/api/v2/mdm/commands/00000000-0000-4000-8000-000000000001"
+      }
+    ]
+  },
+  "source": "https://developer.jamf.com/jamf-pro/reference/post_v2-mdm-commands",
+  "request_evidence": "independent_http_mock"
+}

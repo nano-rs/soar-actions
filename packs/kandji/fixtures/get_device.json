@@ -1,0 +1,46 @@
+{
+  "action": "get_device",
+  "config": {
+    "base_url": "https://nano-example.api.kandji.io"
+  },
+  "inputs": {
+    "device_id": "00000000-0000-4000-8000-000000000001"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://nano-example.api.kandji.io/api/v1/devices/00000000-0000-4000-8000-000000000001"
+      },
+      "response": {
+        "method": "GET",
+        "host": "nano-example.api.kandji.io",
+        "path": "/api/v1/devices/00000000-0000-4000-8000-000000000001",
+        "status": 200,
+        "body": {
+          "device_id": "00000000-0000-4000-8000-000000000001",
+          "device_name": "nano-example-mac",
+          "platform": "Mac",
+          "os_version": "14.4.1",
+          "mdm_enabled": true,
+          "is_missing": false,
+          "is_removed": false
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "device_id": "00000000-0000-4000-8000-000000000001",
+    "device": {
+      "device_id": "00000000-0000-4000-8000-000000000001",
+      "device_name": "nano-example-mac",
+      "platform": "Mac",
+      "os_version": "14.4.1",
+      "mdm_enabled": true,
+      "is_missing": false,
+      "is_removed": false
+    }
+  },
+  "source": "https://api-docs.iru.com/",
+  "request_evidence": "independent_http_mock"
+}

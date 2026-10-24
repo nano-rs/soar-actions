@@ -1,0 +1,60 @@
+{
+  "action": "get_alert",
+  "config": {
+    "base_url": "https://api.prismacloud.io"
+  },
+  "inputs": {
+    "alert_id": "P-12345"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.prismacloud.io/login",
+        "json": {
+          "username": "fixture-only-ACCESS_KEY_ID-not-a-secret",
+          "password": "fixture-only-SECRET_KEY-not-a-secret"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.prismacloud.io",
+        "path": "/login",
+        "status": 200,
+        "body": {
+          "token": "fixture-only-prisma-session-token",
+          "message": "login successful"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.prismacloud.io/alert/P-12345"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.prismacloud.io",
+        "path": "/alert/P-12345",
+        "status": 200,
+        "body": {
+          "id": "P-12345",
+          "status": "open",
+          "firstSeen": 1700000000000,
+          "lastSeen": 1700000000000
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "alert_id": "P-12345",
+    "alert": {
+      "id": "P-12345",
+      "status": "open",
+      "firstSeen": 1700000000000,
+      "lastSeen": 1700000000000
+    }
+  },
+  "source": "https://pan.dev/prisma-cloud/api/cspm/get-alert/",
+  "request_evidence": "independent_http_mock"
+}

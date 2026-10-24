@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_device.json",
+      "url": "https://api-docs.iru.com/",
+      "document_url": "https://api-docs.iru.com/api/collections/15284493/TzCTZkBe?segregateAuth=true&versionTag=latest",
+      "document_sha256": "1e35675566b2066b3f786ac9f8eb156b65dbfe27882e11f7c43bc006701a2921",
+      "request": {
+        "method": "GET",
+        "url": "https://nano-example.api.kandji.io/api/v1/devices/00000000-0000-4000-8000-000000000001"
+      },
+      "response": {
+        "method": "GET",
+        "host": "nano-example.api.kandji.io",
+        "path": "/api/v1/devices/00000000-0000-4000-8000-000000000001",
+        "status": 200,
+        "body": {
+          "device_id": "00000000-0000-4000-8000-000000000001",
+          "device_name": "nano-example-mac",
+          "platform": "Mac",
+          "os_version": "14.4.1",
+          "mdm_enabled": true,
+          "is_missing": false,
+          "is_removed": false
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/list_devices.json",
+      "url": "https://api-docs.iru.com/",
+      "document_url": "https://api-docs.iru.com/api/collections/15284493/TzCTZkBe?segregateAuth=true&versionTag=latest",
+      "document_sha256": "1e35675566b2066b3f786ac9f8eb156b65dbfe27882e11f7c43bc006701a2921",
+      "request": {
+        "method": "GET",
+        "url": "https://nano-example.api.kandji.io/api/v1/devices",
+        "query": {
+          "limit": "100",
+          "offset": "0"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "nano-example.api.kandji.io",
+        "path": "/api/v1/devices",
+        "status": 200,
+        "body": [
+          {
+            "device_id": "00000000-0000-4000-8000-000000000001",
+            "device_name": "nano-example-mac",
+            "platform": "Mac",
+            "os_version": "14.4.1",
+            "mdm_enabled": true,
+            "is_missing": false,
+            "is_removed": false
+          }
+        ],
+        "query": {
+          "limit": "100",
+          "offset": "0"
+        }
+      }
+    }
+  ]
+}
