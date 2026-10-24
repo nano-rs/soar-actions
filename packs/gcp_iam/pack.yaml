@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "gcp_iam",
+  "display_name": "GCP IAM service account keys",
+  "description": "GCP IAM service account keys response actions. Containment and inverse actions require approval.",
+  "vendor": "Google Cloud",
+  "categories": [
+    "identity"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "project_id",
+      "label": "Google Cloud project ID",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "iam.googleapis.com",
+      "path_prefixes": [
+        "/v1/projects"
+      ]
+    },
+    {
+      "host": "oauth2.googleapis.com",
+      "path_prefixes": [
+        "/token"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "google_service_account",
+    "token_url": "https://oauth2.googleapis.com/token",
+    "private_key_credential": "PRIVATE_KEY",
+    "client_email_credential": "CLIENT_EMAIL",
+    "scope": "https://www.googleapis.com/auth/cloud-platform"
+  },
+  "credentials": [
+    {
+      "name": "PRIVATE_KEY",
+      "label": "Private Key"
+    },
+    {
+      "name": "CLIENT_EMAIL",
+      "label": "Client Email"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_key": {
+      "display_name": "Get service account key metadata",
+      "description": "Read key metadata without returning private key material. A missing disabled flag follows the API protobuf default of false. API documentation: https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys/get",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "service_account_email",
+          "type": "email",
+          "required": true
+        },
+        {
+          "name": "key_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://iam.googleapis.com/v1/projects/{{config.project_id}}/serviceAccounts/{{input.service_account_email}}/keys/{{input.key_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "name",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "key_name": "steps.request.name",
+        "disabled": "coalesce steps.request.disabled false",
+        "key_type": "steps.request.keyType"
+      },
+      "fixtures": [
+        "fixtures/get_key.json"
+      ],
+      "output_types": {
+        "key_name": "string",
+        "disabled": "boolean",
+        "key_type": "string"
+      }
+    },
+    "disable_key": {
+      "display_name": "Disable Key",
+      "description": "Request one explicit service account key state change and require the documented empty JSON success body. Verify resulting state with get_key. API documentation: https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys/disable",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "service_account_email",
+          "type": "email",
+          "required": true
+        },
+        {
+          "name": "key_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://iam.googleapis.com/v1/projects/{{config.project_id}}/serviceAccounts/{{input.service_account_email}}/keys/{{input.key_id}}:disable"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "",
+            "equals": {}
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/disable_key.json"
+      ],
+      "rollback": "enable_key",
+      "output_types": {}
+    },
+    "enable_key": {
+      "display_name": "Enable Key",
+      "description": "Request one explicit service account key state change and require the documented empty JSON success body. Verify resulting state with get_key. API documentation: https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys/enable",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "service_account_email",
+          "type": "email",
+          "required": true
+        },
+        {
+          "name": "key_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://iam.googleapis.com/v1/projects/{{config.project_id}}/serviceAccounts/{{input.service_account_email}}/keys/{{input.key_id}}:enable"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "",
+            "equals": {}
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/enable_key.json"
+      ],
+      "rollback": "disable_key",
+      "output_types": {}
+    }
+  }
+}

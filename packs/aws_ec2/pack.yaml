@@ -1,0 +1,372 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "aws_ec2",
+  "display_name": "AWS EC2 network containment",
+  "description": "AWS EC2 network containment response actions. Containment and inverse actions require approval.",
+  "vendor": "AWS",
+  "categories": [
+    "network"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "ec2 regional endpoint",
+      "required": true,
+      "default": "https://ec2.us-east-1.amazonaws.com",
+      "one_of": [
+        "https://ec2.us-east-1.amazonaws.com",
+        "https://ec2.us-west-2.amazonaws.com",
+        "https://ec2.eu-west-1.amazonaws.com"
+      ]
+    },
+    {
+      "name": "region",
+      "label": "AWS signing region",
+      "required": true,
+      "default": "us-east-1",
+      "one_of": [
+        "us-east-1",
+        "us-west-2",
+        "eu-west-1"
+      ]
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "aws_sigv4",
+    "region": "{{config.region}}",
+    "service": "ec2",
+    "access_key_credential": "ACCESS_KEY_ID",
+    "secret_key_credential": "SECRET_ACCESS_KEY",
+    "session_token_credential": "SESSION_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "ACCESS_KEY_ID",
+      "label": "Access Key Id"
+    },
+    {
+      "name": "SECRET_ACCESS_KEY",
+      "label": "Secret Access Key"
+    },
+    {
+      "name": "SESSION_TOKEN",
+      "label": "Session Token"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_network_interface": {
+      "display_name": "Get network interface and groups",
+      "description": "Read one explicit ENI including its current group set; retain the complete XML state for a reviewed restoration. API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeNetworkInterfaces.html",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "network_interface_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^eni-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/",
+            "query": {
+              "Action": "DescribeNetworkInterfaces",
+              "Version": "2016-11-15",
+              "NetworkInterfaceId.1": "{{input.network_interface_id}}"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "contains": "<DescribeNetworkInterfacesResponse"
+          }
+        }
+      ],
+      "outputs": {
+        "response_xml": "steps.request.text"
+      },
+      "fixtures": [
+        "fixtures/get_network_interface.json"
+      ],
+      "output_types": {
+        "response_xml": "string"
+      }
+    },
+    "get_security_group": {
+      "display_name": "Get security group permissions",
+      "description": "Read the candidate quarantine group; the approver must verify that both ingress and egress permission sets are empty. API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSecurityGroups.html",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "group_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/",
+            "query": {
+              "Action": "DescribeSecurityGroups",
+              "Version": "2016-11-15",
+              "GroupId.1": "{{input.group_id}}"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "contains": "<DescribeSecurityGroupsResponse"
+          }
+        }
+      ],
+      "outputs": {
+        "response_xml": "steps.request.text"
+      },
+      "fixtures": [
+        "fixtures/get_security_group.json"
+      ],
+      "output_types": {
+        "response_xml": "string"
+      }
+    },
+    "isolate_network_interface": {
+      "display_name": "Isolate network interface",
+      "description": "Replace the security groups on exactly one ENI with the approved quarantine group. This does not terminate every established connection or cover other ENIs. API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyNetworkInterfaceAttribute.html",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "network_interface_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^eni-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "quarantine_group_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/",
+            "form": {
+              "Action": "ModifyNetworkInterfaceAttribute",
+              "Version": "2016-11-15",
+              "NetworkInterfaceId": "{{input.network_interface_id}}",
+              "SecurityGroupId.1": "{{input.quarantine_group_id}}"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "contains": "<return>true</return>"
+          }
+        }
+      ],
+      "outputs": {
+        "receipt_xml": "steps.request.text"
+      },
+      "fixtures": [
+        "fixtures/isolate_network_interface.json"
+      ],
+      "rollback": "restore_network_interface_groups",
+      "output_types": {
+        "receipt_xml": "string"
+      }
+    },
+    "restore_network_interface_groups": {
+      "display_name": "Restore complete network interface groups",
+      "description": "Replace the ENI group set with all explicitly supplied prior group IDs. Supply the complete captured set; omission does not reconstruct original state automatically. API documentation: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyNetworkInterfaceAttribute.html",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "network_interface_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^eni-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_1",
+          "type": "string",
+          "required": true,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_2",
+          "type": "string",
+          "required": false,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_3",
+          "type": "string",
+          "required": false,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_4",
+          "type": "string",
+          "required": false,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_5",
+          "type": "string",
+          "required": false,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_6",
+          "type": "string",
+          "required": false,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_7",
+          "type": "string",
+          "required": false,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_8",
+          "type": "string",
+          "required": false,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_9",
+          "type": "string",
+          "required": false,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_10",
+          "type": "string",
+          "required": false,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_11",
+          "type": "string",
+          "required": false,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_12",
+          "type": "string",
+          "required": false,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_13",
+          "type": "string",
+          "required": false,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_14",
+          "type": "string",
+          "required": false,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_15",
+          "type": "string",
+          "required": false,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        },
+        {
+          "name": "original_group_16",
+          "type": "string",
+          "required": false,
+          "pattern": "^sg-(?:[0-9a-f]{8}|[0-9a-f]{17})$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/",
+            "form": {
+              "Action": "ModifyNetworkInterfaceAttribute",
+              "Version": "2016-11-15",
+              "NetworkInterfaceId": "{{input.network_interface_id}}",
+              "SecurityGroupId.1": "{{input.original_group_1}}",
+              "SecurityGroupId.2": "{{input.original_group_2}}",
+              "SecurityGroupId.3": "{{input.original_group_3}}",
+              "SecurityGroupId.4": "{{input.original_group_4}}",
+              "SecurityGroupId.5": "{{input.original_group_5}}",
+              "SecurityGroupId.6": "{{input.original_group_6}}",
+              "SecurityGroupId.7": "{{input.original_group_7}}",
+              "SecurityGroupId.8": "{{input.original_group_8}}",
+              "SecurityGroupId.9": "{{input.original_group_9}}",
+              "SecurityGroupId.10": "{{input.original_group_10}}",
+              "SecurityGroupId.11": "{{input.original_group_11}}",
+              "SecurityGroupId.12": "{{input.original_group_12}}",
+              "SecurityGroupId.13": "{{input.original_group_13}}",
+              "SecurityGroupId.14": "{{input.original_group_14}}",
+              "SecurityGroupId.15": "{{input.original_group_15}}",
+              "SecurityGroupId.16": "{{input.original_group_16}}"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "contains": "<return>true</return>"
+          }
+        }
+      ],
+      "outputs": {
+        "receipt_xml": "steps.request.text"
+      },
+      "fixtures": [
+        "fixtures/restore_network_interface_groups.json"
+      ],
+      "rollback": "isolate_network_interface",
+      "output_types": {
+        "receipt_xml": "string"
+      }
+    }
+  }
+}

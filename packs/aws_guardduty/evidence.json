@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/list_findings.json",
+      "url": "https://docs.aws.amazon.com/guardduty/latest/APIReference/API_ListFindings.html",
+      "document_sha256": "e013d63a58b22b7b5843c37628f3b24289f78172f791cf4df8ce649a43285d26",
+      "document_url": "https://docs.aws.amazon.com/guardduty/latest/APIReference/API_ListFindings.html",
+      "request": {
+        "method": "POST",
+        "url": "https://guardduty.us-east-1.amazonaws.com/detector/0123456789abcdef0123456789abcdef/findings",
+        "json": {
+          "maxResults": 50
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "guardduty.us-east-1.amazonaws.com",
+        "path": "/detector/0123456789abcdef0123456789abcdef/findings",
+        "status": 200,
+        "body": {
+          "findingIds": [
+            "1123456789abcdef0123456789abcdef"
+          ],
+          "nextToken": "documented-next-page-token"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/list_findings_page.json",
+      "url": "https://docs.aws.amazon.com/guardduty/latest/APIReference/API_ListFindings.html",
+      "document_sha256": "e013d63a58b22b7b5843c37628f3b24289f78172f791cf4df8ce649a43285d26",
+      "document_url": "https://docs.aws.amazon.com/guardduty/latest/APIReference/API_ListFindings.html",
+      "request": {
+        "method": "POST",
+        "url": "https://guardduty.us-east-1.amazonaws.com/detector/0123456789abcdef0123456789abcdef/findings",
+        "json": {
+          "maxResults": 50,
+          "nextToken": "documented-next-page-token"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "guardduty.us-east-1.amazonaws.com",
+        "path": "/detector/0123456789abcdef0123456789abcdef/findings",
+        "status": 200,
+        "body": {
+          "findingIds": [
+            "1123456789abcdef0123456789abcdef"
+          ],
+          "nextToken": "documented-next-page-token"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/get_finding.json",
+      "url": "https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetFindings.html",
+      "document_sha256": "aa8fc15a4b1d3c2537bc71187e0fa1d57412113a1d4794c1764f076c08f700d9",
+      "document_url": "https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetFindings.html",
+      "request": {
+        "method": "POST",
+        "url": "https://guardduty.us-east-1.amazonaws.com/detector/0123456789abcdef0123456789abcdef/findings/get",
+        "json": {
+          "findingIds": [
+            "1123456789abcdef0123456789abcdef"
+          ]
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "guardduty.us-east-1.amazonaws.com",
+        "path": "/detector/0123456789abcdef0123456789abcdef/findings/get",
+        "status": 200,
+        "body": {
+          "findings": [
+            {
+              "accountId": "111122223333",
+              "arn": "arn:aws:guardduty:us-east-1:111122223333:detector/0123456789abcdef0123456789abcdef/finding/1123456789abcdef0123456789abcdef",
+              "createdAt": "2026-01-01T00:00:00Z",
+              "id": "1123456789abcdef0123456789abcdef",
+              "region": "us-east-1",
+              "resource": {
+                "resourceType": "AccessKey"
+              },
+              "schemaVersion": "2.0",
+              "service": {
+                "serviceName": "guardduty",
+                "detectorId": "0123456789abcdef0123456789abcdef"
+              },
+              "severity": 7.0,
+              "type": "UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.OutsideAWS",
+              "updatedAt": "2026-01-01T00:00:00Z"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

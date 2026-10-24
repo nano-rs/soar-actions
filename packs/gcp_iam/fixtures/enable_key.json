@@ -1,0 +1,28 @@
+{
+  "action": "enable_key",
+  "config": {
+    "project_id": "example-project"
+  },
+  "inputs": {
+    "service_account_email": "incident-target@example-project.iam.gserviceaccount.com",
+    "key_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/incident-target%40example-project.iam.gserviceaccount.com/keys/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:enable"
+      },
+      "response": {
+        "method": "POST",
+        "host": "iam.googleapis.com",
+        "path": "/v1/projects/example-project/serviceAccounts/incident-target%40example-project.iam.gserviceaccount.com/keys/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:enable",
+        "status": 200,
+        "body": {}
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://docs.cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys/enable",
+  "request_evidence": "independent_http_mock"
+}

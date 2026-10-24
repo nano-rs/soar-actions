@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_network_interface.json",
+      "url": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeNetworkInterfaces.html",
+      "document_sha256": "41d9c325c1cd8f89c89a45f6de9e81e935bb641e815aec11cb0e1b7b757e477f",
+      "document_url": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeNetworkInterfaces.html",
+      "request": {
+        "method": "GET",
+        "url": "https://ec2.us-east-1.amazonaws.com/",
+        "query": {
+          "Action": "DescribeNetworkInterfaces",
+          "Version": "2016-11-15",
+          "NetworkInterfaceId.1": "eni-0123456789abcdef0"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "ec2.us-east-1.amazonaws.com",
+        "path": "/",
+        "status": 200,
+        "body": "<DescribeNetworkInterfacesResponse xmlns=\"http://ec2.amazonaws.com/doc/2016-11-15/\"><requestId>11111111-1111-4111-8111-111111111111</requestId><networkInterfaceSet><item><networkInterfaceId>eni-0123456789abcdef0</networkInterfaceId><groupSet><item><groupId>sg-0123456789abcdef0</groupId><groupName>example-original</groupName></item></groupSet></item></networkInterfaceSet></DescribeNetworkInterfacesResponse>",
+        "query": {
+          "Action": "DescribeNetworkInterfaces",
+          "Version": "2016-11-15",
+          "NetworkInterfaceId.1": "eni-0123456789abcdef0"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/get_security_group.json",
+      "url": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSecurityGroups.html",
+      "document_sha256": "a961b4143ee59137fe21b20e3e5528c963397cd94693705382a094e99cf331d1",
+      "document_url": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSecurityGroups.html",
+      "request": {
+        "method": "GET",
+        "url": "https://ec2.us-east-1.amazonaws.com/",
+        "query": {
+          "Action": "DescribeSecurityGroups",
+          "Version": "2016-11-15",
+          "GroupId.1": "sg-0123456789abcdef0"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "ec2.us-east-1.amazonaws.com",
+        "path": "/",
+        "status": 200,
+        "body": "<DescribeSecurityGroupsResponse xmlns=\"http://ec2.amazonaws.com/doc/2016-11-15/\"><requestId>11111111-1111-4111-8111-111111111111</requestId><securityGroupInfo><item><groupId>sg-0123456789abcdef0</groupId><groupName>example-quarantine</groupName><ipPermissions/><ipPermissionsEgress/></item></securityGroupInfo></DescribeSecurityGroupsResponse>",
+        "query": {
+          "Action": "DescribeSecurityGroups",
+          "Version": "2016-11-15",
+          "GroupId.1": "sg-0123456789abcdef0"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/isolate_network_interface.json",
+      "url": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyNetworkInterfaceAttribute.html",
+      "document_sha256": "36cde1b7b2186ee9e940b647aaf4932459986cfb41668ea087b8dab4efa36cee",
+      "document_url": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyNetworkInterfaceAttribute.html",
+      "request": {
+        "method": "POST",
+        "url": "https://ec2.us-east-1.amazonaws.com/",
+        "form": {
+          "Action": "ModifyNetworkInterfaceAttribute",
+          "Version": "2016-11-15",
+          "NetworkInterfaceId": "eni-0123456789abcdef0",
+          "SecurityGroupId.1": "sg-0123456789abcdef0"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "ec2.us-east-1.amazonaws.com",
+        "path": "/",
+        "status": 200,
+        "body": "<ModifyNetworkInterfaceAttributeResponse xmlns=\"http://ec2.amazonaws.com/doc/2016-11-15/\"><requestId>11111111-1111-4111-8111-111111111111</requestId><return>true</return></ModifyNetworkInterfaceAttributeResponse>"
+      }
+    },
+    {
+      "fixture": "fixtures/restore_network_interface_groups.json",
+      "url": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyNetworkInterfaceAttribute.html",
+      "document_sha256": "36cde1b7b2186ee9e940b647aaf4932459986cfb41668ea087b8dab4efa36cee",
+      "document_url": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyNetworkInterfaceAttribute.html",
+      "request": {
+        "method": "POST",
+        "url": "https://ec2.us-east-1.amazonaws.com/",
+        "form": {
+          "Action": "ModifyNetworkInterfaceAttribute",
+          "Version": "2016-11-15",
+          "NetworkInterfaceId": "eni-0123456789abcdef0",
+          "SecurityGroupId.1": "sg-0123456789abcdef0",
+          "SecurityGroupId.2": "sg-1123456789abcdef0"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "ec2.us-east-1.amazonaws.com",
+        "path": "/",
+        "status": 200,
+        "body": "<ModifyNetworkInterfaceAttributeResponse xmlns=\"http://ec2.amazonaws.com/doc/2016-11-15/\"><requestId>11111111-1111-4111-8111-111111111111</requestId><return>true</return></ModifyNetworkInterfaceAttributeResponse>"
+      }
+    }
+  ]
+}

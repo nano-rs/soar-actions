@@ -1,0 +1,259 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "azure_arm_nsg",
+  "display_name": "Azure ARM NSG response",
+  "description": "Azure ARM NSG response response actions. Containment and inverse actions require approval.",
+  "vendor": "Microsoft",
+  "categories": [
+    "network"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "directory_id",
+      "label": "Entra tenant UUID",
+      "required": true
+    },
+    {
+      "name": "subscription_id",
+      "label": "Azure subscription UUID",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "management.azure.com",
+      "path_prefixes": [
+        "/subscriptions"
+      ]
+    },
+    {
+      "host": "login.microsoftonline.com",
+      "path_prefixes": [
+        "/"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "oauth2_client_credentials",
+    "token_url": "https://login.microsoftonline.com/{{config.directory_id}}/oauth2/v2.0/token",
+    "client_id": "CLIENT_ID",
+    "client_secret": "CLIENT_SECRET",
+    "scope": "https://management.azure.com/.default"
+  },
+  "credentials": [
+    {
+      "name": "CLIENT_ID",
+      "label": "Client Id"
+    },
+    {
+      "name": "CLIENT_SECRET",
+      "label": "Client Secret"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_rule": {
+      "display_name": "Get response rule",
+      "description": "Read the current named response rule and provisioning state. API documentation: https://learn.microsoft.com/en-us/rest/api/virtualnetwork/security-rules/get?view=rest-virtualnetwork-2026-01-01",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "resource_group",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_.()-]{1,90}$"
+        },
+        {
+          "name": "nsg_name",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_.-]{1,80}$"
+        },
+        {
+          "name": "rule_name",
+          "type": "string",
+          "required": true,
+          "pattern": "^nano-soar-[A-Za-z0-9_-]{1,48}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://management.azure.com/subscriptions/{{config.subscription_id}}/resourceGroups/{{input.resource_group}}/providers/Microsoft.Network/networkSecurityGroups/{{input.nsg_name}}/securityRules/{{input.rule_name}}",
+            "query": {
+              "api-version": "2026-01-01"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "rule_id": "steps.request.id",
+        "properties": "steps.request.properties"
+      },
+      "fixtures": [
+        "fixtures/get_rule.json"
+      ],
+      "output_types": {
+        "rule_id": "string",
+        "properties": "object"
+      }
+    },
+    "add_outbound_deny_rule": {
+      "display_name": "Add outbound deny rule",
+      "description": "Create or update one response-owned outbound deny rule. The reported provisioning state must be checked before claiming enforcement. API documentation: https://learn.microsoft.com/en-us/rest/api/virtualnetwork/security-rules/create-or-update?view=rest-virtualnetwork-2026-01-01",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "resource_group",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_.()-]{1,90}$"
+        },
+        {
+          "name": "nsg_name",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_.-]{1,80}$"
+        },
+        {
+          "name": "rule_name",
+          "type": "string",
+          "required": true,
+          "pattern": "^nano-soar-[A-Za-z0-9_-]{1,48}$"
+        },
+        {
+          "name": "source_prefix",
+          "type": "string",
+          "required": true,
+          "pattern": "^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}(?:/(?:[0-9]|[12][0-9]|3[0-2]))?$"
+        },
+        {
+          "name": "priority",
+          "type": "int",
+          "required": true
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PUT",
+            "url": "https://management.azure.com/subscriptions/{{config.subscription_id}}/resourceGroups/{{input.resource_group}}/providers/Microsoft.Network/networkSecurityGroups/{{input.nsg_name}}/securityRules/{{input.rule_name}}",
+            "query": {
+              "api-version": "2026-01-01"
+            },
+            "json": {
+              "properties": {
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "*",
+                "sourceAddressPrefix": "{{input.source_prefix}}",
+                "destinationAddressPrefix": "*",
+                "access": "Deny",
+                "priority": "{{input.priority}}",
+                "direction": "Outbound"
+              }
+            }
+          },
+          "expect": {
+            "status": [
+              200,
+              201
+            ],
+            "path": "id",
+            "non_empty": true,
+            "fields": {
+              "properties.access": "Deny",
+              "properties.direction": "Outbound"
+            }
+          }
+        }
+      ],
+      "outputs": {
+        "rule_id": "steps.request.id",
+        "properties": "steps.request.properties"
+      },
+      "fixtures": [
+        "fixtures/add_outbound_deny_rule.json"
+      ],
+      "rollback": "remove_response_rule",
+      "output_types": {
+        "rule_id": "string",
+        "properties": "object"
+      }
+    },
+    "remove_response_rule": {
+      "display_name": "Remove response rule",
+      "description": "Request deletion of one response-owned rule. Accepted deletion does not prove asynchronous completion; removing a rule also does not prove traffic is restored. API documentation: https://learn.microsoft.com/en-us/rest/api/virtualnetwork/security-rules/delete?view=rest-virtualnetwork-2026-01-01",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "resource_group",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_.()-]{1,90}$"
+        },
+        {
+          "name": "nsg_name",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_.-]{1,80}$"
+        },
+        {
+          "name": "rule_name",
+          "type": "string",
+          "required": true,
+          "pattern": "^nano-soar-[A-Za-z0-9_-]{1,48}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "DELETE",
+            "url": "https://management.azure.com/subscriptions/{{config.subscription_id}}/resourceGroups/{{input.resource_group}}/providers/Microsoft.Network/networkSecurityGroups/{{input.nsg_name}}/securityRules/{{input.rule_name}}",
+            "query": {
+              "api-version": "2026-01-01"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              200,
+              202,
+              204
+            ],
+            "path": "text",
+            "equals": ""
+          }
+        }
+      ],
+      "outputs": {},
+      "fixtures": [
+        "fixtures/remove_response_rule.json"
+      ],
+      "rollback": "add_outbound_deny_rule",
+      "output_types": {}
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/list_access_keys.json",
+      "url": "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ListAccessKeys.html",
+      "document_sha256": "853f011ab90263c24d66ea23cfba6af5d590054f75cecb06ab973267a1270c7d",
+      "document_url": "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ListAccessKeys.html",
+      "request": {
+        "method": "GET",
+        "url": "https://iam.amazonaws.com/",
+        "query": {
+          "Action": "ListAccessKeys",
+          "Version": "2010-05-08",
+          "UserName": "example-user",
+          "MaxItems": "100"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "iam.amazonaws.com",
+        "path": "/",
+        "status": 200,
+        "body": "<ListAccessKeysResponse xmlns=\"https://iam.amazonaws.com/doc/2010-05-08/\"><ListAccessKeysResult><AccessKeyMetadata><member><UserName>example-user</UserName><AccessKeyId>AKIAIOSFODNN7EXAMPLE</AccessKeyId><Status>Active</Status><CreateDate>2026-01-01T00:00:00Z</CreateDate></member></AccessKeyMetadata><IsTruncated>false</IsTruncated></ListAccessKeysResult><ResponseMetadata><RequestId>11111111-1111-4111-8111-111111111111</RequestId></ResponseMetadata></ListAccessKeysResponse>",
+        "query": {
+          "Action": "ListAccessKeys",
+          "Version": "2010-05-08",
+          "UserName": "example-user",
+          "MaxItems": "100"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/disable_access_key.json",
+      "url": "https://docs.aws.amazon.com/IAM/latest/APIReference/API_UpdateAccessKey.html",
+      "document_sha256": "e1ac34dc423a2520f607f0fb3434a59afe3df8b21b1891157effdfea8e119762",
+      "document_url": "https://docs.aws.amazon.com/IAM/latest/APIReference/API_UpdateAccessKey.html",
+      "request": {
+        "method": "POST",
+        "url": "https://iam.amazonaws.com/",
+        "form": {
+          "Action": "UpdateAccessKey",
+          "Version": "2010-05-08",
+          "UserName": "example-user",
+          "AccessKeyId": "AKIAIOSFODNN7EXAMPLE",
+          "Status": "Inactive"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "iam.amazonaws.com",
+        "path": "/",
+        "status": 200,
+        "body": "<UpdateAccessKeyResponse><ResponseMetadata><RequestId>11111111-1111-4111-8111-111111111111</RequestId></ResponseMetadata></UpdateAccessKeyResponse>"
+      }
+    },
+    {
+      "fixture": "fixtures/enable_access_key.json",
+      "url": "https://docs.aws.amazon.com/IAM/latest/APIReference/API_UpdateAccessKey.html",
+      "document_sha256": "e1ac34dc423a2520f607f0fb3434a59afe3df8b21b1891157effdfea8e119762",
+      "document_url": "https://docs.aws.amazon.com/IAM/latest/APIReference/API_UpdateAccessKey.html",
+      "request": {
+        "method": "POST",
+        "url": "https://iam.amazonaws.com/",
+        "form": {
+          "Action": "UpdateAccessKey",
+          "Version": "2010-05-08",
+          "UserName": "example-user",
+          "AccessKeyId": "AKIAIOSFODNN7EXAMPLE",
+          "Status": "Active"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "iam.amazonaws.com",
+        "path": "/",
+        "status": 200,
+        "body": "<UpdateAccessKeyResponse><ResponseMetadata><RequestId>11111111-1111-4111-8111-111111111111</RequestId></ResponseMetadata></UpdateAccessKeyResponse>"
+      }
+    }
+  ]
+}

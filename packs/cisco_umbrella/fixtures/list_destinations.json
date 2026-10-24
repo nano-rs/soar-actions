@@ -1,0 +1,68 @@
+{
+  "action": "list_destinations",
+  "config": {},
+  "inputs": {
+    "list_id": 1234567,
+    "page": 1
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://api.umbrella.com/policies/v2/destinationlists/1234567/destinations",
+        "query": {
+          "limit": "100",
+          "page": "1"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.umbrella.com",
+        "path": "/policies/v2/destinationlists/1234567/destinations",
+        "status": 200,
+        "body": {
+          "status": {
+            "code": 200,
+            "text": "OK"
+          },
+          "meta": {
+            "page": 1,
+            "limit": 100,
+            "total": 1
+          },
+          "data": [
+            {
+              "id": "1234590",
+              "destination": "example.net",
+              "type": "domain",
+              "comment": "Example response fixture",
+              "createdAt": "2026-01-01 00:00:00"
+            }
+          ]
+        },
+        "query": {
+          "limit": "100",
+          "page": "1"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "meta": {
+      "page": 1,
+      "limit": 100,
+      "total": 1
+    },
+    "destinations": [
+      {
+        "id": "1234590",
+        "destination": "example.net",
+        "type": "domain",
+        "comment": "Example response fixture",
+        "createdAt": "2026-01-01 00:00:00"
+      }
+    ]
+  },
+  "source": "https://developer.cisco.com/docs/cloud-security/umbrella-api-api-reference-policies-destination-lists-api-destinations-get-destinations-in-destination-list/",
+  "request_evidence": "independent_http_mock"
+}

@@ -1,0 +1,35 @@
+{
+  "action": "disable_access_key",
+  "config": {},
+  "inputs": {
+    "user_name": "example-user",
+    "target_access_key_id": "AKIAIOSFODNN7EXAMPLE"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://iam.amazonaws.com/",
+        "form": {
+          "Action": "UpdateAccessKey",
+          "Version": "2010-05-08",
+          "UserName": "example-user",
+          "AccessKeyId": "AKIAIOSFODNN7EXAMPLE",
+          "Status": "Inactive"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "iam.amazonaws.com",
+        "path": "/",
+        "status": 200,
+        "body": "<UpdateAccessKeyResponse><ResponseMetadata><RequestId>11111111-1111-4111-8111-111111111111</RequestId></ResponseMetadata></UpdateAccessKeyResponse>"
+      }
+    }
+  ],
+  "outputs": {
+    "receipt_xml": "<UpdateAccessKeyResponse><ResponseMetadata><RequestId>11111111-1111-4111-8111-111111111111</RequestId></ResponseMetadata></UpdateAccessKeyResponse>"
+  },
+  "source": "https://docs.aws.amazon.com/IAM/latest/APIReference/API_UpdateAccessKey.html",
+  "request_evidence": "independent_http_mock"
+}
