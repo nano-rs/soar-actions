@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_case.json",
+      "url": "https://docs.cloud.google.com/chronicle/docs/reference/rest/v1/projects.locations.instances.cases/get",
+      "document_url": "https://docs.cloud.google.com/chronicle/docs/reference/rest/v1/projects.locations.instances.cases/get",
+      "document_sha256": "a22421d3c34ef33b805f39241c63888a8f78d6918e697f1669541a6c831e5b5b",
+      "request": {
+        "method": "GET",
+        "url": "https://us-chronicle.googleapis.com/v1/projects/nano-example-project/locations/us/instances/00000000-0000-4000-8000-000000000001/cases/1"
+      },
+      "response": {
+        "method": "GET",
+        "host": "us-chronicle.googleapis.com",
+        "path": "/v1/projects/nano-example-project/locations/us/instances/00000000-0000-4000-8000-000000000001/cases/1",
+        "status": 200,
+        "body": {
+          "name": "projects/nano-example-project/locations/us/instances/00000000-0000-4000-8000-000000000001/cases/1"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/get_case_alert.json",
+      "url": "https://docs.cloud.google.com/chronicle/docs/reference/rest/v1/projects.locations.instances.cases.caseAlerts/get",
+      "document_url": "https://docs.cloud.google.com/chronicle/docs/reference/rest/v1/projects.locations.instances.cases.caseAlerts/get",
+      "document_sha256": "6ba9a463dc26f3c65cbfa215f3763e2d112fc2bd7c454d4c4c7b03a65a011663",
+      "request": {
+        "method": "GET",
+        "url": "https://us-chronicle.googleapis.com/v1/projects/nano-example-project/locations/us/instances/00000000-0000-4000-8000-000000000001/cases/1/caseAlerts/nano-example-alert"
+      },
+      "response": {
+        "method": "GET",
+        "host": "us-chronicle.googleapis.com",
+        "path": "/v1/projects/nano-example-project/locations/us/instances/00000000-0000-4000-8000-000000000001/cases/1/caseAlerts/nano-example-alert",
+        "status": 200,
+        "body": {
+          "name": "projects/nano-example-project/locations/us/instances/00000000-0000-4000-8000-000000000001/cases/1/caseAlerts/nano-example-alert"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "microsoft_sentinel",
+  "display_name": "Microsoft Sentinel",
+  "description": "Microsoft Sentinel bounded native response actions. Mutations require explicit approval; receipts do not establish asynchronous completion.",
+  "vendor": "Microsoft Sentinel",
+  "categories": [
+    "cloud_security"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "directory_id",
+      "label": "Entra tenant UUID",
+      "required": true
+    },
+    {
+      "name": "subscription_id",
+      "label": "Azure subscription UUID",
+      "required": true
+    },
+    {
+      "name": "resource_group",
+      "label": "Resource group",
+      "required": true
+    },
+    {
+      "name": "workspace",
+      "label": "Log Analytics workspace",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "management.azure.com",
+      "path_prefixes": [
+        "/subscriptions"
+      ]
+    },
+    {
+      "host": "login.microsoftonline.com",
+      "path_prefixes": [
+        "/"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "oauth2_client_credentials",
+    "token_url": "https://login.microsoftonline.com/{{config.directory_id}}/oauth2/v2.0/token",
+    "client_id": "CLIENT_ID",
+    "client_secret": "CLIENT_SECRET",
+    "scope": "https://management.azure.com/.default"
+  },
+  "credentials": [
+    {
+      "name": "CLIENT_ID",
+      "label": "Entra application client ID"
+    },
+    {
+      "name": "CLIENT_SECRET",
+      "label": "Entra application client secret"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 30
+  },
+  "actions": {
+    "get_incident": {
+      "display_name": "Get incident",
+      "description": "Read one incident through public-cloud ARM. Requires Microsoft Sentinel Reader or equivalent narrowly scoped role. Official endpoint reference: https://learn.microsoft.com/en-us/rest/api/securityinsights/incidents/get?view=rest-securityinsights-2025-09-01",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "incident_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://management.azure.com/subscriptions/{{config.subscription_id}}/resourceGroups/{{config.resource_group}}/providers/Microsoft.OperationalInsights/workspaces/{{config.workspace}}/providers/Microsoft.SecurityInsights/incidents/{{input.incident_id}}",
+            "query": {
+              "api-version": "2025-09-01"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "name",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "incident_id": "steps.request.name",
+        "incident": "steps.request"
+      },
+      "output_types": {
+        "incident_id": "string",
+        "incident": "object"
+      },
+      "fixtures": [
+        "fixtures/get_incident.json"
+      ]
+    },
+    "update_incident_status": {
+      "display_name": "Set active/new incident status",
+      "description": "First read the existing incident, then use its etag and complete properties for a PUT that changes status only. This preserves owner, labels, description and unrecognized future properties. An etag conflict fails; no retry, create or close operation is exposed. Requires Microsoft Sentinel Responder or equivalent incident write permission. Official endpoint reference: https://learn.microsoft.com/en-us/rest/api/securityinsights/incidents/create-or-update?view=rest-securityinsights-2025-09-01",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "incident_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true,
+          "pattern": "^(New|Active)$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "current",
+          "request": {
+            "method": "GET",
+            "url": "https://management.azure.com/subscriptions/{{config.subscription_id}}/resourceGroups/{{config.resource_group}}/providers/Microsoft.OperationalInsights/workspaces/{{config.workspace}}/providers/Microsoft.SecurityInsights/incidents/{{input.incident_id}}",
+            "query": {
+              "api-version": "2025-09-01"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "etag",
+            "non_empty": true
+          }
+        },
+        {
+          "id": "request",
+          "request": {
+            "method": "PUT",
+            "url": "https://management.azure.com/subscriptions/{{config.subscription_id}}/resourceGroups/{{config.resource_group}}/providers/Microsoft.OperationalInsights/workspaces/{{config.workspace}}/providers/Microsoft.SecurityInsights/incidents/{{input.incident_id}}",
+            "query": {
+              "api-version": "2025-09-01"
+            },
+            "json": {
+              "etag": "{{steps.current.etag}}",
+              "properties": "{{with_field steps.current.properties \"status\" input.status}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "name",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "incident_id": "steps.request.name",
+        "status": "steps.request.properties.status",
+        "incident": "steps.request"
+      },
+      "output_types": {
+        "incident_id": "string",
+        "status": "string",
+        "incident": "object"
+      },
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Restore the previous status through a new explicitly approved call after re-reading current state. Closed-state classification updates are not exposed.",
+      "fixtures": [
+        "fixtures/update_incident_status.json"
+      ]
+    }
+  }
+}

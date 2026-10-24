@@ -1,0 +1,59 @@
+{
+  "batch": "D",
+  "part": 2,
+  "vendors": {
+    "rapid7_insightidr": {
+      "actions": {
+        "get_investigation": "read",
+        "list_investigations": "read",
+        "update_investigation_status": "destructive"
+      },
+      "unsupported": [],
+      "document_prefixes": [
+        "https://help.rapid7.com/"
+      ]
+    },
+    "microsoft_sentinel": {
+      "actions": {
+        "get_incident": "read",
+        "update_incident_status": "destructive"
+      },
+      "unsupported": [],
+      "document_prefixes": [
+        "https://learn.microsoft.com/"
+      ]
+    },
+    "google_secops": {
+      "actions": {
+        "get_case": "read",
+        "get_case_alert": "read"
+      },
+      "unsupported": [],
+      "document_prefixes": [
+        "https://docs.cloud.google.com/"
+      ]
+    },
+    "salesforce": {
+      "actions": {
+        "get_user_login": "read",
+        "freeze_user": "destructive",
+        "unfreeze_user": "destructive"
+      },
+      "unsupported": [],
+      "document_prefixes": [
+        "https://developer.salesforce.com/",
+        "https://help.salesforce.com/"
+      ]
+    },
+    "atlassian_cloud": {
+      "actions": {
+        "suspend_user": "destructive",
+        "restore_user": "destructive"
+      },
+      "unsupported": [],
+      "document_prefixes": [
+        "https://developer.atlassian.com/"
+      ]
+    }
+  }
+}

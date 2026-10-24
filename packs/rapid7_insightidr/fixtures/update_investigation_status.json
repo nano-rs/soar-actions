@@ -1,0 +1,55 @@
+{
+  "action": "update_investigation_status",
+  "config": {
+    "base_url": "https://us.api.insight.rapid7.com"
+  },
+  "inputs": {
+    "investigation_id": "00000000-0000-4000-8000-000000000001",
+    "status": "INVESTIGATING"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "PATCH",
+        "url": "https://us.api.insight.rapid7.com/idr/v2/investigations/00000000-0000-4000-8000-000000000001",
+        "json": {
+          "status": "INVESTIGATING"
+        }
+      },
+      "response": {
+        "method": "PATCH",
+        "host": "us.api.insight.rapid7.com",
+        "path": "/idr/v2/investigations/00000000-0000-4000-8000-000000000001",
+        "status": 200,
+        "body": {
+          "rrn": "rrn:investigation:us1:00000000-0000-4000-8000-000000000001:investigation:EXAMPLE1",
+          "organizationId": "00000000-0000-4000-8000-000000000001",
+          "title": "Synthetic investigation",
+          "status": "INVESTIGATING",
+          "priority": "HIGH",
+          "source": "ALERT",
+          "createdTime": "2026-01-01T00:00:00Z",
+          "lastAccessed": "2026-01-01T00:00:00Z",
+          "disposition": "UNDECIDED"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "rrn": "rrn:investigation:us1:00000000-0000-4000-8000-000000000001:investigation:EXAMPLE1",
+    "status": "INVESTIGATING",
+    "investigation": {
+      "rrn": "rrn:investigation:us1:00000000-0000-4000-8000-000000000001:investigation:EXAMPLE1",
+      "organizationId": "00000000-0000-4000-8000-000000000001",
+      "title": "Synthetic investigation",
+      "status": "INVESTIGATING",
+      "priority": "HIGH",
+      "source": "ALERT",
+      "createdTime": "2026-01-01T00:00:00Z",
+      "lastAccessed": "2026-01-01T00:00:00Z",
+      "disposition": "UNDECIDED"
+    }
+  },
+  "source": "https://help.rapid7.com/insightidr/en-us/api/v2/docs.html#tag/Investigations",
+  "request_evidence": "independent_http_mock"
+}

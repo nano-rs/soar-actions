@@ -1,0 +1,90 @@
+{
+  "action": "list_investigations",
+  "config": {
+    "base_url": "https://us.api.insight.rapid7.com"
+  },
+  "inputs": {
+    "page_index": "0"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://us.api.insight.rapid7.com/idr/v2/investigations",
+        "query": {
+          "index": "0",
+          "size": "100"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "us.api.insight.rapid7.com",
+        "path": "/idr/v2/investigations",
+        "status": 200,
+        "body": {
+          "data": [
+            {
+              "rrn": "rrn:investigation:us1:00000000-0000-4000-8000-000000000001:investigation:EXAMPLE1",
+              "organizationId": "00000000-0000-4000-8000-000000000001",
+              "title": "Synthetic investigation",
+              "status": "OPEN",
+              "priority": "HIGH",
+              "source": "ALERT",
+              "createdTime": "2026-01-01T00:00:00Z",
+              "lastAccessed": "2026-01-01T00:00:00Z",
+              "disposition": "UNDECIDED"
+            }
+          ],
+          "metadata": {
+            "index": 0,
+            "size": 100,
+            "total_data": 1,
+            "total_pages": 1
+          }
+        },
+        "query": {
+          "index": "0",
+          "size": "100"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "investigations": [
+      {
+        "rrn": "rrn:investigation:us1:00000000-0000-4000-8000-000000000001:investigation:EXAMPLE1",
+        "organizationId": "00000000-0000-4000-8000-000000000001",
+        "title": "Synthetic investigation",
+        "status": "OPEN",
+        "priority": "HIGH",
+        "source": "ALERT",
+        "createdTime": "2026-01-01T00:00:00Z",
+        "lastAccessed": "2026-01-01T00:00:00Z",
+        "disposition": "UNDECIDED"
+      }
+    ],
+    "page": {
+      "data": [
+        {
+          "rrn": "rrn:investigation:us1:00000000-0000-4000-8000-000000000001:investigation:EXAMPLE1",
+          "organizationId": "00000000-0000-4000-8000-000000000001",
+          "title": "Synthetic investigation",
+          "status": "OPEN",
+          "priority": "HIGH",
+          "source": "ALERT",
+          "createdTime": "2026-01-01T00:00:00Z",
+          "lastAccessed": "2026-01-01T00:00:00Z",
+          "disposition": "UNDECIDED"
+        }
+      ],
+      "metadata": {
+        "index": 0,
+        "size": 100,
+        "total_data": 1,
+        "total_pages": 1
+      }
+    }
+  },
+  "source": "https://help.rapid7.com/insightidr/en-us/api/v2/docs.html#tag/Investigations",
+  "request_evidence": "independent_http_mock"
+}

@@ -1,0 +1,30 @@
+{
+  "action": "freeze_user",
+  "config": {
+    "base_url": "https://nano-example.my.salesforce.com"
+  },
+  "inputs": {
+    "user_login_id": "0Yw000000000001"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "PATCH",
+        "url": "https://nano-example.my.salesforce.com/services/data/v68.0/sobjects/UserLogin/0Yw000000000001",
+        "json": {
+          "IsFrozen": true
+        }
+      },
+      "response": {
+        "method": "PATCH",
+        "host": "nano-example.my.salesforce.com",
+        "path": "/services/data/v68.0/sobjects/UserLogin/0Yw000000000001",
+        "status": 204,
+        "body": ""
+      }
+    }
+  ],
+  "outputs": {},
+  "source": "https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm",
+  "request_evidence": "independent_http_mock"
+}

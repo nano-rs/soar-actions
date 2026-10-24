@@ -1,0 +1,170 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "salesforce",
+  "display_name": "Salesforce",
+  "description": "Salesforce bounded native response actions. Mutations require explicit approval; receipts do not establish asynchronous completion.",
+  "vendor": "Salesforce",
+  "categories": [
+    "cloud_security"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Salesforce My Domain HTTPS origin",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/services/data/v68.0/query",
+        "/services/data/v68.0/sobjects/UserLogin"
+      ],
+      "host_suffixes": [
+        ".my.salesforce.com"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "ACCESS_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "ACCESS_TOKEN",
+      "label": "Salesforce OAuth access token with API and Manage Users permission"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 30
+  },
+  "actions": {
+    "get_user_login": {
+      "display_name": "Find user login",
+      "description": "Find at most one UserLogin record by a pattern-restricted User ID. Read Id, UserId and IsFrozen. Freeze/unfreeze requires the returned UserLogin Id, not UserId. Empty records is a valid no-match result. No free SOQL or nextRecordsUrl is accepted. Official endpoint reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_query.htm",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^005[A-Za-z0-9]{12}([A-Za-z0-9]{3})?$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/services/data/v68.0/query",
+            "query": {
+              "q": "SELECT Id, UserId, IsFrozen FROM UserLogin WHERE UserId = '{{input.user_id}}' LIMIT 1"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "records",
+            "json_type": "array"
+          }
+        }
+      ],
+      "outputs": {
+        "records": "steps.request.records",
+        "result": "steps.request"
+      },
+      "output_types": {
+        "records": "array",
+        "result": "object"
+      },
+      "fixtures": [
+        "fixtures/get_user_login.json"
+      ]
+    },
+    "freeze_user": {
+      "display_name": "Freeze User",
+      "description": "Update one UserLogin IsFrozen boolean. Requires Manage Users and API access. This changes login eligibility; it does not delete the user, reclaim a license or promise existing-session revocation. Re-read via get_user_login to verify. Official endpoint reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_login_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9]{15}([A-Za-z0-9]{3})?$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PATCH",
+            "url": "{{config.base_url}}/services/data/v68.0/sobjects/UserLogin/{{input.user_login_id}}",
+            "json": {
+              "IsFrozen": true
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "output_types": {},
+      "rollback": "unfreeze_user",
+      "fixtures": [
+        "fixtures/freeze_user.json"
+      ]
+    },
+    "unfreeze_user": {
+      "display_name": "Unfreeze User",
+      "description": "Update one UserLogin IsFrozen boolean. Requires Manage Users and API access. This changes login eligibility; it does not delete the user, reclaim a license or promise existing-session revocation. Re-read via get_user_login to verify. Official endpoint reference: https://developer.salesforce.com/docs/atlas.en-us.api_rest.meta/api_rest/dome_update_fields.htm",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_login_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9]{15}([A-Za-z0-9]{3})?$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PATCH",
+            "url": "{{config.base_url}}/services/data/v68.0/sobjects/UserLogin/{{input.user_login_id}}",
+            "json": {
+              "IsFrozen": false
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "output_types": {},
+      "rollback": "freeze_user",
+      "fixtures": [
+        "fixtures/unfreeze_user.json"
+      ]
+    }
+  }
+}

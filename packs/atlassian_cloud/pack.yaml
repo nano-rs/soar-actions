@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "atlassian_cloud",
+  "display_name": "Atlassian Cloud",
+  "description": "Atlassian Cloud bounded native response actions. Mutations require explicit approval; receipts do not establish asynchronous completion.",
+  "vendor": "Atlassian Cloud",
+  "categories": [
+    "cloud_security"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "organization_id",
+      "label": "Atlassian organization ID",
+      "required": true
+    },
+    {
+      "name": "directory_id",
+      "label": "Atlassian directory ID",
+      "required": true
+    }
+  ],
+  "allow": [
+    {
+      "host": "api.atlassian.com",
+      "path_prefixes": [
+        "/admin/v2/orgs"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "Organization admin API key (not a personal API token)"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 30
+  },
+  "actions": {
+    "suspend_user": {
+      "display_name": "Suspend User",
+      "description": "Use the current directory-aware organization-admin API. Suspend temporarily removes app access and billing; restore reinstates roles/group memberships and resumes billing. Requires organization admin API key and matching directory. Each direction requires approval. Official endpoint reference: https://developer.atlassian.com/cloud/admin/organization/rest/api-group-users/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9:_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://api.atlassian.com/admin/v2/orgs/{{config.organization_id}}/directories/{{config.directory_id}}/users/{{input.account_id}}/suspend",
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "output_types": {},
+      "rollback": "restore_user",
+      "fixtures": [
+        "fixtures/suspend_user.json"
+      ]
+    },
+    "restore_user": {
+      "display_name": "Restore User",
+      "description": "Use the current directory-aware organization-admin API. Suspend temporarily removes app access and billing; restore reinstates roles/group memberships and resumes billing. Requires organization admin API key and matching directory. Each direction requires approval. Official endpoint reference: https://developer.atlassian.com/cloud/admin/organization/rest/api-group-users/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "account_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9:_-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://api.atlassian.com/admin/v2/orgs/{{config.organization_id}}/directories/{{config.directory_id}}/users/{{input.account_id}}/restore",
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "output_types": {},
+      "rollback": "suspend_user",
+      "fixtures": [
+        "fixtures/restore_user.json"
+      ]
+    }
+  }
+}

@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "rapid7_insightidr",
+  "display_name": "Rapid7 InsightIDR",
+  "description": "Rapid7 InsightIDR bounded native response actions. Mutations require explicit approval; receipts do not establish asynchronous completion.",
+  "vendor": "Rapid7 InsightIDR",
+  "categories": [
+    "cloud_security"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "InsightIDR region",
+      "required": true,
+      "default": "https://us.api.insight.rapid7.com",
+      "one_of": [
+        "https://eu.api.insight.rapid7.com",
+        "https://us.api.insight.rapid7.com",
+        "https://us2.api.insight.rapid7.com",
+        "https://us3.api.insight.rapid7.com",
+        "https://ca.api.insight.rapid7.com",
+        "https://au.api.insight.rapid7.com",
+        "https://ap.api.insight.rapid7.com"
+      ]
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/idr/v2/investigations"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "api_key_header",
+    "header": "X-Api-Key",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "Rapid7 organization/user API key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 30
+  },
+  "actions": {
+    "get_investigation": {
+      "display_name": "Get investigation",
+      "description": "Read one investigation UUID in the connection organization. No multi-customer query is exposed. Official endpoint reference: https://help.rapid7.com/insightidr/en-us/api/v2/docs.html#tag/Investigations",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "investigation_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/idr/v2/investigations/{{input.investigation_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "rrn",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "rrn": "steps.request.rrn",
+        "investigation": "steps.request"
+      },
+      "output_types": {
+        "rrn": "string",
+        "investigation": "object"
+      },
+      "fixtures": [
+        "fixtures/get_investigation.json"
+      ]
+    },
+    "list_investigations": {
+      "display_name": "List investigation page",
+      "description": "Read one explicit page of at most 100 investigations. Default vendor time range applies. Empty pages are valid; this pack does not iterate or follow response URLs. Official endpoint reference: https://help.rapid7.com/insightidr/en-us/api/v2/docs.html#tag/Investigations",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "page_index",
+          "type": "string",
+          "required": true,
+          "pattern": "^(0|[1-9][0-9]{0,5})$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/idr/v2/investigations",
+            "query": {
+              "index": "{{input.page_index}}",
+              "size": "100"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "data",
+            "json_type": "array"
+          }
+        }
+      ],
+      "outputs": {
+        "investigations": "steps.request.data",
+        "page": "steps.request"
+      },
+      "output_types": {
+        "investigations": "array",
+        "page": "object"
+      },
+      "fixtures": [
+        "fixtures/list_investigations.json"
+      ]
+    },
+    "update_investigation_status": {
+      "display_name": "Set investigation status",
+      "description": "Update only status; omitted fields remain unchanged under the documented PATCH contract. Read the returned state. Closure of investigations associated with Threat Command can require additional close-reason fields; those combinations are not exposed. Official endpoint reference: https://help.rapid7.com/insightidr/en-us/api/v2/docs.html#tag/Investigations",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "investigation_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "required": true,
+          "pattern": "^(OPEN|INVESTIGATING|CLOSED)$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PATCH",
+            "url": "{{config.base_url}}/idr/v2/investigations/{{input.investigation_id}}",
+            "json": {
+              "status": "{{input.status}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "rrn",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "rrn": "steps.request.rrn",
+        "status": "steps.request.status",
+        "investigation": "steps.request"
+      },
+      "output_types": {
+        "rrn": "string",
+        "status": "string",
+        "investigation": "object"
+      },
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "The prior status is not known at authoring time. An authorized operator can re-read and explicitly restore it using this same approved action. No automatic rollback is performed.",
+      "fixtures": [
+        "fixtures/update_investigation_status.json"
+      ]
+    }
+  }
+}

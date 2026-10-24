@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_investigation.json",
+      "url": "https://help.rapid7.com/insightidr/en-us/api/v2/docs.html#tag/Investigations",
+      "document_url": "https://help.rapid7.com/insightidr/en-us/api/v2/insightidr-api-v2.json",
+      "document_sha256": "8cff844b98fb7cec1a16a8b908463ddefc936d6d55347e1d7242ce02c1bbbf1f",
+      "request": {
+        "method": "GET",
+        "url": "https://us.api.insight.rapid7.com/idr/v2/investigations/00000000-0000-4000-8000-000000000001"
+      },
+      "response": {
+        "method": "GET",
+        "host": "us.api.insight.rapid7.com",
+        "path": "/idr/v2/investigations/00000000-0000-4000-8000-000000000001",
+        "status": 200,
+        "body": {
+          "rrn": "rrn:investigation:us1:00000000-0000-4000-8000-000000000001:investigation:EXAMPLE1",
+          "organizationId": "00000000-0000-4000-8000-000000000001",
+          "title": "Synthetic investigation",
+          "status": "OPEN",
+          "priority": "HIGH",
+          "source": "ALERT",
+          "createdTime": "2026-01-01T00:00:00Z",
+          "lastAccessed": "2026-01-01T00:00:00Z",
+          "disposition": "UNDECIDED"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/list_investigations.json",
+      "url": "https://help.rapid7.com/insightidr/en-us/api/v2/docs.html#tag/Investigations",
+      "document_url": "https://help.rapid7.com/insightidr/en-us/api/v2/insightidr-api-v2.json",
+      "document_sha256": "8cff844b98fb7cec1a16a8b908463ddefc936d6d55347e1d7242ce02c1bbbf1f",
+      "request": {
+        "method": "GET",
+        "url": "https://us.api.insight.rapid7.com/idr/v2/investigations",
+        "query": {
+          "index": "0",
+          "size": "100"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "us.api.insight.rapid7.com",
+        "path": "/idr/v2/investigations",
+        "status": 200,
+        "body": {
+          "data": [
+            {
+              "rrn": "rrn:investigation:us1:00000000-0000-4000-8000-000000000001:investigation:EXAMPLE1",
+              "organizationId": "00000000-0000-4000-8000-000000000001",
+              "title": "Synthetic investigation",
+              "status": "OPEN",
+              "priority": "HIGH",
+              "source": "ALERT",
+              "createdTime": "2026-01-01T00:00:00Z",
+              "lastAccessed": "2026-01-01T00:00:00Z",
+              "disposition": "UNDECIDED"
+            }
+          ],
+          "metadata": {
+            "index": 0,
+            "size": 100,
+            "total_data": 1,
+            "total_pages": 1
+          }
+        },
+        "query": {
+          "index": "0",
+          "size": "100"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/update_investigation_status.json",
+      "url": "https://help.rapid7.com/insightidr/en-us/api/v2/docs.html#tag/Investigations",
+      "document_url": "https://help.rapid7.com/insightidr/en-us/api/v2/insightidr-api-v2.json",
+      "document_sha256": "8cff844b98fb7cec1a16a8b908463ddefc936d6d55347e1d7242ce02c1bbbf1f",
+      "request": {
+        "method": "PATCH",
+        "url": "https://us.api.insight.rapid7.com/idr/v2/investigations/00000000-0000-4000-8000-000000000001",
+        "json": {
+          "status": "INVESTIGATING"
+        }
+      },
+      "response": {
+        "method": "PATCH",
+        "host": "us.api.insight.rapid7.com",
+        "path": "/idr/v2/investigations/00000000-0000-4000-8000-000000000001",
+        "status": 200,
+        "body": {
+          "rrn": "rrn:investigation:us1:00000000-0000-4000-8000-000000000001:investigation:EXAMPLE1",
+          "organizationId": "00000000-0000-4000-8000-000000000001",
+          "title": "Synthetic investigation",
+          "status": "INVESTIGATING",
+          "priority": "HIGH",
+          "source": "ALERT",
+          "createdTime": "2026-01-01T00:00:00Z",
+          "lastAccessed": "2026-01-01T00:00:00Z",
+          "disposition": "UNDECIDED"
+        }
+      }
+    }
+  ]
+}
