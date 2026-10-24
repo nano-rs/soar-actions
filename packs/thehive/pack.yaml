@@ -1,0 +1,350 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "thehive",
+  "display_name": "TheHive",
+  "description": "TheHive investigation and service actions.",
+  "vendor": "StrangeBee",
+  "categories": [
+    "ticketing"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [
+    {
+      "name": "base_url",
+      "label": "Customer TheHive HTTPS origin",
+      "required": true,
+      "format": "https_origin"
+    }
+  ],
+  "allow": [
+    {
+      "host": "{{config.base_url}}",
+      "path_prefixes": [
+        "/api/v1/case",
+        "/api/v1/alert"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "API_KEY"
+  },
+  "credentials": [
+    {
+      "name": "API_KEY",
+      "label": "Api Key"
+    }
+  ],
+  "defaults": {
+    "per_minute": 5,
+    "per_day": 500,
+    "timeout_secs": 20
+  },
+  "actions": {
+    "get_case": {
+      "display_name": "Get case",
+      "description": "Read one organization-visible case by its explicit identifier; no list/query expansion. API documentation: https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "case_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^(~[A-Za-z0-9-]{1,80}|[0-9]{1,12})$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v1/case/{{input.case_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "_id",
+            "json_type": "string",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "case": "steps.request"
+      },
+      "output_types": {
+        "case": "object"
+      },
+      "fixtures": [
+        "fixtures/get_case.json"
+      ]
+    },
+    "create_case": {
+      "display_name": "Create case",
+      "description": "Create one case with explicit text and conservative severity/TLP/PAP defaults. Alert uniqueness is provider-enforced on type/source/sourceRef, not a promise to retry. API documentation: https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "effect": "write",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "pattern": "^[^\\r\\n]{1,512}$"
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "required": true,
+          "max_bytes": 16000
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/v1/case",
+            "json": {
+              "title": "{{input.title}}",
+              "description": "{{input.description}}",
+              "severity": 2,
+              "tlp": 2,
+              "pap": 2
+            }
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "_id",
+            "json_type": "string",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "case": "steps.request"
+      },
+      "output_types": {
+        "case": "object"
+      },
+      "fixtures": [
+        "fixtures/create_case.json"
+      ]
+    },
+    "update_case": {
+      "display_name": "Update case text",
+      "description": "Replace only title/description after reading current values. A 204 confirms acceptance with an empty receipt; no object or completed workflow is fabricated. API documentation: https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "effect": "write",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "case_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^(~[A-Za-z0-9-]{1,80}|[0-9]{1,12})$"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "pattern": "^[^\\r\\n]{1,512}$"
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "required": true,
+          "max_bytes": 16000
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PATCH",
+            "url": "{{config.base_url}}/api/v1/case/{{input.case_id}}",
+            "json": {
+              "title": "{{input.title}}",
+              "description": "{{input.description}}"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "output_types": {},
+      "fixtures": [
+        "fixtures/update_case.json"
+      ]
+    },
+    "get_alert": {
+      "display_name": "Get alert",
+      "description": "Read one organization-visible alert by its explicit identifier; no list/query expansion. API documentation: https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "alert_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^~[A-Za-z0-9-]{1,80}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "{{config.base_url}}/api/v1/alert/{{input.alert_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "_id",
+            "json_type": "string",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "alert": "steps.request"
+      },
+      "output_types": {
+        "alert": "object"
+      },
+      "fixtures": [
+        "fixtures/get_alert.json"
+      ]
+    },
+    "create_alert": {
+      "display_name": "Create alert",
+      "description": "Create one alert with explicit text and conservative severity/TLP/PAP defaults. Alert uniqueness is provider-enforced on type/source/sourceRef, not a promise to retry. API documentation: https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "effect": "write",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "pattern": "^[^\\r\\n]{1,512}$"
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "required": true,
+          "max_bytes": 16000
+        },
+        {
+          "name": "alert_type",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9 _-]{1,32}$"
+        },
+        {
+          "name": "source_reference",
+          "type": "string",
+          "required": true,
+          "pattern": "^[A-Za-z0-9_.:-]{1,128}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "{{config.base_url}}/api/v1/alert",
+            "json": {
+              "title": "{{input.title}}",
+              "description": "{{input.description}}",
+              "severity": 2,
+              "tlp": 2,
+              "pap": 2,
+              "type": "{{input.alert_type}}",
+              "source": "nano Security Lake",
+              "sourceRef": "{{input.source_reference}}"
+            }
+          },
+          "expect": {
+            "status": [
+              201
+            ],
+            "path": "_id",
+            "json_type": "string",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "alert": "steps.request"
+      },
+      "output_types": {
+        "alert": "object"
+      },
+      "fixtures": [
+        "fixtures/create_alert.json"
+      ]
+    },
+    "update_alert": {
+      "display_name": "Update alert text",
+      "description": "Replace only title/description after reading current values. A 204 confirms acceptance with an empty receipt; no object or completed workflow is fabricated. API documentation: https://docs.strangebee.com/thehive/api-docs/docs.yaml",
+      "effect": "write",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "alert_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^~[A-Za-z0-9-]{1,80}$"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "pattern": "^[^\\r\\n]{1,512}$"
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "required": true,
+          "max_bytes": 16000
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "PATCH",
+            "url": "{{config.base_url}}/api/v1/alert/{{input.alert_id}}",
+            "json": {
+              "title": "{{input.title}}",
+              "description": "{{input.description}}"
+            },
+            "response_format": "text"
+          },
+          "expect": {
+            "status": [
+              204
+            ]
+          }
+        }
+      ],
+      "outputs": {},
+      "output_types": {},
+      "fixtures": [
+        "fixtures/update_alert.json"
+      ]
+    }
+  },
+  "deployment_scope": "self_hosted_sovereign"
+}
