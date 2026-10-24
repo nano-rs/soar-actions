@@ -22,7 +22,7 @@
           "data": {
             "id": "11111111-1111-4111-8111-111111111111",
             "message": "Example security alert",
-            "description": "Example incident evidence",
+            "description": "Example incident evidence\nObserved by the response team.",
             "status": "open",
             "priority": "P3",
             "alias": "nano-example-incident"
@@ -74,7 +74,7 @@
         "url": "https://api.opsgenie.com/v2/alerts",
         "json": {
           "message": "Example security alert",
-          "description": "Example incident evidence",
+          "description": "Example incident evidence\nObserved by the response team.",
           "alias": "nano-example-incident",
           "priority": "P3",
           "source": "nano Security Lake"

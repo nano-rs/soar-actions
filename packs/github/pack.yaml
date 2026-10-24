@@ -224,15 +224,15 @@
         },
         {
           "name": "title",
-          "type": "string",
+          "type": "text",
           "required": true,
-          "pattern": "^[\\s\\S]{1,256}$"
+          "max_bytes": 256
         },
         {
           "name": "body",
-          "type": "string",
+          "type": "text",
           "required": true,
-          "pattern": "^[\\s\\S]{1,10000}$"
+          "max_bytes": 10000
         }
       ],
       "steps": [
@@ -294,15 +294,15 @@
         },
         {
           "name": "title",
-          "type": "string",
+          "type": "text",
           "required": true,
-          "pattern": "^[\\s\\S]{1,256}$"
+          "max_bytes": 256
         },
         {
           "name": "body",
-          "type": "string",
+          "type": "text",
           "required": true,
-          "pattern": "^[\\s\\S]{1,10000}$"
+          "max_bytes": 10000
         },
         {
           "name": "state",
@@ -371,9 +371,9 @@
         },
         {
           "name": "body",
-          "type": "string",
+          "type": "text",
           "required": true,
-          "pattern": "^[\\s\\S]{1,10000}$"
+          "max_bytes": 10000
         }
       ],
       "steps": [

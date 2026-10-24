@@ -21,7 +21,7 @@
           "ticket": {
             "id": 123456,
             "subject": "Example security incident",
-            "description": "Example incident evidence",
+            "description": "Example incident evidence\nObserved by the response team.",
             "status": "open",
             "priority": "normal",
             "requester_id": 987654,
@@ -35,7 +35,7 @@
     "ticket": {
       "id": 123456,
       "subject": "Example security incident",
-      "description": "Example incident evidence",
+      "description": "Example incident evidence\nObserved by the response team.",
       "status": "open",
       "priority": "normal",
       "requester_id": 987654,

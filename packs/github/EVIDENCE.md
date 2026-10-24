@@ -40,7 +40,7 @@ Inputs: `owner` (string), `repository` (string), `issue_number` (int), `page` (i
 
 Create one issue in the explicit repository; notifications/automations may run. API documentation: https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28
 
-Inputs: `owner` (string), `repository` (string), `title` (string), `body` (string). Outputs: `issue`: object.
+Inputs: `owner` (string), `repository` (string), `title` (text), `body` (text). Outputs: `issue`: object.
 
 ### Update issue fields
 
@@ -48,7 +48,7 @@ Inputs: `owner` (string), `repository` (string), `title` (string), `body` (strin
 
 Replace the explicitly supplied title/body/state after reading current values; no atomic collision guarantee is implied. API documentation: https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28
 
-Inputs: `owner` (string), `repository` (string), `issue_number` (int), `title` (string), `body` (string), `state` (string). Outputs: `issue`: object.
+Inputs: `owner` (string), `repository` (string), `issue_number` (int), `title` (text), `body` (text), `state` (string). Outputs: `issue`: object.
 
 ### Add issue comment
 
@@ -56,4 +56,4 @@ Inputs: `owner` (string), `repository` (string), `issue_number` (int), `title` (
 
 Append one investigation comment; verify existing comments before a later attempt after an uncertain acknowledgment. API documentation: https://docs.github.com/en/rest/issues/comments?apiVersion=2022-11-28
 
-Inputs: `owner` (string), `repository` (string), `issue_number` (int), `body` (string). Outputs: `comment`: object.
+Inputs: `owner` (string), `repository` (string), `issue_number` (int), `body` (text). Outputs: `comment`: object.

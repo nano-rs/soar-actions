@@ -24,7 +24,7 @@ Inputs: `asset_id` (string). Outputs: `asset`: object.
 
 Read one 50-record cloud search page using explicit vendor criteria. Inspect metadata before a separate caller-requested next page. API documentation: https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json
 
-Inputs: `asset_filter` (string), `vulnerability_filter` (string), `cursor` (string). Outputs: `page`: object.
+Inputs: `asset_filter` (text), `vulnerability_filter` (text), `cursor` (string). Outputs: `page`: object.
 
 ### Search Vulnerabilities
 
@@ -32,4 +32,4 @@ Inputs: `asset_filter` (string), `vulnerability_filter` (string), `cursor` (stri
 
 Read one 50-record cloud search page using explicit vendor criteria. Inspect metadata before a separate caller-requested next page. API documentation: https://help.rapid7.com/insightvm/en-us/api/insightvm-api-v4.json
 
-Inputs: `vulnerability_filter` (string), `cursor` (string). Outputs: `page`: object.
+Inputs: `vulnerability_filter` (text), `cursor` (string). Outputs: `page`: object.

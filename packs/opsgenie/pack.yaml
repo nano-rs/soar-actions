@@ -146,9 +146,9 @@
         },
         {
           "name": "description",
-          "type": "string",
+          "type": "text",
           "required": true,
-          "pattern": "^[\\s\\S]{1,15000}$"
+          "max_bytes": 15000
         },
         {
           "name": "alias",
@@ -208,9 +208,9 @@
         },
         {
           "name": "message",
-          "type": "string",
+          "type": "text",
           "required": true,
-          "pattern": "^[\\s\\S]{1,130}$"
+          "max_bytes": 130
         }
       ],
       "steps": [
@@ -263,9 +263,9 @@
         },
         {
           "name": "description",
-          "type": "string",
+          "type": "text",
           "required": true,
-          "pattern": "^[\\s\\S]{1,15000}$"
+          "max_bytes": 15000
         }
       ],
       "steps": [

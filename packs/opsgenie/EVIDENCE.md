@@ -32,7 +32,7 @@ Inputs: `request_id` (string). Outputs: `request`: object.
 
 Submit an alert to the configured integration; the request ID acknowledges dispatch and may trigger paging. API documentation: https://docs.opsgenie.com/docs/alert-api
 
-Inputs: `message` (string), `description` (string), `alias` (string). Outputs: `request_id`: string.
+Inputs: `message` (string), `description` (text), `alias` (string). Outputs: `request_id`: string.
 
 ### Update Message
 
@@ -40,7 +40,7 @@ Inputs: `message` (string), `description` (string), `alias` (string). Outputs: `
 
 Submit a replacement for one explicit alert field. Inspect request state separately before claiming completion or attempting another update. API documentation: https://docs.opsgenie.com/docs/alert-api-continued
 
-Inputs: `alert_id` (string), `message` (string). Outputs: `request_id`: string.
+Inputs: `alert_id` (string), `message` (text). Outputs: `request_id`: string.
 
 ### Update Description
 
@@ -48,4 +48,4 @@ Inputs: `alert_id` (string), `message` (string). Outputs: `request_id`: string.
 
 Submit a replacement for one explicit alert field. Inspect request state separately before claiming completion or attempting another update. API documentation: https://docs.opsgenie.com/docs/alert-api-continued
 
-Inputs: `alert_id` (string), `description` (string). Outputs: `request_id`: string.
+Inputs: `alert_id` (string), `description` (text). Outputs: `request_id`: string.

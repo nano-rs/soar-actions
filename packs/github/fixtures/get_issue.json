@@ -25,7 +25,7 @@
           "id": 456,
           "number": 42,
           "title": "Example security incident",
-          "body": "Example incident evidence",
+          "body": "Example incident evidence\nObserved by the response team.",
           "state": "open",
           "html_url": "https://github.com/example-org/incident-response/issues/42",
           "updated_at": "2026-01-01T00:00:00Z"
@@ -38,7 +38,7 @@
       "id": 456,
       "number": 42,
       "title": "Example security incident",
-      "body": "Example incident evidence",
+      "body": "Example incident evidence\nObserved by the response team.",
       "state": "open",
       "html_url": "https://github.com/example-org/incident-response/issues/42",
       "updated_at": "2026-01-01T00:00:00Z"

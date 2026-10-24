@@ -105,15 +105,15 @@
       "inputs": [
         {
           "name": "asset_filter",
-          "type": "string",
+          "type": "text",
           "required": true,
-          "pattern": "^[\\s\\S]{1,512}$"
+          "max_bytes": 512
         },
         {
           "name": "vulnerability_filter",
-          "type": "string",
+          "type": "text",
           "required": true,
-          "pattern": "^[\\s\\S]{1,512}$"
+          "max_bytes": 512
         },
         {
           "name": "cursor",
@@ -165,9 +165,9 @@
       "inputs": [
         {
           "name": "vulnerability_filter",
-          "type": "string",
+          "type": "text",
           "required": true,
-          "pattern": "^[\\s\\S]{1,512}$"
+          "max_bytes": 512
         },
         {
           "name": "cursor",

@@ -40,7 +40,7 @@ Inputs: `ticket_id` (int), `cursor` (string). Outputs: `page`: object.
 
 Create one incident ticket for the explicit requester with an internal comment; business rules may trigger notifications. API documentation: https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/
 
-Inputs: `requester_id` (int), `subject` (string), `comment` (string). Outputs: `ticket`: object.
+Inputs: `requester_id` (int), `subject` (string), `comment` (text). Outputs: `ticket`: object.
 
 ### Update ticket with collision protection
 
@@ -48,4 +48,4 @@ Inputs: `requester_id` (int), `subject` (string), `comment` (string). Outputs: `
 
 Replace the selected status and append one internal comment only if the supplied update stamp is current; a collision stops the action. API documentation: https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/
 
-Inputs: `ticket_id` (int), `comment` (string), `status` (string), `updated_at` (string). Outputs: `ticket`: object.
+Inputs: `ticket_id` (int), `comment` (text), `status` (string), `updated_at` (string). Outputs: `ticket`: object.

@@ -5,7 +5,7 @@
   },
   "inputs": {
     "message": "Example security alert",
-    "description": "Example incident evidence",
+    "description": "Example incident evidence\nObserved by the response team.",
     "alias": "nano-example-incident"
   },
   "exchanges": [
@@ -15,7 +15,7 @@
         "url": "https://api.opsgenie.com/v2/alerts",
         "json": {
           "message": "Example security alert",
-          "description": "Example incident evidence",
+          "description": "Example incident evidence\nObserved by the response team.",
           "alias": "nano-example-incident",
           "priority": "P3",
           "source": "nano Security Lake"
