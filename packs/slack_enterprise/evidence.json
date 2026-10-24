@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_user.json",
+      "url": "https://docs.slack.dev/reference/methods/users.info/",
+      "document_url": "https://raw.githubusercontent.com/slackapi/slack-api-specs/master/web-api/slack_web_openapi_v2_without_examples.json",
+      "document_sha256": "8b92da26a3c5b11d20042a9f36d81f1fa6fc9382c5ddc471babb68b91936bc3a",
+      "request": {
+        "method": "GET",
+        "url": "https://slack.com/api/users.info",
+        "query": {
+          "user": "U0NANOEXAMPLE"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "slack.com",
+        "path": "/api/users.info",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "user": {
+            "id": "U0NANOEXAMPLE",
+            "name": "nano-example",
+            "deleted": false
+          }
+        },
+        "query": {
+          "user": "U0NANOEXAMPLE"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/revoke_sessions.json",
+      "url": "https://docs.slack.dev/reference/methods/admin.users.session.reset/",
+      "document_url": "https://raw.githubusercontent.com/slackapi/slack-api-specs/master/web-api/slack_web_openapi_v2_without_examples.json",
+      "document_sha256": "8b92da26a3c5b11d20042a9f36d81f1fa6fc9382c5ddc471babb68b91936bc3a",
+      "request": {
+        "method": "POST",
+        "url": "https://slack.com/api/admin.users.session.reset",
+        "form": {
+          "user_id": "U0NANOEXAMPLE"
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "slack.com",
+        "path": "/api/admin.users.session.reset",
+        "status": 200,
+        "body": {
+          "ok": true
+        }
+      }
+    }
+  ]
+}

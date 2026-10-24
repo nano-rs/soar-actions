@@ -1,0 +1,45 @@
+{
+  "action": "get_user",
+  "config": {},
+  "inputs": {
+    "user_id": "U0NANOEXAMPLE"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://slack.com/api/users.info",
+        "query": {
+          "user": "U0NANOEXAMPLE"
+        }
+      },
+      "response": {
+        "method": "GET",
+        "host": "slack.com",
+        "path": "/api/users.info",
+        "status": 200,
+        "body": {
+          "ok": true,
+          "user": {
+            "id": "U0NANOEXAMPLE",
+            "name": "nano-example",
+            "deleted": false
+          }
+        },
+        "query": {
+          "user": "U0NANOEXAMPLE"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "user_id": "U0NANOEXAMPLE",
+    "user": {
+      "id": "U0NANOEXAMPLE",
+      "name": "nano-example",
+      "deleted": false
+    }
+  },
+  "source": "https://docs.slack.dev/reference/methods/users.info/",
+  "request_evidence": "independent_http_mock"
+}

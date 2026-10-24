@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "fixtures": [
+    {
+      "fixture": "fixtures/get_user.json",
+      "url": "https://developer.box.com/reference/get-users-id/",
+      "document_url": "https://raw.githubusercontent.com/box/box-openapi/main/openapi.json",
+      "document_sha256": "1b7848282862071cf2c929f7af101819060018cdebb89f8f024fe3ef965a1529",
+      "request": {
+        "method": "GET",
+        "url": "https://api.box.com/2.0/users/1234567890"
+      },
+      "response": {
+        "method": "GET",
+        "host": "api.box.com",
+        "path": "/2.0/users/1234567890",
+        "status": 200,
+        "body": {
+          "type": "user",
+          "id": "1234567890",
+          "name": "Synthetic User",
+          "login": "nano-example@example.invalid"
+        }
+      }
+    },
+    {
+      "fixture": "fixtures/end_sessions.json",
+      "url": "https://developer.box.com/reference/post-users-terminate-sessions/",
+      "document_url": "https://raw.githubusercontent.com/box/box-openapi/main/openapi.json",
+      "document_sha256": "1b7848282862071cf2c929f7af101819060018cdebb89f8f024fe3ef965a1529",
+      "request": {
+        "method": "POST",
+        "url": "https://api.box.com/2.0/users/terminate_sessions",
+        "json": {
+          "user_ids": [
+            "1234567890"
+          ],
+          "user_logins": []
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.box.com",
+        "path": "/2.0/users/terminate_sessions",
+        "status": 202,
+        "body": {
+          "message": "Request is successful, please check the admin events for the status of the job"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "action": "end_sessions",
+  "config": {},
+  "inputs": {
+    "user_id": "1234567890"
+  },
+  "exchanges": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "https://api.box.com/2.0/users/terminate_sessions",
+        "json": {
+          "user_ids": [
+            "1234567890"
+          ],
+          "user_logins": []
+        }
+      },
+      "response": {
+        "method": "POST",
+        "host": "api.box.com",
+        "path": "/2.0/users/terminate_sessions",
+        "status": 202,
+        "body": {
+          "message": "Request is successful, please check the admin events for the status of the job"
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "message": "Request is successful, please check the admin events for the status of the job"
+  },
+  "source": "https://developer.box.com/reference/post-users-terminate-sessions/",
+  "request_evidence": "independent_http_mock"
+}

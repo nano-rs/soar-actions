@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "slack_enterprise",
+  "display_name": "Slack Enterprise",
+  "description": "Slack Enterprise bounded native response actions. Mutations require explicit approval; receipts do not establish asynchronous completion.",
+  "vendor": "Slack Enterprise",
+  "categories": [
+    "cloud_security"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "slack.com",
+      "path_prefixes": [
+        "/api/users.info",
+        "/api/admin.users.session.reset"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "ACCESS_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "ACCESS_TOKEN",
+      "label": "Org-installed Slack user OAuth token (admin.users:write; users:read for lookup)"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 30
+  },
+  "actions": {
+    "get_user": {
+      "display_name": "Get user",
+      "description": "Look up one explicit Slack user. Requires users:read. Slack can return HTTP 200 with ok:false; this is rejected. Official endpoint reference: https://docs.slack.dev/reference/methods/users.info/",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[UW][A-Z0-9]{8,31}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://slack.com/api/users.info",
+            "query": {
+              "user": "{{input.user_id}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "ok",
+            "equals": true
+          }
+        }
+      ],
+      "outputs": {
+        "user_id": "steps.request.user.id",
+        "user": "steps.request.user"
+      },
+      "output_types": {
+        "user_id": "string",
+        "user": "object"
+      },
+      "fixtures": [
+        "fixtures/get_user.json"
+      ]
+    },
+    "revoke_sessions": {
+      "display_name": "Revoke user sessions",
+      "description": "Revoke sessions on all supported devices for one user in an Enterprise organization. Requires admin.users:write and an org-installed user token authorized by an Org Admin/Owner. No mobile_only/web_only filters are sent, so both classes use vendor defaults. HTTP 200 ok:false never establishes success. No account deletion or token revocation endpoint is exposed. Official endpoint reference: https://docs.slack.dev/reference/methods/admin.users.session.reset/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[UW][A-Z0-9]{8,31}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://slack.com/api/admin.users.session.reset",
+            "form": {
+              "user_id": "{{input.user_id}}"
+            }
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "ok",
+            "equals": true
+          }
+        }
+      ],
+      "outputs": {
+        "ok": "steps.request.ok"
+      },
+      "output_types": {
+        "ok": "boolean"
+      },
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Revoked sessions cannot be restored by an API inverse. The user must authenticate again according to organization policy.",
+      "fixtures": [
+        "fixtures/revoke_sessions.json"
+      ]
+    }
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "kind": "action_pack",
+  "name": "box",
+  "display_name": "Box",
+  "description": "Box bounded native response actions. Mutations require explicit approval; receipts do not establish asynchronous completion.",
+  "vendor": "Box",
+  "categories": [
+    "cloud_security"
+  ],
+  "source": {
+    "kind": "nano_authored"
+  },
+  "config": [],
+  "allow": [
+    {
+      "host": "api.box.com",
+      "path_prefixes": [
+        "/2.0/users"
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "credential": "ACCESS_TOKEN"
+  },
+  "credentials": [
+    {
+      "name": "ACCESS_TOKEN",
+      "label": "Box OAuth access token with enterprise user/session privileges"
+    }
+  ],
+  "defaults": {
+    "per_minute": 10,
+    "per_day": 500,
+    "timeout_secs": 30
+  },
+  "actions": {
+    "get_user": {
+      "display_name": "Get user",
+      "description": "Retrieve one user in the enterprise. Requires the application and authenticated user to have permission to look up enterprise users. External users can have a limited representation. Official endpoint reference: https://developer.box.com/reference/get-users-id/",
+      "effect": "read",
+      "idempotent": true,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[1-9][0-9]{0,19}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "GET",
+            "url": "https://api.box.com/2.0/users/{{input.user_id}}"
+          },
+          "expect": {
+            "status": [
+              200
+            ],
+            "path": "id",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "user_id": "steps.request.id",
+        "user": "steps.request"
+      },
+      "output_types": {
+        "user_id": "string",
+        "user": "object"
+      },
+      "fixtures": [
+        "fixtures/get_user.json"
+      ]
+    },
+    "end_sessions": {
+      "display_name": "End user sessions",
+      "description": "Create asynchronous jobs to terminate sessions for one explicit enterprise user ID. Both required array fields are sent; user_logins is empty, so it cannot select additional users. Requires enterprise administrator/co-admin session-termination permission. HTTP 202 with a message acknowledges scheduling only; check Box admin events for eventual results. Official endpoint reference: https://developer.box.com/reference/post-users-terminate-sessions/",
+      "effect": "destructive",
+      "idempotent": false,
+      "inputs": [
+        {
+          "name": "user_id",
+          "type": "string",
+          "required": true,
+          "pattern": "^[1-9][0-9]{0,19}$"
+        }
+      ],
+      "steps": [
+        {
+          "id": "request",
+          "request": {
+            "method": "POST",
+            "url": "https://api.box.com/2.0/users/terminate_sessions",
+            "json": {
+              "user_ids": [
+                "{{input.user_id}}"
+              ],
+              "user_logins": []
+            }
+          },
+          "expect": {
+            "status": [
+              202
+            ],
+            "path": "message",
+            "non_empty": true
+          }
+        }
+      ],
+      "outputs": {
+        "message": "steps.request.message"
+      },
+      "output_types": {
+        "message": "string"
+      },
+      "rollback_unavailable": true,
+      "rollback_unavailable_reason": "Terminated sessions cannot be restored through an inverse API. The user must authenticate again; an accepted asynchronous job is not proof all sessions have ended.",
+      "fixtures": [
+        "fixtures/end_sessions.json"
+      ]
+    }
+  }
+}
