@@ -77,7 +77,7 @@
           "description": "Example incident evidence\nObserved by the response team.",
           "alias": "nano-example-incident",
           "priority": "P3",
-          "source": "nano Security Lake"
+          "source": "nano"
         }
       },
       "response": {

@@ -271,7 +271,7 @@
               "tlp": 2,
               "pap": 2,
               "type": "{{input.alert_type}}",
-              "source": "nano Security Lake",
+              "source": "nano",
               "sourceRef": "{{input.source_reference}}"
             }
           },

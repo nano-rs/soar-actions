@@ -15,7 +15,7 @@
           "routing_key": "fixture-only-ROUTING_KEY-not-a-secret",
           "payload": {
             "summary": "Case 00000000-0000-4000-8000-000000000001 needs investigation.",
-            "source": "nano Security Lake",
+            "source": "nano",
             "severity": "critical"
           }
         }

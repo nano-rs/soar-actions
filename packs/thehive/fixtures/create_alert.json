@@ -21,7 +21,7 @@
           "tlp": 2,
           "pap": 2,
           "type": "Endpoint Detection",
-          "source": "nano Security Lake",
+          "source": "nano",
           "sourceRef": "example-incident-42"
         }
       },

@@ -168,7 +168,7 @@
               "description": "{{input.description}}",
               "alias": "{{input.alias}}",
               "priority": "P3",
-              "source": "nano Security Lake"
+              "source": "nano"
             }
           },
           "expect": {
