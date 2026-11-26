@@ -73,7 +73,7 @@
               "dedup_key": "{{input.case_id}}",
               "payload": {
                 "summary": "{{input.summary}}",
-                "source": "nano Security Lake",
+                "source": "nano",
                 "severity": "{{input.severity}}"
               }
             }

@@ -10,7 +10,7 @@
         "method": "GET",
         "url": "https://qualysapi.qualys.com/api/2.0/fo/asset/host/",
         "headers": {
-          "X-Requested-With": "nano Security Lake SOAR"
+          "X-Requested-With": "nano"
         },
         "query": {
           "action": "list",
@@ -42,7 +42,7 @@
         "method": "GET",
         "url": "https://qualysapi.qualys.com/api/2.0/fo/asset/host/vm/detection/",
         "headers": {
-          "X-Requested-With": "nano Security Lake SOAR"
+          "X-Requested-With": "nano"
         },
         "query": {
           "action": "list",
@@ -74,7 +74,7 @@
         "method": "GET",
         "url": "https://qualysapi.qualys.com/api/2.0/fo/knowledge_base/vuln/",
         "headers": {
-          "X-Requested-With": "nano Security Lake SOAR"
+          "X-Requested-With": "nano"
         },
         "query": {
           "action": "list",
